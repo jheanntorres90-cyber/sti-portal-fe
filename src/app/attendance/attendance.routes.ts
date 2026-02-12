@@ -39,6 +39,10 @@ export const ATTENDANCE_ROUTES: Routes = [
     loadComponent: () => import('./student/subject-attendance/subject-attendance.component').then(m => m.SubjectAttendanceComponent)
   },
   {
+    path: 'student-schedule',
+    loadComponent: () => import('./student/schedule/schedule.component').then(m => m.StudentScheduleComponent)  
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
