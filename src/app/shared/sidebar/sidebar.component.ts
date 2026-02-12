@@ -35,12 +35,13 @@ import { AvatarModule } from 'primeng/avatar';
             
             <div *ngIf="isAttendanceOpen" class="mt-1 space-y-1 pl-4 border-l-2 border-gray-50 dark:border-white/5 ml-6">
               <a routerLink="/attendance/dashboard" routerLinkActive="active-attendance" class="nav-item">Dashboard</a>
-              <a routerLink="/attendance/student-dashboard" routerLinkActive="active-student" class="nav-item">Dashboard</a>
               <a routerLink="/attendance/attendance" routerLinkActive="active-attendance" class="nav-item">Attendance</a>
-              
               <a routerLink="/attendance/student-list" routerLinkActive="active-attendance" class="nav-item">Student List</a>
               <a routerLink="/attendance/schedule" routerLinkActive="active-attendance" class="nav-item">Schedule</a>
               <a routerLink="/attendance/announcements" routerLinkActive="active-attendance" class="nav-item">Announcements</a>
+              <a routerLink="/attendance/student-dashboard" routerLinkActive="active-student" class="nav-item">Dashboard</a>
+              <a routerLink="/attendance/gate-attendance" routerLinkActive="active-student" class="nav-item"> Gate Attendance</a>
+              
             </div>
           </div>
 
