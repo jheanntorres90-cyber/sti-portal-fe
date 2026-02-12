@@ -27,6 +27,10 @@ export const GRADES_ROUTES: Routes = [
     loadComponent: () => import('./announcements/announcements.component').then(m => m.TeacherAnnouncementsComponent)
   },
   {
+    path: 'student-dashboard',
+    loadComponent: () => import('./student/dashboard.component').then(m => m.StudentDashboardComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
