@@ -31,6 +31,10 @@ export const GRADES_ROUTES: Routes = [
     loadComponent: () => import('./student/dashboard.component').then(m => m.StudentDashboardComponent)
   },
   {
+    path: 'student-grades',
+    loadComponent: () => import('./student/grades/grades.component').then(m => m.GradesComponent)  
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
