@@ -43,6 +43,10 @@ export const ATTENDANCE_ROUTES: Routes = [
     loadComponent: () => import('./student/schedule/schedule.component').then(m => m.StudentScheduleComponent)  
   },
   {
+    path: 'student-announcements',
+    loadComponent: () => import('./student/announcements/announcements.component').then(m => m.StudentAnnouncementsComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
