@@ -27,6 +27,10 @@ export const ATTENDANCE_ROUTES: Routes = [
     loadComponent: () => import('./settings/settings.component').then(m => m.AttendanceSettingsComponent)
   },
   {
+    path: 'student-dashboard',
+    loadComponent: () => import('./student/dashboard/dashboard.component').then(m => m.StudentAttendanceDashboardComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
