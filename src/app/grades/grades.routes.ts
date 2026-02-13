@@ -40,7 +40,11 @@ export const GRADES_ROUTES: Routes = [
   },
   {
     path: 'student-announcements',
-loadComponent: () => import('./student/announcements/announcements.component').then(m => m.AnnouncementsComponent)
+   loadComponent: () => import('./student/announcements/announcements.component').then(m => m.AnnouncementsComponent)
+  },
+  {
+    path: 'student-mvh',
+   loadComponent: () => import('./student/mvh/mvh.componnet').then(m => m.MvshComponent)
   },
   {
     path: '',
