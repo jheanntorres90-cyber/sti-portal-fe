@@ -47,6 +47,10 @@ export const GRADES_ROUTES: Routes = [
    loadComponent: () => import('./student/mvh/mvh.componnet').then(m => m.MvshComponent)
   },
   {
+    path: 'student-feedback',
+   loadComponent: () => import('./student/feedback/feedback.component').then(m => m.FeedbackComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
