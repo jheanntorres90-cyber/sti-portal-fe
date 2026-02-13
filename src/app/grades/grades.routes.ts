@@ -35,6 +35,26 @@ export const GRADES_ROUTES: Routes = [
     loadComponent: () => import('./student/grades/grades.component').then(m => m.GradesComponent)  
   },
   {
+    path: 'student-schedule ',
+    loadComponent: () => import('./student/schedule/schedule.component').then(m => m.MyScheduleComponent)
+  },
+  {
+    path: 'student-announcements',
+   loadComponent: () => import('./student/announcements/announcements.component').then(m => m.AnnouncementsComponent)
+  },
+  {
+    path: 'student-mvh',
+   loadComponent: () => import('./student/mvh/mvh.componnet').then(m => m.MvshComponent)
+  },
+  {
+    path: 'student-feedback',
+   loadComponent: () => import('./student/feedback/feedback.component').then(m => m.FeedbackComponent)
+  },
+  {
+    path: 'student-about',
+   loadComponent: () => import('./student/about/about.component').then(m => m.AboutComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
