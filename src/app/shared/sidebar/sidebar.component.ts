@@ -48,6 +48,7 @@ import { AvatarModule } from 'primeng/avatar';
 
               <a routerLink="/attendance/admin-dashboard" routerLinkActive="active-student" class="nav-item">Dashboard</a>
               <a routerLink="/attendance/admin-attendance" routerLinkActive="active-student" class="nav-item">Attendance</a>
+              <a routerLink="/attendance/admin-manage-students" routerLinkActive="active-student" class="nav-item">Manage Students</a>
 
             </div>
           </div>
