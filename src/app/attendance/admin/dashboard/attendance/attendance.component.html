@@ -1,0 +1,323 @@
+<div class="space-y-6 p-4 sm:p-6 animate-fadeIn dark:bg-slate-950 min-h-screen pb-12">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
+        Attedance Management
+      </h1>
+      <p class="text-[10px] font-black uppercase text-slate-400 mt-1 tracking-tighter">Monitor and manage student attendance records</p>
+    </div>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="font-bold flex items-center gap-2 dark:text-white uppercase text-xs tracking-widest text-slate-500">
+        <i class="fas fa-filter text-blue-600"></i> Filter System
+      </h2>
+      <button (click)="resetFilters()" class="text-[10px] font-black text-blue-600 hover:text-blue-700 uppercase tracking-tighter">
+        Reset All
+      </button>
+    </div>
+
+    <form [formGroup]="filterForm">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">From Date *</label>
+          <p-calendar formControlName="fromDate" dateFormat="yy-mm-dd" [showIcon]="true" 
+                     styleClass="w-full" inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-calendar>
+          <small *ngIf="filterForm.get('fromDate')?.invalid && filterForm.get('fromDate')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">To Date *</label>
+          <p-calendar formControlName="toDate" dateFormat="yy-mm-dd" [showIcon]="true" 
+                     styleClass="w-full" inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-calendar>
+          <small *ngIf="filterForm.get('toDate')?.invalid && filterForm.get('toDate')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Course *</label>
+          <p-dropdown formControlName="course" [options]="courseOptions" optionLabel="label" optionValue="value"
+                     placeholder="Select Course" styleClass="w-full" 
+                     inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-dropdown>
+          <small *ngIf="filterForm.get('course')?.invalid && filterForm.get('course')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Section *</label>
+          <p-dropdown formControlName="section" [options]="sectionOptions" optionLabel="label" optionValue="value"
+                     placeholder="Select Section" styleClass="w-full"
+                     inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-dropdown>
+          <small *ngIf="filterForm.get('section')?.invalid && filterForm.get('section')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Subject *</label>
+          <p-dropdown formControlName="subject" [options]="subjectOptions" optionLabel="label" optionValue="value"
+                     placeholder="Select Subject" styleClass="w-full"
+                     inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-dropdown>
+          <small *ngIf="filterForm.get('subject')?.invalid && filterForm.get('subject')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="flex items-end gap-2 pb-0.5">
+          <button pButton type="button" label="Apply Filters" icon="fas fa-filter" 
+                  class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center justify-center gap-2 border-none"
+                  (click)="applyFilters()"></button>
+          <button pButton type="button" label="Reset" icon="fas fa-undo" 
+                  class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center justify-center gap-2 border-none"
+                  (click)="resetFilters()"></button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Export Buttons -->
+  <div class="flex justify-end gap-3">
+    <button (click)="exportToCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center justify-center gap-2">
+      <i class="fas fa-file-csv"></i> Export CSV
+    </button>
+    <button (click)="exportToExcel()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center justify-center gap-2">
+      <i class="fas fa-file-excel"></i> Export Excel
+    </button>
+    <button (click)="generateReport()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center justify-center gap-2">
+      <i class="fas fa-chart-bar"></i> Generate Report
+    </button>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Present</p>
+          <p class="text-2xl font-bold text-gray-800 dark:text-white mt-2">{{ summary.present }}</p>
+        </div>
+        <div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center">
+          <i class="fas fa-check-circle text-xl text-emerald-600 dark:text-emerald-400"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Late</p>
+          <p class="text-2xl font-bold text-gray-800 dark:text-white mt-2">{{ summary.late }}</p>
+        </div>
+        <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/20 rounded-2xl flex items-center justify-center">
+          <i class="fas fa-clock text-xl text-amber-600 dark:text-amber-400"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Absent</p>
+          <p class="text-2xl font-bold text-gray-800 dark:text-white mt-2">{{ summary.absent }}</p>
+        </div>
+        <div class="w-12 h-12 bg-rose-50 dark:bg-rose-900/20 rounded-2xl flex items-center justify-center">
+          <i class="fas fa-times-circle text-xl text-rose-600 dark:text-rose-400"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Attendance Rate</p>
+          <p class="text-2xl font-bold text-gray-800 dark:text-white mt-2">{{ summary.attendanceRate }}</p>
+        </div>
+        <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center">
+          <i class="fas fa-chart-line text-xl text-blue-600 dark:text-blue-400"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Attendance Records Table -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+    <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-list text-blue-600"></i>
+        <h3 class="font-bold dark:text-white uppercase text-xs tracking-widest text-slate-500">Attendance Records</h3>
+      </div>
+      <span class="text-[10px] font-black uppercase text-slate-400 tracking-tighter">
+        Showing {{ showingCount }} of {{ filteredRecords.length }} Records
+      </span>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
+          <tr>
+            <th class="px-6 py-4">Student ID</th>
+            <th class="px-6 py-4">Name</th>
+            <th class="px-6 py-4">Course & Section</th>
+            <th class="px-6 py-4">Subject</th>
+            <th class="px-6 py-4">Date</th>
+            <th class="px-6 py-4">Time In</th>
+            <th class="px-6 py-4">Time Out</th>
+            <th class="px-6 py-4">Status</th>
+            <th class="px-6 py-4">Method</th>
+            <th class="px-6 py-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y dark:divide-slate-800">
+          <tr *ngFor="let record of paginatedRecords" class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+            <td class="px-6 py-4 font-mono text-[11px] text-slate-500 dark:text-slate-400">{{ record.studentId }}</td>
+            <td class="px-6 py-4 font-bold dark:text-white text-sm">{{ record.name }}</td>
+            <td class="px-6 py-4">
+              <span class="text-xs dark:text-slate-400 font-medium">{{ record.course }}</span>
+              <span class="block text-[10px] text-slate-400 uppercase font-bold">{{ record.section }}</span>
+            </td>
+            <td class="px-6 py-4 text-xs dark:text-slate-400 font-medium">{{ record.subject }}</td>
+            <td class="px-6 py-4 text-xs dark:text-slate-400">{{ formatDate(record.date) }}</td>
+            <td class="px-6 py-4 text-xs dark:text-slate-400">{{ record.timeIn || '-' }}</td>
+            <td class="px-6 py-4 text-xs dark:text-slate-400">{{ record.timeOut || '-' }}</td>
+            <td class="px-6 py-4">
+              <span [ngClass]="{
+                'text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20': record.status === 'Present',
+                'text-amber-600 bg-amber-50 dark:bg-amber-900/20': record.status === 'Late',
+                'text-rose-600 bg-rose-50 dark:bg-rose-900/20': record.status === 'Absent'
+              }" class="text-[10px] font-black uppercase rounded-lg px-2 py-1">
+                {{ record.status }}
+              </span>
+            </td>
+            <td class="px-6 py-4">
+              <span [ngClass]="{
+                'text-blue-600 bg-blue-50 dark:bg-blue-900/20': record.method === 'QR',
+                'text-purple-600 bg-purple-50 dark:bg-purple-900/20': record.method === 'Manual',
+                'text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20': record.method === 'Biometric'
+              }" class="text-[10px] font-black uppercase rounded-lg px-2 py-1">
+                {{ record.method }}
+              </span>
+            </td>
+            <td class="px-6 py-4">
+              <div class="flex gap-2">
+                <button (click)="viewRecord(record)" class="text-blue-600 hover:text-blue-700 text-xs" title="View">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button (click)="openEditModal(record)" class="text-amber-600 hover:text-amber-700 text-xs" title="Edit">
+                  <i class="fas fa-pencil"></i>
+                </button>
+                <button (click)="deleteRecord(record)" class="text-rose-600 hover:text-rose-700 text-xs" title="Delete">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="paginatedRecords.length === 0">
+            <td colspan="11" class="text-center p-8 text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase">
+              No records found. Try adjusting your filters.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="p-4 border-t dark:border-slate-800 flex justify-between items-center bg-slate-50/30 dark:bg-slate-900/50">
+      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        Page {{ currentPage }} of {{ totalPages }}
+      </p>
+      <div class="flex gap-2">
+        <button (click)="previousPage()" [disabled]="currentPage === 1" 
+                class="px-4 py-2 text-[10px] font-black uppercase bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl disabled:opacity-30 dark:text-white transition-all">
+          Prev
+        </button>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages || totalPages === 0" 
+                class="px-4 py-2 text-[10px] font-black uppercase bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl disabled:opacity-30 dark:text-white transition-all">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <p-dialog header="Edit Attendance Record" [(visible)]="showEditModal" 
+            [style]="{ width: '600px' }" [modal]="true" [draggable]="false"
+            styleClass="rounded-3xl">
+    <form [formGroup]="editForm" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Student Name</label>
+          <input pInputText formControlName="studentName" readonly 
+                 class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white" />
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Student ID</label>
+          <input pInputText formControlName="studentId" readonly 
+                 class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white" />
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Date *</label>
+          <p-calendar formControlName="date" dateFormat="yy-mm-dd" [showIcon]="true"
+                     inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-calendar>
+          <small *ngIf="editForm.get('date')?.invalid && editForm.get('date')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Time In *</label>
+           <p-calendar formControlName="timeIn" [timeOnly]="true" hourFormat="24" [showIcon]="true">   
+                     inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-calendar>
+          <small *ngIf="editForm.get('timeIn')?.invalid && editForm.get('timeIn')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Time Out *</label>
+          <p-calendar formControlName="timeIn" [timeOnly]="true" hourFormat="24" [showIcon]="true">
+                     inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-calendar>
+          <small *ngIf="editForm.get('timeOut')?.invalid && editForm.get('timeOut')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Status *</label>
+          <p-dropdown formControlName="status" [options]="statusOptions" optionLabel="label" optionValue="value"
+                     placeholder="Select Status" styleClass="w-full"
+                     inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-dropdown>
+          <small *ngIf="editForm.get('status')?.invalid && editForm.get('status')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Method *</label>
+          <p-dropdown formControlName="method" [options]="methodOptions" optionLabel="label" optionValue="value"
+                     placeholder="Select Method" styleClass="w-full"
+                     inputStyleClass="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></p-dropdown>
+          <small *ngIf="editForm.get('method')?.invalid && editForm.get('method')?.touched" 
+                 class="text-red-500 text-[8px] font-black uppercase block mt-1">Required</small>
+        </div>
+        
+        <div class="space-y-1.5 md:col-span-2">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Remarks</label>
+          <textarea pInputTextarea formControlName="remarks" rows="3" 
+                    class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"
+                    placeholder="Add remarks..."></textarea>
+        </div>
+      </div>
+      
+      <div class="flex justify-end gap-2 mt-4">
+        <button (click)="closeEditModal()" 
+                class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white text-xs font-bold py-2 px-4 rounded-2xl transition-all flex items-center gap-2">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button (click)="updateAttendance()" [disabled]="editForm.invalid"
+                class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded-2xl transition-all flex items-center gap-2 disabled:opacity-50">
+          <i class="fas fa-check"></i> Save Changes
+        </button>
+      </div>
+    </form>
+  </p-dialog>
+</div>
