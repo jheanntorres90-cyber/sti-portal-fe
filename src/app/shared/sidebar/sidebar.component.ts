@@ -53,9 +53,7 @@ import { AvatarModule } from 'primeng/avatar';
               <a routerLink="/attendance/admin-announcements" routerLinkActive="active-student" class="nav-item">Announcements</a>
               <a routerLink="/attendance/admin-add-new-admin" routerLinkActive="active-student" class="nav-item">Add New Admin</a>
               <a routerLink="/attendance/admin-reset-password" routerLinkActive="active-student" class="nav-item">Reset Password</a>
-
-
-       
+    
             </div>
           </div>
 
@@ -83,6 +81,9 @@ import { AvatarModule } from 'primeng/avatar';
               <a routerLink="/grades/student-feedback" routerLinkActive="active-grade" class="nav-item">Feedback</a>
               <a routerLink="/grades/student-about" routerLinkActive="active-grade" class="nav-item">About</a>
               <a routerLink="/grades/student-faqs" routerLinkActive="active-grade" class="nav-item">Faqs</a>
+             
+              <a routerLink="/grades/admin-dashboard" routerLinkActive="active-grade" class="nav-item">Dashboard</a>
+         
             </div>
           </div>
 
