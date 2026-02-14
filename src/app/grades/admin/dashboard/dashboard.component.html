@@ -1,0 +1,246 @@
+<div class="p-4 md:p-8 space-y-8 bg-gray-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+
+  <!-- WELCOME SECTION -->
+  <div class="bg-white dark:bg-[#1e1e1e] rounded-[2.5rem] p-8 shadow-sm border border-gray-100 dark:border-white/5">
+    <h2 class="text-2xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight uppercase">
+      Welcome Back, Admin
+    </h2>
+    <p class="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-[0.2em] mt-2">
+      System Overview & Insights
+    </p>
+  </div>
+
+  <!-- STATS GRID -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <!-- Total Students -->
+    <div (click)="handleStatCardClick($event)"
+         class="bg-white dark:bg-[#1e1e1e] p-8 rounded-[2rem] shadow-sm border border-gray-100 dark:border-white/5 hover:shadow-md transition-all cursor-pointer">
+
+      <div class="bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400
+                  w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
+        <i class="fas fa-users"></i>
+      </div>
+
+      <div class="text-4xl font-black text-gray-900 dark:text-white tracking-tighter">
+        {{ animatedStats.totalStudents | number }}
+      </div>
+
+      <div class="text-[10px] text-gray-400 dark:text-slate-500 font-black uppercase tracking-[0.2em] mt-2">
+        Total Students
+      </div>
+
+      <div class="text-[10px] font-bold text-green-600 mt-3 uppercase tracking-widest">
+        +12 This Week
+      </div>
+    </div>
+
+    <!-- Active Students -->
+    <div (click)="handleStatCardClick($event)"
+         class="bg-white dark:bg-[#1e1e1e] p-8 rounded-[2rem] shadow-sm border border-gray-100 dark:border-white/5 hover:shadow-md transition-all cursor-pointer">
+
+      <div class="bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400
+                  w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
+        <i class="fas fa-user-check"></i>
+      </div>
+
+      <div class="text-4xl font-black text-gray-900 dark:text-white tracking-tighter">
+        {{ animatedStats.activeStudents | number }}
+      </div>
+
+      <div class="text-[10px] text-gray-400 dark:text-slate-500 font-black uppercase tracking-[0.2em] mt-2">
+        Active Students
+      </div>
+
+      <div class="text-[10px] font-bold text-green-600 mt-3 uppercase tracking-widest">
+        95.5% Active Rate
+      </div>
+    </div>
+
+    <!-- Grades Entered -->
+    <div (click)="handleStatCardClick($event)"
+         class="bg-white dark:bg-[#1e1e1e] p-8 rounded-[2rem] shadow-sm border border-gray-100 dark:border-white/5 hover:shadow-md transition-all cursor-pointer">
+
+      <div class="bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400
+                  w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
+        <i class="fas fa-book"></i>
+      </div>
+
+      <div class="text-4xl font-black text-gray-900 dark:text-white tracking-tighter">
+        {{ animatedStats.gradesEntered | number }}
+      </div>
+
+      <div class="text-[10px] text-gray-400 dark:text-slate-500 font-black uppercase tracking-[0.2em] mt-2">
+        Grades Entered
+      </div>
+
+      <div class="text-[10px] font-bold text-green-600 mt-3 uppercase tracking-widest">
+        92% Completion
+      </div>
+    </div>
+
+    <!-- Pending Approval -->
+    <div (click)="handleStatCardClick($event)"
+         class="bg-white dark:bg-[#1e1e1e] p-8 rounded-[2rem] shadow-sm border border-gray-100 dark:border-white/5 hover:shadow-md transition-all cursor-pointer">
+
+      <div class="bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400
+                  w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-2xl shadow-sm">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+
+      <div class="text-4xl font-black text-gray-900 dark:text-white tracking-tighter">
+        {{ animatedStats.pendingApproval }}
+      </div>
+
+      <div class="text-[10px] text-gray-400 dark:text-slate-500 font-black uppercase tracking-[0.2em] mt-2">
+        Pending Approval
+      </div>
+
+      <div class="text-[10px] font-bold text-red-500 mt-3 uppercase tracking-widest">
+        Needs Review
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CONTENT GRID -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <!-- ANNOUNCEMENTS -->
+    <div class="bg-white dark:bg-[#1e1e1e] rounded-[2.5rem] shadow-sm border border-gray-100 dark:border-white/5 overflow-hidden">
+
+      <div class="p-8 border-b border-gray-50 dark:border-white/5 flex justify-between items-center">
+        <h3 class="text-lg font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight">
+          Latest Announcements
+        </h3>
+        <a [routerLink]="['/announcements']"
+           class="text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-700 transition-colors">
+          View All
+        </a>
+      </div>
+
+      <div class="divide-y divide-gray-50 dark:divide-white/5">
+
+        <!-- Keep all your existing announcement cards here -->
+        <!-- Just wrap each one like this -->
+
+        <div class="p-8 hover:bg-gray-50 dark:hover:bg-[#252525] transition-colors cursor-pointer group">
+          <h4 class="font-black text-gray-900 dark:text-gray-100 text-sm uppercase group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            Midterm Examination Schedule - October 2023
+          </h4>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-3 font-medium leading-relaxed">
+            Midterm examinations will be held from October 15-19, 2023.
+          </p>
+          <div class="text-[10px] text-gray-400 dark:text-slate-500 font-black uppercase tracking-widest mt-4">
+            Today, 10:30 AM • 1,247 Views
+          </div>
+        </div>
+
+        <div class="p-8 hover:bg-gray-50 dark:hover:bg-[#252525] transition-colors cursor-pointer group">
+          <h4 class="font-black text-gray-900 dark:text-gray-100 text-sm uppercase group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            Libary System Maintenance
+          </h4>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-3 font-medium leading-relaxed">
+           The library management system will undergo maintenance this weekend. Online services will be temporarily unavailable.
+          </p>
+          <div class="text-[10px] text-gray-400 dark:text-slate-500 font-black uppercase tracking-widest mt-4">
+            Yesterday, 2:15 PM • 892 views
+          </div>
+        </div>
+         
+         <div class="p-8 hover:bg-gray-50 dark:hover:bg-[#252525] transition-colors cursor-pointer group">
+          <h4 class="font-black text-gray-900 dark:text-gray-100 text-sm uppercase group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            Research Symposium 2023
+          </h4>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-3 font-medium leading-relaxed">
+           Annual Research Symposium scheduled for November 20th. Submit research proposals by October 30th.
+          </p>
+          <div class="text-[10px] text-gray-400 dark:text-slate-500 font-black uppercase tracking-widest mt-4">
+           Oct 5, 9:45 AM • 1737 views
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- RECENT ACTIVITIES -->
+    <div class="bg-white dark:bg-[#1e1e1e] rounded-[2.5rem] shadow-sm border border-gray-100 dark:border-white/5 overflow-hidden">
+
+      <div class="p-8 border-b border-gray-50 dark:border-white/5 flex justify-between items-center">
+        <h3 class="text-lg font-black text-gray-900 dark:text-gray-100 uppercase tracking-tight">
+          Recent Activities
+        </h3>
+        <a href="#"
+           (click)="onViewAllActivities($event)"
+           class="text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-700 transition-colors">
+          View All
+        </a>
+      </div>
+
+      <div class="p-8 space-y-4">
+
+        <div class="p-6 rounded-[2rem] border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-[#252525] hover:bg-white dark:hover:bg-[#2a2a2a] transition-all">
+
+       <div class="font-black text-gray-900 dark:text-gray-100 text-sm uppercase group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+        New student registered:
+         <span class="text-blue-600 dark:text-blue-400 text-sm uppercase">
+        John Doe
+      </span>
+    </div>
+
+          <div class="text-[11px] text-gray-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-2">
+            2 Minutes Ago
+          </div>
+
+        <div class="font-black text-gray-900 dark:text-gray-100 text-sm uppercase group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          Payment recieved: 
+         <span class="text-blue-600 dark:text-blue-400">
+        ₱ 15,000 
+      </span>
+    </div>
+
+          <div class="text-[11px] text-gray-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-2">
+            15 Minutes Ago
+          </div>
+          
+        <div class="font-black text-gray-900 dark:text-gray-100 text-sm uppercase group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          Grades updated for 
+         <span class="text-blue-600 dark:text-blue-400">
+        CS101
+      </span>
+    </div>
+
+          <div class="text-[11px] text-gray-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-2">
+            1 Minutes Ago
+          </div>
+
+        <div class="font-black text-gray-900 dark:text-gray-100 text-sm uppercase group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          New announcement posted:
+         <span class="text-blue-600 dark:text-blue-400">
+        Midterm Schedule
+      </span>
+    </div>
+
+         <div class="text-[11px] text-gray-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-2">
+            12 Minutes Ago
+          </div>
+
+         <div class="font-black text-gray-900 dark:text-gray-100 text-sm uppercase group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          Gate attendance recorded for
+         <span class="text-blue-600 dark:text-blue-400">
+        Caila Torres
+      </span>
+    </div>
+
+        <div class="text-[11px] text-gray-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-2">
+            1 hours Ago
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
