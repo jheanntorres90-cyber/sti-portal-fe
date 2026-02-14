@@ -67,6 +67,10 @@ export const ATTENDANCE_ROUTES: Routes = [
     loadComponent: () => import('./admin/announcements/announcements').then(m => m.AdminAnnouncementsComponent)
   },
   {
+    path: 'admin-add-new-admin',
+    loadComponent: () => import('./admin/add-new-admin/add-admin.component').then(m => m.AdminAddAdminComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
