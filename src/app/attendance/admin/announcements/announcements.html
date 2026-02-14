@@ -1,0 +1,279 @@
+<div class="space-y-6 p-4 sm:p-6 animate-fadeIn dark:bg-slate-950 min-h-screen pb-12">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
+        Announcement Management
+      </h1>
+      <p class="text-[10px] font-black uppercase text-slate-400 mt-1 tracking-tighter">
+        Create, manage and filter school announcements
+      </p>
+    </div>
+  </div>
+
+  <!-- Create Announcement Card -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+
+    <h2 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white mb-6">
+      Create Announcement
+    </h2>
+
+    <form #announcementForm="ngForm" (ngSubmit)="createAnnouncement()"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Audience *</label>
+        <select [(ngModel)]="newAnnouncement.audience" name="audience"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+          <option value="">Select Audience</option>
+          <option value="General">General</option>
+          <option value="Teachers">Teachers</option>
+          <option value="Students">Students</option>
+          <option value="Parents">Parents</option>
+          <option value="BSIT">BSIT</option>
+          <option value="BSCS">BSCS</option>
+        </select>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Course</label>
+        <select [(ngModel)]="newAnnouncement.course" name="course"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+          <option value="BSIT">BSIT</option>
+          <option value="BSCS">BSCS</option>
+          <option value="BSTM">BSTM</option>
+          <option value="BSPSYCH">BSPSYCH</option>
+          <option value="STEM">STEM</option>
+          <option value="HUMMS">HUMMS</option>
+          <option value="ICT">ICT</option>
+          <option value="ABM">ABM</option>
+        </select>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Subject</label>
+        <input type="text" [(ngModel)]="newAnnouncement.subject" name="subject"
+          placeholder="Enter subject"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+      </div>
+
+      <div class="space-y-1.5 md:col-span-3">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Message *</label>
+        <textarea [(ngModel)]="newAnnouncement.message" name="message"
+          rows="4"
+          placeholder="Enter announcement message..."
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></textarea>
+      </div>
+
+      <div class="md:col-span-3 flex justify-end">
+        <button type="submit"
+          class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-6 rounded-2xl transition-all flex items-center gap-2">
+          <i class="fas fa-paper-plane"></i> Post Announcement
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+        Filter Announcements
+      </h2>
+      <button (click)="clearFilters()"
+        class="text-[10px] font-black text-blue-600 hover:text-blue-700 uppercase tracking-tighter">
+        Reset
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+      <input type="text" [(ngModel)]="filter.subject"
+        placeholder="Search subject..."
+        class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+
+      <input type="date" [(ngModel)]="filter.date"
+        class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+
+      <button (click)="applyFilters()"
+        class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center justify-center gap-2">
+        <i class="fas fa-filter"></i> Apply Filters
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Export Buttons -->
+  <div class="flex justify-end gap-3">
+    <button (click)="exportToCSV()"
+      class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center gap-2">
+      <i class="fas fa-file-csv"></i> Export CSV
+    </button>
+    <button (click)="exportToExcel()"
+      class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center gap-2">
+      <i class="fas fa-file-excel"></i> Export Excel
+    </button>
+  </div>
+
+  <!-- Announcement Table -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+
+    <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+      <h3 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+        All Announcements
+      </h3>
+      <span class="text-[10px] font-black uppercase text-slate-400 tracking-tighter">
+        {{ filteredAnnouncements.length }} Records
+      </span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
+          <tr>
+            <th class="px-6 py-4">Audience</th>
+            <th class="px-6 py-4">Subject</th>
+            <th class="px-6 py-4">Message</th>
+            <th class="px-6 py-4">Date</th>
+            <th class="px-6 py-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y dark:divide-slate-800">
+          <tr *ngFor="let announcement of filteredAnnouncements"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+
+            <td class="px-6 py-4 text-xs font-bold dark:text-white">
+              {{ announcement.audience }}
+            </td>
+
+            <td class="px-6 py-4 text-xs dark:text-slate-400">
+              {{ announcement.subject }}
+            </td>
+
+            <td class="px-6 py-4 text-xs dark:text-slate-400">
+              {{ announcement.message }}
+            </td>
+
+            <td class="px-6 py-4 text-xs dark:text-slate-400">
+              {{ announcement.date }}
+            </td>
+
+            <td class="px-6 py-4">
+              <div class="flex gap-2">
+                <button (click)="editAnnouncement(announcement)"
+                        class="text-amber-600 hover:text-amber-700 text-xs">
+                  <i class="fas fa-pencil"></i>
+                </button>
+                <button (click)="deleteAnnouncement(announcement.id)"
+                        class="text-rose-600 hover:text-rose-700 text-xs">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Edit Announcement Modal -->
+<div *ngIf="isModalOpen"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl p-6 shadow-xl">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+        Edit Announcement
+      </h2>
+
+      <button (click)="closeModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="updateAnnouncement()"
+          class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Audience
+        </label>
+        <select [(ngModel)]="editingAnnouncement.audience"
+                name="audience"
+                class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+          <option value="General">General</option>
+          <option value="Teachers">Teachers</option>
+          <option value="Students">Students</option>
+          <option value="Parents">Parents</option>
+          <option value="BSIT">BSIT</option>
+          <option value="BSCS">BSCS</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Course
+        </label>
+         <select [(ngModel)]="newAnnouncement.course" name="course"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+          <option value="BSIT">BSIT</option>
+          <option value="BSCS">BSCS</option>
+          <option value="BSTM">BSTM</option>
+          <option value="BSPSYCH">BSPSYCH</option>
+          <option value="STEM">STEM</option>
+          <option value="HUMMS">HUMMS</option>
+          <option value="ICT">ICT</option>
+          <option value="ABM">ABM</option>
+        </select>
+      </div>
+
+      <div class="col-span-full">
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Subject
+        </label>
+        <input type="text"
+               [(ngModel)]="editingAnnouncement.subject"
+               name="subject"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div class="col-span-full">
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Message
+        </label>
+        <textarea rows="4"
+                  [(ngModel)]="editingAnnouncement.message"
+                  name="message"
+                  class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+        </textarea>
+      </div>
+
+      <div class="col-span-full flex justify-end gap-3 pt-4">
+        <button type="button"
+                (click)="closeModal()"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+          Save Changes
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+
