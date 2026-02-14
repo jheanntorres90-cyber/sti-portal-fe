@@ -52,15 +52,19 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'admin-attendance',
-    loadComponent: () => import('./admin/dashboard/attendance/attendance.component').then(m => m.AdminAttendanceComponent)
+    loadComponent: () => import('./admin/attendance/attendance.component').then(m => m.AdminAttendanceComponent)
   },
   {
     path: 'admin-manage-students',
-    loadComponent: () => import('./admin/dashboard/manage-students/manage.component').then(m => m.ManageStudentsComponent)
+    loadComponent: () => import('./admin/manage-students/manage.component').then(m => m.ManageStudentsComponent)
   },
   {
     path: 'admin-schedule',
     loadComponent: () => import('./admin/schedule/schedule.component').then(m => m.AdminScheduleComponent)
+  },
+  {
+    path: 'admin-announcements',
+    loadComponent: () => import('./admin/announcements/announcements').then(m => m.AdminAnnouncementsComponent)
   },
   {
     path: '',
