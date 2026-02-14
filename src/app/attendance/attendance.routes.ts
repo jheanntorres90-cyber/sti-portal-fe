@@ -71,6 +71,10 @@ export const ATTENDANCE_ROUTES: Routes = [
     loadComponent: () => import('./admin/add-new-admin/add-admin.component').then(m => m.AdminAddAdminComponent)
   },
   {
+  path: 'admin-reset-password',
+  loadComponent: () => import('./admin/reset-password/reset-password.component').then(m => m.AdminResetPasswordComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
