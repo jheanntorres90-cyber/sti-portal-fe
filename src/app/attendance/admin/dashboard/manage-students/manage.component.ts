@@ -33,6 +33,9 @@ export class ManageStudentsComponent implements OnInit {
     faceImage: null as File | null
   };
 
+  isModalOpen = false;
+  editEventId: number | null = null;
+
   editStudent = {
     fullName: 'John Doe',
     studentId: '2025-001',

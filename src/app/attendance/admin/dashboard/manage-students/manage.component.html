@@ -24,9 +24,6 @@
 
    <form (ngSubmit)="registerStudent()" #studentForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 
-      <!-- INPUT STYLE TEMPLATE -->
-      <!-- Use same styling everywhere -->
-
       <div class="space-y-1.5">
         <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Full Name</label>
         <input type="text" [(ngModel)]="newStudent.fullName" name="fullName"
@@ -87,7 +84,7 @@
       <div class="col-span-full flex justify-end pt-4">
         <button type="submit"
           class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-6 rounded-2xl transition-all flex items-center gap-2">
-          <i class="fas fa-check"></i> Register Student
+          <i class="fas fa-user-plus"></i> Register Student
         </button>
       </div>
 
@@ -208,3 +205,111 @@
 
   </div>
 </div>
+
+<!-- EDIT MODAL -->
+<!-- EDIT MODAL -->
+<div *ngIf="isEditModalOpen"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl p-6 shadow-xl">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+        Edit Student
+      </h2>
+
+      <button (click)="isEditModalOpen = false"
+              class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="updateStudent()"
+          class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <!-- Full Name -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Full Name</label>
+        <input type="text"
+               [(ngModel)]="editStudent.fullName"
+               name="fullName"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Student ID -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Student ID</label>
+        <input type="text"
+               [(ngModel)]="editStudent.studentId"
+               name="studentId"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white"
+               disabled>
+      </div>
+
+      <!-- Course -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Course</label>
+        <input type="text"
+               [(ngModel)]="editStudent.course"
+               name="course"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Year & Section -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Year & Section</label>
+        <input type="text"
+               [(ngModel)]="editStudent.yearSection"
+               name="yearSection"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Email</label>
+        <input type="email"
+               [(ngModel)]="editStudent.email"
+               name="email"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Contact</label>
+        <input type="text"
+               [(ngModel)]="editStudent.contact"
+               name="contact"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- RFID -->
+      <div class="col-span-full">
+        <label class="text-xs uppercase text-slate-400 font-black">RFID</label>
+        <input type="text"
+               [(ngModel)]="editStudent.rfid"
+               name="rfid"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Buttons -->
+      <div class="col-span-full flex justify-end gap-3 pt-4">
+        <button type="button"
+                (click)="isEditModalOpen = false"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+          Save Changes
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+

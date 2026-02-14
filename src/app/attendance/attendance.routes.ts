@@ -59,6 +59,10 @@ export const ATTENDANCE_ROUTES: Routes = [
     loadComponent: () => import('./admin/dashboard/manage-students/manage.component').then(m => m.ManageStudentsComponent)
   },
   {
+    path: 'admin-schedule',
+    loadComponent: () => import('./admin/schedule/schedule.component').then(m => m.AdminScheduleComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
