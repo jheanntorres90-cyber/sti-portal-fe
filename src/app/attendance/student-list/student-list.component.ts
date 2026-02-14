@@ -8,6 +8,14 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="space-y-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
+         Student List
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-2"> Monitor and manage registered students</p>
+    </div>
+  </div>
       <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
         <div class="flex justify-between items-center mb-6">
           <h2 class="font-bold flex items-center gap-2 dark:text-white uppercase text-xs tracking-widest text-slate-500">
