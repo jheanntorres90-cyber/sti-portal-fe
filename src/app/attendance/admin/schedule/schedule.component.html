@@ -1,0 +1,463 @@
+<div class="space-y-6 p-4 sm:p-6 animate-fadeIn dark:bg-slate-950 min-h-screen pb-12">
+
+  <!-- HEADER -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
+        Schedule Management
+      </h1>
+      <p class="text-[10px] font-black uppercase text-slate-400 mt-1 tracking-tighter">
+        Manage academic schedules and university events
+      </p>
+    </div>
+  </div>
+
+  <!-- ALERT CONTAINER -->
+  <div class="fixed top-5 right-5 z-[9999] flex flex-col gap-2.5 max-w-[400px]">
+    <div *ngFor="let alert of alerts"
+         class="flex items-start gap-3 p-4 rounded-2xl border shadow-sm"
+         [ngClass]="{
+           'border-emerald-400 bg-emerald-50 text-emerald-700': alert.type === 'success',
+           'border-blue-400 bg-blue-50 text-blue-700': alert.type === 'info',
+           'border-amber-400 bg-amber-50 text-amber-700': alert.type === 'warning',
+           'border-rose-400 bg-rose-50 text-rose-700': alert.type === 'error'
+         }">
+
+      <i class="text-lg mt-1"
+         [ngClass]="{
+           'fas fa-check-circle text-emerald-600': alert.type === 'success',
+           'fas fa-info-circle text-blue-600': alert.type === 'info',
+           'fas fa-exclamation-triangle text-amber-600': alert.type === 'warning',
+           'fas fa-times-circle text-rose-600': alert.type === 'error'
+         }"></i>
+
+      <div class="flex-1">
+        <div class="text-sm font-semibold">{{alert.title}}</div>
+        <div class="text-xs opacity-80">{{alert.message}}</div>
+      </div>
+
+      <button (click)="removeAlertDirect(alert.id)"
+              class="text-gray-400 hover:text-gray-600 text-xs">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ADD SCHEDULE -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+
+    <div class="flex items-center gap-2 mb-6">
+      <i class="fas fa-plus-circle text-blue-600"></i>
+      <h2 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+        Add New Schedule
+      </h2>
+    </div>
+
+    <form (ngSubmit)="addNewEvent()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Academic Year</label>
+        <input type="text" [(ngModel)]="academicYear" name="academicYear"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"
+          required>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Event Type</label>
+        <select [(ngModel)]="eventType" name="eventType"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"
+          required>
+          <option value="">Select Type</option>
+          <option value="Regular Class">Regular Class</option>
+          <option value="Examination">Examination</option>
+          <option value="Event">University Event</option>
+          <option value="Holiday">Holiday</option>
+          <option value="Suspension">Class Suspension</option>
+        </select>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Start Date</label>
+        <input type="date" [(ngModel)]="dateStart" name="dateStart"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"
+          required>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">End Date</label>
+        <input type="date" [(ngModel)]="dateEnd" name="dateEnd"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+      </div>
+
+      <div class="space-y-1.5 col-span-full">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Title / Reason</label>
+        <input type="text" [(ngModel)]="eventTitle" name="eventTitle"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"
+          required>
+      </div>
+
+      <div class="space-y-1.5 col-span-full">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Description</label>
+        <textarea [(ngModel)]="description" name="description"
+          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-3 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all"></textarea>
+      </div>
+
+      <div class="col-span-full flex justify-end pt-4">
+        <button type="submit"
+          class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-6 rounded-2xl transition-all flex items-center gap-2">
+          <i class="fas fa-check"></i> Add Schedule
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+
+  <!-- HEADER -->
+  <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+    <i class="fas fa-calendar text-blue-600"></i>
+    <h3 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+      Calendar View
+    </h3>
+  </div>
+
+  <!-- DAYS HEADER -->
+  <div class="grid grid-cols-7 text-center bg-slate-50/50 dark:bg-slate-950/50 border-b border-slate-200 dark:border-slate-800">
+
+    <div class="py-4 text-[10px] uppercase font-black text-slate-400">Sun</div>
+    <div class="py-4 text-[10px] uppercase font-black text-slate-400">Mon</div>
+    <div class="py-4 text-[10px] uppercase font-black text-slate-400">Tue</div>
+    <div class="py-4 text-[10px] uppercase font-black text-slate-400">Wed</div>
+    <div class="py-4 text-[10px] uppercase font-black text-slate-400">Thu</div>
+    <div class="py-4 text-[10px] uppercase font-black text-slate-400">Fri</div>
+    <div class="py-4 text-[10px] uppercase font-black text-slate-400">Sat</div>
+
+  </div>
+
+  <!-- CALENDAR GRID -->
+  <div class="grid grid-cols-7 gap-4 p-6">
+
+    <div *ngFor="let day of calendarDays"
+         (click)="selectDate(day)"
+         class="h-24 flex items-start justify-center pt-3 rounded-2xl border 
+                border-slate-200 dark:border-slate-700
+                bg-slate-100 dark:bg-slate-800
+                text-sm font-medium text-slate-700 dark:text-slate-300
+                hover:bg-slate-200 dark:hover:bg-slate-700
+                transition cursor-pointer relative">
+
+      <!-- Day Number -->
+      <span [ngClass]="{
+              'font-bold text-blue-600 dark:text-blue-400': day.isToday
+            }">
+        {{ day.day }}
+      </span>
+
+      <!-- Event Indicator Dot -->
+      <span *ngIf="day.hasEvent"
+            class="absolute bottom-2 w-2 h-2 rounded-full bg-blue-600">
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+
+  <!-- HEADER -->
+  <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <i class="fas fa-calendar-week text-blue-600"></i>
+      <h3 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+        Weekly Schedule
+      </h3>
+    </div>
+
+    <span class="text-[10px] font-black uppercase text-slate-400 tracking-tighter">
+      {{ getWeeklyEvents().length }} Total Events
+    </span>
+  </div>
+
+  <!-- TABLE -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+
+      <!-- TABLE HEADER -->
+      <thead class="bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
+        <tr>
+          <th class="px-6 py-4">Day</th>
+          <th class="px-6 py-4">Time</th>
+          <th class="px-6 py-4">Type</th>
+          <th class="px-6 py-4">Title</th>
+          <th class="px-6 py-4">Academic Year</th>
+          <th class="px-6 py-4">Description</th>
+          <th class="px-6 py-4">Actions</th>
+        </tr>
+      </thead>
+
+      <!-- TABLE BODY -->
+      <tbody class="divide-y dark:divide-slate-800">
+
+        <tr *ngFor="let event of getWeeklyEvents()"
+            class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+
+          <td class="px-6 py-4 text-xs dark:text-slate-400 font-medium">
+            {{ event.day }}
+          </td>
+
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ event.time }}
+          </td>
+
+          <!-- Dynamic Badge -->
+          <td class="px-6 py-4">
+            <span 
+              [ngClass]="{
+                'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400': event.type === 'Regular Class',
+                'bg-rose-50 text-rose-600 dark:bg-rose-900/20 dark:text-rose-400': event.type === 'Examination',
+                'bg-cyan-50 text-cyan-600 dark:bg-cyan-900/20 dark:text-cyan-400': event.type === 'University Event',
+                'bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400': event.type === 'Holiday',
+                'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300': event.type === 'Suspension'
+              }"
+              class="text-[10px] font-black uppercase rounded-lg px-2 py-1">
+              {{ event.type }}
+            </span>
+          </td>
+
+          <td class="px-6 py-4 font-bold dark:text-white text-sm">
+            {{ event.title }}
+          </td>
+
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ event.academicYear }}
+          </td>
+
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ event.description }}
+          </td>
+
+          <!-- ACTIONS -->
+          <td class="px-6 py-4">
+            <div class="flex gap-2">
+
+              <button (click)="editEvent(event.id)"
+                      class="text-amber-600 hover:text-amber-700 text-xs transition">
+                <i class="fas fa-pencil"></i>
+              </button>
+
+              <button (click)="deleteEvent(event.id)"
+                      class="text-rose-600 hover:text-rose-700 text-xs transition">
+                <i class="fas fa-trash"></i>
+              </button>
+
+            </div>
+          </td>
+
+        </tr>
+
+        <!-- EMPTY STATE -->
+        <tr *ngIf="getWeeklyEvents().length === 0">
+          <td colspan="7"
+              class="text-center p-8 text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase">
+            No weekly events found.
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+
+  <!-- HEADER -->
+  <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <i class="fas fa-calendar text-blue-600"></i>
+      <h3 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+        All Schedules
+      </h3>
+    </div>
+
+    <span class="text-[10px] font-black uppercase text-slate-400 tracking-tighter">
+      {{ getFilteredEvents().length }} Total Events
+    </span>
+  </div>
+
+  <!-- TABLE -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+
+      <!-- TABLE HEADER -->
+      <thead class="bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
+        <tr>
+          <th class="px-6 py-4">Academic Year</th>
+          <th class="px-6 py-4">Type</th>
+          <th class="px-6 py-4">Title</th>
+          <th class="px-6 py-4">Start</th>
+          <th class="px-6 py-4">End</th>
+          <th class="px-6 py-4">Description</th>
+          <th class="px-6 py-4">Actions</th>
+        </tr>
+      </thead>
+
+      <!-- TABLE BODY -->
+      <tbody class="divide-y dark:divide-slate-800">
+
+        <tr *ngFor="let event of getFilteredEvents()"
+            class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+
+          <!-- Academic Year -->
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ event.academicYear }}
+          </td>
+
+          <!-- Event Type Badge -->
+          <td class="px-6 py-4">
+            <span 
+              [ngClass]="{
+                'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400': event.type === 'Regular Class',
+                'bg-rose-50 text-rose-600 dark:bg-rose-900/20 dark:text-rose-400': event.type === 'Examination',
+                'bg-cyan-50 text-cyan-600 dark:bg-cyan-900/20 dark:text-cyan-400': event.type === 'University Event',
+                'bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400': event.type === 'Holiday',
+                'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300': event.type === 'Suspension'
+              }"
+              class="text-[10px] font-black uppercase rounded-lg px-2 py-1">
+              {{ event.type }}
+            </span>
+          </td>
+
+          <!-- Title -->
+          <td class="px-6 py-4 font-bold dark:text-white text-sm">
+            {{ event.title }}
+          </td>
+
+          <!-- Start Date -->
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ formatDateDisplay(event.startDate) }}
+          </td>
+
+          <!-- End Date -->
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ formatDateDisplay(event.endDate) }}
+          </td>
+
+          <!-- Description -->
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ event.description }}
+          </td>
+
+          <!-- ACTIONS -->
+          <td class="px-6 py-4">
+            <div class="flex gap-2">
+
+              <button (click)="editEvent(event.id)"
+                      class="text-amber-600 hover:text-amber-700 text-xs transition">
+                <i class="fas fa-pencil"></i>
+              </button>
+
+              <button (click)="deleteEvent(event.id)"
+                      class="text-rose-600 hover:text-rose-700 text-xs transition">
+                <i class="fas fa-trash"></i>
+              </button>
+
+            </div>
+          </td>
+
+        </tr>
+
+        <!-- EMPTY STATE -->
+        <tr *ngIf="getFilteredEvents().length === 0">
+          <td colspan="7"
+              class="text-center p-8 text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase">
+            No schedules found.
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+</div>
+<!-- EDIT MODAL -->
+<div *ngIf="isModalOpen"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl p-6 shadow-xl">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+        Edit Schedule
+      </h2>
+
+      <button (click)="closeModal()"
+              class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="updateEvent()" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Academic Year</label>
+        <input type="text" [(ngModel)]="editYear" name="editYear"
+          class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Event Type</label>
+        <input type="text" [(ngModel)]="editType" name="editType"
+          class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div class="col-span-full">
+        <label class="text-xs uppercase text-slate-400 font-black">Title</label>
+        <input type="text" [(ngModel)]="editTitle" name="editTitle"
+          class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Start Date</label>
+        <input type="date" [(ngModel)]="editStart" name="editStart"
+          class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">End Date</label>
+        <input type="date" [(ngModel)]="editEnd" name="editEnd"
+          class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div class="col-span-full">
+        <label class="text-xs uppercase text-slate-400 font-black">Description</label>
+        <textarea [(ngModel)]="editDesc" name="editDesc"
+          class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-3 text-sm dark:text-white">
+        </textarea>
+      </div>
+
+      <div class="col-span-full flex justify-end gap-3 pt-4">
+        <button type="button"
+                (click)="closeModal()"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+          Save Changes
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
