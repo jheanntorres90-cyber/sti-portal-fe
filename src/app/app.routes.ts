@@ -7,8 +7,8 @@ import { SettingsComponent } from './settings/settings.component';
 export const routes: Routes = [
   { 
     path: '', 
-    redirectTo: '/attendance/dashboard', 
-    pathMatch: 'full' 
+    redirectTo: '', 
+    pathMatch: 'prefix',
   },
   { 
     path: 'attendance',
@@ -20,6 +20,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadChildren: () => import('./grades/grades.routes').then(m => m.GRADES_ROUTES)
   },
+
   // --- NEW ROUTES START ---
   { 
     path: 'profile', 
@@ -41,8 +42,8 @@ export const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./auth/auth.routes').then(m => m.AUTH_ROUTES)
   },
-  { 
-    path: '**', 
-    redirectTo: '/attendance/dashboard' 
-  }
+  // { 
+  //   path: '', 
+  //   redirectTo: 'login' 
+  // }
 ];
