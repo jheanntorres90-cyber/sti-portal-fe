@@ -1,0 +1,248 @@
+<div class="space-y-6 p-4 sm:p-6 animate-fadeIn dark:bg-slate-950 min-h-screen pb-12">
+
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
+      Admin Management
+    </h1>
+    <p class="text-[10px] font-black uppercase text-slate-400 mt-1 tracking-tighter">
+      Create and manage administrator accounts
+    </p>
+  </div>
+
+  <!-- Register Admin Card -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+
+    <h2 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white mb-6">
+      Register New Admin
+    </h2>
+
+    <form [formGroup]="adminForm"
+          (ngSubmit)="onSubmit()"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <!-- Full Name -->
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400">Full Name *</label>
+        <input formControlName="fullName"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+      </div>
+
+      <!-- Email -->
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400">Email *</label>
+        <input formControlName="email"
+               type="email"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+      </div>
+
+      <!-- Username -->
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400">Username *</label>
+        <input formControlName="username"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+      </div>
+
+      <!-- Password -->
+      <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400">Password *</label>
+        <input [type]="showPassword ? 'text' : 'password'"
+               formControlName="password"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+      </div>
+
+      <!-- Profile -->
+    <div class="col-span-full">
+
+  <label class="text-xs uppercase text-slate-400 font-black">
+    Profile Picture
+  </label>
+
+  <!-- File Input -->
+  <input type="file"
+         (change)="onFileSelected($event, true)"
+         class="w-full mt-2 text-xs dark:text-white">
+
+  <!-- Preview Centered -->
+  <div class="flex justify-center mt-6">
+
+    <div class="relative group">
+
+      <img
+        [src]="editForm.get('profilePic')?.value || 'https://via.placeholder.com/150'"
+        class="w-28 h-28 rounded-full object-cover border-4 border-blue-100 shadow-md transition-all duration-300 group-hover:scale-105">
+
+      <!-- Hover Overlay -->
+      <div class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+        <span class="text-white text-xs font-bold">
+          Change
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+      <!-- Button -->
+      <div class="col-span-full flex justify-end pt-4">
+        <button type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-6 rounded-2xl transition-all flex items-center gap-2">
+          <i class="fas fa-user-plus"></i> Create Admin
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Admin Table -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+
+    <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+      <h3 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+        Existing Admins
+      </h3>
+      <span class="text-[10px] font-black uppercase text-slate-400 tracking-tighter">
+        {{ admins.length }} Records
+      </span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
+          <tr>
+            <th class="px-6 py-4">Profile</th>
+            <th class="px-6 py-4">Full Name</th>
+            <th class="px-6 py-4">Email</th>
+            <th class="px-6 py-4">Mobile</th>
+            <th class="px-6 py-4">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y dark:divide-slate-800">
+          <tr *ngFor="let admin of admins"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+
+              <td class="px-6 py-4"> <img [src]="admin.profilePic || 'https://via.placeholder.com/40'" class="w-10 h-10 rounded-full object-cover"></td>
+
+            <td class="px-6 py-4 font-bold dark:text-white text-sm">
+              {{ admin.fullName }}
+            </td>
+
+            <td class="px-6 py-4 text-xs dark:text-slate-400">
+              {{ admin.email }}
+            </td>
+
+             <td class="px-6 py-4 text-xs dark:text-slate-400">
+             {{ admin.mobile || '-' }} </td>
+
+
+            <td class="px-6 py-4">
+              <div class="flex gap-3">
+                <button (click)="editAdminFromRow(admin)"
+                        class="text-amber-600 hover:text-amber-700 text-xs">
+                  <i class="fas fa-pencil"></i>
+                </button>
+                <button (click)="confirmDelete(admin)"
+                        class="text-rose-600 hover:text-rose-700 text-xs">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add Admin Modal -->
+<div *ngIf="isAddModalOpen"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl p-8 relative">
+
+    <!-- Close Button -->
+    <button (click)="closeModal()"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+      ✕
+    </button>
+
+    <!-- Title -->
+    <h2 class="text-xl font-bold text-blue-700 mb-6">
+      Edit Admin
+    </h2>
+
+    <form [formGroup]="editForm"
+          (ngSubmit)="onEditSubmit()"
+          class="space-y-5">
+
+      <!-- Full Name -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">
+          Full Name
+        </label>
+        <input formControlName="fullName"
+               type="text"
+               class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">
+          Email Address
+        </label>
+        <input formControlName="email"
+               type="email"
+               class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+      </div>
+
+      <!-- Mobile -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">
+          Mobile Number
+        </label>
+        <input formControlName="mobile"
+               type="text"
+               class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+      </div>
+
+      <!-- Profile Upload -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">
+          Update Profile Picture
+        </label>
+
+        <input type="file"
+               (change)="onFileSelected($event, true)"
+               class="w-full text-sm mb-4">
+
+        <!-- Preview -->
+        <div class="flex justify-center">
+          <img
+            [src]="editForm.get('profilePic')?.value || 'https://via.placeholder.com/150'"
+            class="w-24 h-24 rounded-full object-cover border shadow-md">
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end gap-3 pt-4">
+        <button type="button"
+                (click)="closeModal()"
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-2 rounded-lg">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+          Save Changes
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
