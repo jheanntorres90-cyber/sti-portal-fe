@@ -260,4 +260,141 @@
   </div>
 
 </ng-container>
- 
+ </div>
+
+ <!-- ADD SCHEDULE MODAL -->
+<div *ngIf="showAddModal"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl p-6 shadow-xl">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+        Add New Schedule
+      </h2>
+
+      <button (click)="closeAddModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="saveSchedule()"
+          class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <!-- Course Code -->
+      <div class="col-span-full">
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Course Code
+        </label>
+        <input type="text"
+               [(ngModel)]="formCourseCode"
+               name="courseCode"
+               placeholder="Search for a course..."
+               class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+      </div>
+
+      <!-- Teacher -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Teacher
+        </label>
+        <select [(ngModel)]="formTeacher"
+                name="teacher"
+                class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+          <option *ngFor="let teacher of teachers">
+            {{ teacher }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Room -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Room
+        </label>
+        <select [(ngModel)]="formRoom"
+                name="room"
+                class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+          <option *ngFor="let room of rooms">
+            {{ room }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Day -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Day
+        </label>
+        <select [(ngModel)]="formDay"
+                name="day"
+                class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+          <option *ngFor="let day of days">
+            {{ day }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Duration -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Duration
+        </label>
+        <select [(ngModel)]="formDuration"
+                name="duration"
+                (change)="updateEndTime()"
+                class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+          <option *ngFor="let duration of durations"
+                  [value]="duration.value">
+            {{ duration.label }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Start Time -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Start Time
+        </label>
+        <input type="time"
+               [(ngModel)]="formStartTime"
+               name="startTime"
+               (change)="updateEndTime()"
+               class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+      </div>
+
+      <!-- End Time -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          End Time
+        </label>
+        <input type="time"
+               [(ngModel)]="formEndTime"
+               name="endTime"
+               readonly
+               class="w-full bg-slate-100 dark:bg-slate-700 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white">
+      </div>
+
+      <!-- Buttons -->
+      <div class="col-span-full flex justify-end gap-3 pt-4">
+        <button type="button"
+                (click)="closeAddModal()"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+          Add Schedule
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+
