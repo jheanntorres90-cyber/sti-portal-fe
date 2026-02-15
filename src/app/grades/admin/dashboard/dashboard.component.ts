@@ -31,6 +31,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     pendingApproval: 0
   };
   
+  
   // Activity feed for real-time updates
   private activityFeed = [
     'New student application submitted',
@@ -57,6 +58,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     'fas fa-book',
     'fas fa-tools'
   ];
+  
 
   ngOnInit(): void {
     this.initDashboard();
