@@ -1,0 +1,314 @@
+<div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; background-color: #f9fafb; min-height: 100vh; transition: all 0.3s; font-family: system-ui, -apple-system, sans-serif;">
+
+  <!-- Tabs -->
+  <div style="position: relative;display: flex;gap: 2rem;border-bottom: 2px solid #e2e8f0;padding-bottom: 0.5rem;">
+    <button (click)="switchTab('import')"style="background: none;border: none;font-size: 0.95rem;font-weight: 600;padding: 0.5rem 0;cursor: pointer;transition: color 0.3s ease;"[style.color]="activeTab === 'import' ? '#2563eb' : '#64748b'">
+    Import Data
+  </button>
+   <button (click)="switchTab('export')"style="background: none;border: none;font-size: 0.95rem;font-weight: 600;padding: 0.5rem 0;cursor: pointer;transition: color 0.3s ease;"[style.color]="activeTab === 'export' ? '#2563eb' : '#64748b'">
+      Export Data
+    </button>
+
+     <span style=" position: absolute; bottom: -2px; height: 3px; width: 110px; background-color: #2563eb; border-radius: 999px; transition: transform 0.3s ease; " [style.transform]="activeTab === 'import' ? 'translateX(0)' : 'translateX(130px)'"></span>
+  </div>
+
+  <!-- Import Tab -->
+  <div id="import-tab" [style.display]="activeTab === 'import' ? 'block' : 'none'">
+
+    <!-- Main Card -->
+    <div style="background-color: white; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f1f5f9;">
+
+      <!-- Card Header -->
+      <div style="padding: 1.5rem; border-bottom: 1px solid #f1f5f9;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #334155;">
+          <i class="fas fa-download" style="color: #3b82f6;"></i> Import Data
+        </div>
+      </div>
+
+      <!-- Card Body -->
+      <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+
+        <!-- Alert Info -->
+        <div style="background-color: #eff6ff; border-radius: 1rem; padding: 1rem; display: flex; gap: 0.75rem;">
+          <i class="fas fa-info-circle" style="color: #3b82f6; font-size: 1.25rem;"></i>
+          <div style="font-size: 0.875rem; color: #1e293b;">
+            <strong style="display: block; margin-bottom: 0.5rem;">Import Guidelines:</strong>
+            <ul style="margin: 0; padding-left: 1.5rem; color: #334155; list-style-type: disc; line-height: 1.6;">
+              <li>Supported formats: CSV, XLSX, XLS</li>
+              <li>Maximum file size: 50MB</li>
+              <li>Ensure column headers match the template</li>
+              <li>Date format: YYYY-MM-DD</li>
+              <li>Review validation errors before completing import</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Form Group -->
+        <div>
+          <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 0.5rem;">Select Data Type</label>
+          <select style="width: 100%; background-color: #f8fafc; border: none; border-radius: 0.75rem; padding: 0.75rem; font-size: 0.875rem; color: #334155;" [(ngModel)]="selectedDataType">
+            <option value="">Choose data type...</option>
+            <option *ngFor="let type of dataTypes" [value]="type.value">{{type.label}}</option>
+          </select>
+        </div>
+
+        <!-- File Upload Zone -->
+        <div style="background-color: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 1rem; padding: 2rem; text-align: center; transition: all 0.2s;" 
+             [style.backgroundColor]="isDragging ? '#eff6ff' : '#f8fafc'"
+             [style.borderColor]="isDragging ? '#3b82f6' : '#cbd5e1'"
+             (dragover)="onDragOver($event)"
+             (dragleave)="onDragLeave($event)"
+             (drop)="onDrop($event)">
+          <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #3b82f6; margin-bottom: 1rem;"></i>
+          <h3 style="font-size: 1.125rem; font-weight: 600; color: #334155; margin: 0 0 0.5rem 0;">Drag & Drop your file here</h3>
+          <p style="color: #64748b; font-size: 0.875rem; margin: 0 0 1rem 0;">or click to browse from your computer</p>
+          <input type="file" 
+                 #fileInput
+                 (change)="onFileSelected($event)" 
+                 accept=".csv,.xlsx,.xls" 
+                 style="display: none;">
+          <button style="background-color: white; border: 1px solid #e2e8f0; padding: 0.75rem 1.5rem; border-radius: 0.75rem; font-size: 0.875rem; color: #334155; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.2s;" (click)="fileInput.click()">
+            <i class="fas fa-folder-open" style="color: #64748b;"></i> Browse Files
+          </button>
+        </div>
+
+        <!-- File Info -->
+        <div style="display: none; background-color: #f1f5f9; border-radius: 0.75rem; padding: 1rem;" [style.display]="showImportFileInfo ? 'block' : 'none'">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <i class="fas fa-file-excel" style="color: #22c55e; font-size: 1.25rem;"></i>
+              <strong style="color: #334155;">{{importFileInfo?.name}}</strong>
+              <span style="color: #64748b; font-size: 0.875rem;">{{importFileInfo?.size}}</span>
+            </div>
+            <button style="background-color: white; border: 1px solid #e2e8f0; padding: 0.5rem 1rem; border-radius: 0.75rem; font-size: 0.875rem; color: #64748b; cursor: pointer;" (click)="clearImportFile()">
+              <i class="fas fa-times"></i> Remove
+            </button>
+          </div>
+        </div>
+
+        <!-- Import Options -->
+        <div>
+          <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 0.5rem;">Import Options</label>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #334155;">
+              <input type="checkbox" [(ngModel)]="validateData"> Validate data before import (recommended)
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #334155;">
+              <input type="checkbox" [(ngModel)]="skipDuplicates"> Skip duplicate records automatically
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #334155;">
+              <input type="checkbox" [(ngModel)]="createBackup"> Create backup before import
+            </label>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div style="display: none;" [style.display]="showImportProgress ? 'block' : 'none'">
+          <div style="background-color: #e2e8f0; border-radius: 9999px; height: 0.5rem; overflow: hidden; margin-bottom: 0.75rem;">
+            <div style="background-color: #3b82f6; height: 100%; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: white;" [style.width.%]="importProgress">{{importProgress | number:'1.0-0'}}%</div>
+          </div>
+          <div style="font-size: 0.875rem; color: #334155;" [style.color]="importStatusType === 'error' ? '#ef4444' : importStatusType === 'success' ? '#22c55e' : '#334155'">{{importStatus}}</div>
+        </div>
+
+        <!-- Button Group -->
+        <div style="display: flex; gap: 0.75rem;">
+          <button style="background-color: #2563eb; border: none; padding: 0.75rem 1.5rem; border-radius: 0.75rem; color: white; font-size: 0.875rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;" (click)="startImport()">
+            <i class="fas fa-download"></i> Start Import
+          </button>
+          <button style="background-color: white; border: 1px solid #e2e8f0; padding: 0.75rem 1.5rem; border-radius: 0.75rem; color: #334155; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;" (click)="toggleTemplateSection()">
+            <i class="fas fa-file-download"></i> Download Template
+          </button>
+          <button style="background-color: white; border: 1px solid #e2e8f0; padding: 0.75rem 1.5rem; border-radius: 0.75rem; color: #334155; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;" (click)="viewHistory()">
+            <i class="fas fa-history"></i> View History
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template Section -->
+    <div style="background-color: white; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f1f5f9; margin-top: 1.5rem;" *ngIf="showTemplateSection">
+      <div style="padding: 1.5rem; border-bottom: 1px solid #f1f5f9;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #334155;">
+          <i class="fas fa-file-download" style="color: #3b82f6;"></i> Download Import Templates
+        </div>
+      </div>
+      
+      <div style="padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div *ngFor="let template of templates" 
+             style="border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s;"
+             (click)="downloadTemplate(template.type)">
+          <i class="fas fa-{{template.icon}}" style="font-size: 2rem; color: #3b82f6; margin-bottom: 0.75rem;"></i>
+          <h4 style="font-weight: 600; color: #334155; margin: 0 0 0.5rem 0;">{{template.title}}</h4>
+          <p style="color: #64748b; font-size: 0.875rem; margin: 0;">{{template.desc}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Tab -->
+  <div id="export-tab" [style.display]="activeTab === 'export' ? 'block' : 'none'">
+    <div style="background-color: white; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f1f5f9;">
+
+      <!-- Card Header -->
+      <div style="padding: 1.5rem; border-bottom: 1px solid #f1f5f9;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: #334155;">
+          <i class="fas fa-upload" style="color: #3b82f6;"></i> Export Data
+        </div>
+      </div>
+
+      <!-- Card Body -->
+      <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+
+        <!-- Alert Info -->
+        <div style="background-color: #eff6ff; border-radius: 1rem; padding: 1rem; display: flex; gap: 0.75rem;">
+          <i class="fas fa-info-circle" style="color: #3b82f6; font-size: 1.25rem;"></i>
+          <div style="font-size: 0.875rem; color: #1e293b;">
+            <strong style="display: block; margin-bottom: 0.5rem;">Export Information:</strong>
+            <ul style="margin: 0; padding-left: 1.5rem; color: #334155; list-style-type: disc; line-height: 1.6;">
+
+              <li>Choose your preferred export format below</li>
+              <li>Apply filters to export specific data ranges</li>
+              <li>Large exports may take several minutes to process</li>
+              <li>Files will be downloaded directly to your device</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Data Type Select -->
+        <div>
+          <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 0.5rem;">Select Data Type to Export</label>
+          <select style="width: 100%; background-color: #f8fafc; border: none; border-radius: 0.75rem; padding: 0.75rem; font-size: 0.875rem; color: #334155;" [(ngModel)]="exportDataType" (change)="updateSummary()">
+            <option value="">Choose data type...</option>
+            <option *ngFor="let type of dataTypes" [value]="type.value">{{type.label}}</option>
+          </select>
+        </div>
+
+        <!-- Export Formats -->
+        <div>
+          <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 0.5rem;">Select Export Format</label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+           <div *ngFor="let format of exportFormats"(click)="selectFormat(format.format)"style=" position: relative; border: 2px solid #e2e8f0; padding: 1.5rem; border-radius: 1rem;
+            text-align: center;cursor: pointer;transition: all 0.3s ease;background-color: #f8fafc;overflow: hidden;"[style.borderColor]="selectedFormat === format.format ? '#2563eb' : '#e2e8f0'"
+            [style.backgroundColor]="selectedFormat === format.format ? '#eff6ff' : '#f8fafc'"onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 10px 25px rgba(37,99,235,0.15)'"onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+
+            <i class="fas fa-{{format.icon}}" style="font-size: 1.75rem; margin-bottom: 0.75rem;"[style.color]="selectedFormat === format.format ? '#2563eb' : '#64748b'"> </i>
+              <h4 style="font-weight: 600; margin: 0 0 0.25rem 0;"[style.color]="selectedFormat === format.format ? '#1e3a8a' : '#334155'">{{format.title}}</h4>
+             <p style="font-size: 0.8rem; margin: 0;"[style.color]="selectedFormat === format.format ? '#1d4ed8' : '#64748b'">{{format.desc}} </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters Section -->
+        <div style="border: 1px solid #e2e8f0; border-radius: 1rem; overflow: hidden;">
+          <div style="padding: 1rem; background-color: #f8fafc; display: flex; justify-content: space-between; align-items: center;">
+            <h4 style="font-weight: 600; color: #334155; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-filter" style="color: #3b82f6;"></i> Advanced Filters (Optional)
+            </h4>
+          <label style="position: relative; display: inline-block; width: 52px; height: 28px;">
+        <input type="checkbox" (ngModel)]="showFilters" (change)="toggleFilters()"style="opacity: 0; width: 0; height: 0;">
+         <span style="position: absolute;cursor: pointer;inset: 0; background-color: #cbd5e1;border-radius: 9999px;transition: all 0.3s ease;"[style.backgroundColor]="showFilters ? '#3b82f6' : '#cbd5e1'"></span>
+         <span style="position: absolute;height: 22px;width: 22px;left: 3px;top: 3px;background-color: white;border-radius: 50%;transition: all 0.3s ease;box-shadow: 0 2px 6px rgba(0,0,0,0.2);"[style.transform]="showFilters ? 'translateX(24px)' : 'translateX(0)'"></span>
+        </label>
+        </div>
+          
+          <div style="padding: 1rem; display: none;" [style.display]="showFilters ? 'block' : 'none'">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div>
+                <label style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; display: block;">Date From</label>
+                <input type="date" style="width: 100%; background-color: #f8fafc; border: none; border-radius: 0.75rem; padding: 0.75rem; font-size: 0.875rem;" [(ngModel)]="dateFrom">
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; display: block;">Date To</label>
+                <input type="date" style="width: 100%; background-color: #f8fafc; border: none; border-radius: 0.75rem; padding: 0.75rem; font-size: 0.875rem;" [(ngModel)]="dateTo">
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div>
+                <label style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; display: block;">Program/Department</label>
+                <select style="width: 100%; background-color: #f8fafc; border: none; border-radius: 0.75rem; padding: 0.75rem; font-size: 0.875rem;" [(ngModel)]="program">
+                  <option *ngFor="let prog of programs" [value]="prog.value">{{prog.label}}</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; display: block;">Year Level</label>
+                <select style="width: 100%; background-color: #f8fafc; border: none; border-radius: 0.75rem; padding: 0.75rem; font-size: 0.875rem;" [(ngModel)]="yearLevel">
+                  <option *ngFor="let year of yearLevels" [value]="year.value">{{year.label}}</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <label style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; display: block;">Status</label>
+              <select style="width: 100%; background-color: #f8fafc; border: none; border-radius: 0.75rem; padding: 0.75rem; font-size: 0.875rem;" [(ngModel)]="status">
+                <option *ngFor="let stat of statuses" [value]="stat.value">{{stat.label}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Export Options -->
+        <div>
+          <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 0.5rem;">Export Options</label>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #334155;">
+              <input type="checkbox" [(ngModel)]="includeHeaders"> Include column headers
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #334155;">
+              <input type="checkbox" [(ngModel)]="compressFile"> Compress file (ZIP format)
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #334155;">
+              <input type="checkbox" [(ngModel)]="encryptFile"> Password protect export (for sensitive data)
+            </label>
+          </div>
+        </div>
+
+        <!-- Summary Box -->
+        <div style="background-color: #f8fafc; border-radius: 1rem; padding: 1rem; display: none;" [style.display]="showSummary ? 'block' : 'none'">
+          <h4 style="font-weight: 600; color: #334155; margin: 0 0 0.75rem 0; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-list-check" style="color: #3b82f6;"></i> Export Summary
+          </h4>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748b;">Data Type:</span>
+              <strong style="color: #334155;">{{summaryData.dataType}}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748b;">Export Format:</span>
+              <strong style="color: #334155;">{{summaryData.format}}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748b;">Estimated Records:</span>
+              <strong style="color: #334155;">{{summaryData.records}}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748b;">Estimated File Size:</span>
+              <strong style="color: #334155;">{{summaryData.size}}</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div style="display: none;" [style.display]="showExportProgress ? 'block' : 'none'">
+          <div style="background-color: #e2e8f0; border-radius: 9999px; height: 0.5rem; overflow: hidden; margin-bottom: 0.75rem;">
+            <div style="background-color: #3b82f6; height: 100%; border-radius: 9999px;" [style.width.%]="exportProgress"></div>
+          </div>
+          <div style="font-size: 0.875rem; color: #334155;" [style.color]="exportStatusType === 'error' ? '#ef4444' : exportStatusType === 'success' ? '#22c55e' : '#334155'">{{exportStatus}}</div>
+        </div>
+
+        <!-- Button Group -->
+        <div style="display: flex; gap: 0.75rem;">
+          <button style="background-color: #2563eb; border: none; padding: 0.75rem 1.5rem; border-radius: 0.75rem; color: white; font-size: 0.875rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;" (click)="startExport()">
+            <i class="fas fa-upload"></i> Start Export
+          </button>
+          <button style="background-color: white; border: 1px solid #e2e8f0; padding: 0.75rem 1.5rem; border-radius: 0.75rem; color: #334155; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;" (click)="previewData()">
+            <i class="fas fa-eye"></i> Preview Data
+          </button>
+          <button style="background-color: white; border: 1px solid #e2e8f0; padding: 0.75rem 1.5rem; border-radius: 0.75rem; color: #334155; font-size: 0.875rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;" (click)="viewExportHistory()">
+            <i class="fas fa-history"></i> Export History
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
