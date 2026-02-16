@@ -28,7 +28,7 @@ interface Course {
   templateUrl: './schedule.component.html',
 
 })
-export class AdminGpsScheduleComponent implements OnInit {
+export class AdminScheduleComponent implements OnInit {
   // Data properties
   scheduleData: Schedule[] = [];
   courseData: Course[] = [];
