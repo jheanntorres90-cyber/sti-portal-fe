@@ -67,6 +67,10 @@ export const GRADES_ROUTES: Routes = [
     loadComponent: () => import('./admin/schedule-management/schedule.component').then(m => m.AdminGpsScheduleComponent)
   },
   {
+    path: 'admin-announcements',
+    loadComponent: () => import('./admin/announcements/announcements.component').then(m => m.AdminAnnouncementsComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
