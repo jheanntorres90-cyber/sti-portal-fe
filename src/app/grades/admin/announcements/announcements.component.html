@@ -1,0 +1,559 @@
+<div class="p-6 space-y-6 bg-gray-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+
+  <!-- HEADER -->
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
+        Announcement Management
+      </h1>
+      <p class="text-gray-500 dark:text-slate-400">
+        Manage and monitor all announcements
+      </p>
+    </div>
+  </div>
+
+  <!-- STATS GRID -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs uppercase font-bold text-gray-400">Total</p>
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+            {{ stats.total }}
+          </h2>
+        </div>
+        <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-xl text-blue-600">
+          <i class="fas fa-bullhorn"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs uppercase font-bold text-gray-400">Active</p>
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+            {{ stats.active }}
+          </h2>
+        </div>
+        <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-xl text-green-600">
+          <i class="fas fa-check-circle"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs uppercase font-bold text-gray-400">Pinned</p>
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+            {{ stats.pinned }}
+          </h2>
+        </div>
+        <div class="bg-yellow-100 dark:bg-yellow-900/30 p-3 rounded-xl text-yellow-600">
+          <i class="fas fa-thumbtack"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-xs uppercase font-bold text-gray-400">Total Views</p>
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+            {{ stats.totalViews | number }}
+          </h2>
+        </div>
+        <div class="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-xl text-purple-600">
+          <i class="fas fa-eye"></i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FILTER + LIST CONTAINER -->
+  <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-800">
+
+    <!-- FILTER HEADER -->
+    <div class="p-6 border-b border-gray-100 dark:border-slate-800 space-y-4">
+
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-gray-700 dark:text-gray-200">
+          All Announcements
+        </h3>
+        <button
+          (click)="resetFilters()"
+          class="text-sm bg-gray-100 dark:bg-slate-800 px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition">
+          <i class="fas fa-redo mr-1"></i> Reset
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+        <input type="text"
+          [(ngModel)]="searchTerm"
+          (input)="filterAnnouncements()"
+          placeholder="Search announcements..."
+          class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+
+        <select [(ngModel)]="filterPriority"
+          (change)="filterAnnouncements()"
+          class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+          <option value="all">All Priorities</option>
+          <option value="urgent">Urgent</option>
+          <option value="high">High</option>
+          <option value="normal">Normal</option>
+          <option value="low">Low</option>
+        </select>
+
+        <select [(ngModel)]="filterAudience"
+          (change)="filterAnnouncements()"
+          class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+          <option value="all">All Audiences</option>
+          <option value="students">Students</option>
+          <option value="teachers">Teachers</option>
+          <option value="organizations">Organizations</option>
+          <option value="staff">Staff</option>
+        </select>
+
+        <select [(ngModel)]="filterStatus"
+          (change)="filterAnnouncements()"
+          class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="scheduled">Scheduled</option>
+        </select>
+
+      </div>
+    </div>
+
+    <!-- ANNOUNCEMENT LIST -->
+    <div class="p-6 space-y-6">
+
+      <div *ngIf="filteredAnnouncements.length === 0"
+        class="text-center text-gray-400 italic py-12">
+        No announcements found matching your filters.
+      </div>
+
+      <div *ngFor="let ann of filteredAnnouncements"
+        class="bg-gray-50 dark:bg-slate-800/40 p-6 rounded-2xl border border-gray-100 dark:border-slate-700 space-y-4 hover:shadow-lg transition">
+
+        <!-- HEADER -->
+        <div class="flex justify-between items-start">
+
+          <div>
+            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+              {{ ann.title }}
+            </h3>
+
+            <div class="flex flex-wrap gap-3 text-xs text-gray-400 mt-2">
+
+              <span><i class="fas fa-user mr-1"></i> {{ ann.author }}</span>
+              <span><i class="fas fa-calendar mr-1"></i> {{ formatDate(ann.date) }}</span>
+              <span><i class="fas fa-eye mr-1"></i> {{ ann.views }} views</span>
+
+              <span
+                class="px-2 py-1 rounded-md text-[10px] font-bold uppercase"
+                [ngClass]="{
+                  'bg-red-100 text-red-600': ann.priority === 'urgent',
+                  'bg-orange-100 text-orange-600': ann.priority === 'high',
+                  'bg-blue-100 text-blue-600': ann.priority === 'normal',
+                  'bg-gray-200 text-gray-600': ann.priority === 'low'
+                }">
+                {{ ann.priority }}
+              </span>
+
+            </div>
+          </div>
+
+          <div *ngIf="ann.pinned"
+            class="text-yellow-500">
+            <i class="fas fa-thumbtack"></i>
+          </div>
+
+        </div>
+
+      <div class="space-y-4">
+  <p class="text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
+    {{ ann.content | slice:0:200 }}{{ ann.content.length > 200 ? '...' : '' }}
+  </p>
+
+  <!-- ATTACHMENTS BELOW CONTENT -->
+  <div *ngIf="ann.attachments.length" class="pt-2">
+    
+    <div class="flex flex-wrap gap-4">
+      
+      <div *ngFor="let file of ann.attachments"
+           class="w-32 h-32 rounded-xl border border-gray-200 dark:border-slate-700 overflow-hidden bg-gray-100 dark:bg-slate-800 flex items-center justify-center shadow-sm hover:shadow-md transition">
+
+        <!-- IMAGE -->
+        <img *ngIf="file.type.startsWith('image/')"
+             [src]="file.url"
+             class="w-full h-full object-cover rounded-xl" />
+
+        <!-- VIDEO -->
+        <video *ngIf="file.type.startsWith('video/')"
+               [src]="file.url"
+               controls
+               class="w-full h-full object-cover rounded-xl">
+        </video>
+
+        <!-- OTHER FILE -->
+        <div *ngIf="!file.type.startsWith('image/') && !file.type.startsWith('video/')"
+             class="text-xs text-gray-500 text-center px-2">
+          <i class="fas fa-file text-lg mb-1"></i>
+          <p class="truncate w-full">{{ file.name }}</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+        <!-- ACTIONS -->
+        <div class="flex flex-wrap gap-2 pt-4 border-t border-gray-200 dark:border-slate-700">
+
+          <button (click)="viewAnnouncement(ann)"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm transition">
+            <i class="fas fa-eye mr-1"></i> View
+          </button>
+
+         <button (click)="editAnnouncement(ann)"
+           class="bg-gray-200 dark:bg-slate-700 px-4 py-2 rounded-lg text-sm transition">
+         <i class="fas fa-edit mr-1"></i> Edit
+         </button>
+
+          <button (click)="togglePin(ann.id)"
+            class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm transition">
+            {{ ann.pinned ? 'Unpin' : 'Pin' }}
+          </button>
+
+          <button (click)="deleteAnnouncement(ann.id)"
+            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW ANNOUNCEMENT MODAL -->
+<div *ngIf="showViewModal"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+
+  <div class="bg-white dark:bg-slate-900 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden animate-fadeIn max-h-[90vh] flex flex-col">
+
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 dark:border-slate-700">
+      <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+        Announcement Details
+      </h2>
+      <button (click)="closeViewModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xl">
+        ✕
+      </button>
+    </div>
+
+    <!-- BODY -->
+   <div class="p-6 space-y-6 overflow-y-auto">
+
+      <!-- PINNED ALERT -->
+      <div *ngIf="selectedAnnouncement?.pinned"
+           class="bg-yellow-100 text-yellow-800 px-4 py-3 rounded-xl text-sm flex items-center gap-2">
+        <i class="fas fa-thumbtack"></i>
+        This announcement is pinned
+      </div>
+
+      <!-- TITLE -->
+      <div>
+        <h3 class="text-2xl font-bold text-gray-800 dark:text-white">
+          {{ selectedAnnouncement?.title }}
+        </h3>
+
+        <div class="flex flex-wrap gap-4 text-xs text-gray-400 mt-3">
+          <span><i class="fas fa-user mr-1"></i> {{ selectedAnnouncement?.author }}</span>
+          <span><i class="fas fa-calendar mr-1"></i> {{ formatDate(selectedAnnouncement?.date) }}</span>
+          <span><i class="fas fa-eye mr-1"></i> {{ selectedAnnouncement?.views }} views</span>
+
+          <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-red-100 text-red-600"
+                *ngIf="selectedAnnouncement?.priority === 'urgent'">
+            Urgent Priority
+          </span>
+
+          <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-green-100 text-green-600"
+                *ngIf="selectedAnnouncement?.status === 'active'">
+            Active
+          </span>
+        </div>
+      </div>
+      
+
+      <!-- TARGET AUDIENCE -->
+      <div>
+        <h4 class="text-xs uppercase text-slate-400 font-black">
+          Target Audience
+        </h4>
+        <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs">
+          {{ selectedAnnouncement?.audience }}
+        </span>
+      </div>
+
+      <!-- CONTENT -->
+      <div>
+        <h4 class="text-xs uppercase text-slate-400 font-black">
+          Content
+        </h4>
+        <p class="text-sm text-gray-700 dark:text-slate-300 leading-relaxed">
+          {{ selectedAnnouncement?.content }}
+        </p>
+    </div>
+
+      <!-- ATTACHMENTS -->
+      <div *ngIf="selectedAnnouncement?.attachments?.length">
+        <h4 class="text-sm font-semibold text-gray-600 dark:text-slate-400 mb-3">
+          Attachments
+        </h4>
+
+        <div class="flex flex-wrap gap-4">
+          <div *ngFor="let file of selectedAnnouncement?.attachments"
+               class="w-40 h-40 rounded-xl border border-gray-200 dark:border-slate-700 overflow-hidden bg-gray-100 dark:bg-slate-800 flex items-center justify-center">
+
+            <!-- IMAGE PREVIEW -->
+            <img *ngIf="file.type.startsWith('image/')"
+                 [src]="file.url"
+                 class="w-full h-full object-cover" />
+
+            <!-- VIDEO PREVIEW -->
+            <video *ngIf="file.type.startsWith('video/')"
+                   [src]="file.url"
+                   controls
+                   class="w-full h-full object-cover">
+            </video>
+
+            <!-- OTHER FILE TYPES -->
+            <div *ngIf="!file.type.startsWith('image/') && !file.type.startsWith('video/')"
+                 class="text-xs text-gray-500 text-center px-2">
+              {{ file.name }}
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-slate-700">
+
+      <button (click)="selectedAnnouncement && editAnnouncement(selectedAnnouncement)"
+        class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-xl text-sm">
+        <i class="fas fa-edit mr-1"></i> Edit Announcement
+      </button>
+
+      <button (click)="closeViewModal()"
+        class="bg-gray-200 dark:bg-slate-700 px-5 py-2 rounded-xl text-sm">
+        Close
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- CREATE / EDIT ANNOUNCEMENT MODAL -->
+<div *ngIf="showModal"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+
+  <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[95vh] flex flex-col">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 dark:border-slate-700">
+      <h2 class="text-lg font-semibold text-gray-800 dark:text-white">
+        {{ modalMode === 'create' ? 'Create Announcement' : 'Edit Announcement' }}
+      </h2>
+      <button (click)="closeModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xl">
+        ✕
+      </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="p-6 space-y-6 overflow-y-auto">
+
+      <!-- TITLE -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Title 
+        </label>
+        <input type="text"
+               [(ngModel)]="currentAnnouncement.title"
+               class="w-full mt-2 bg-gray-100 dark:bg-slate-800 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+      </div>
+
+      <!-- CONTENT -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Content 
+        </label>
+        <textarea rows="4"
+                  [(ngModel)]="currentAnnouncement.content"
+                  class="w-full mt-2 bg-gray-100 dark:bg-slate-800 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white resize-none">
+        </textarea>
+      </div>
+
+      <!-- ATTACHMENTS -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Attachments
+        </label>
+
+        <!-- Upload Box -->
+        <label class="mt-2 flex items-center justify-center gap-2 border-2 border-dashed border-blue-300 dark:border-slate-700 rounded-xl p-4 cursor-pointer bg-blue-50 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-slate-700 transition">
+          <i class="fas fa-paperclip text-blue-600"></i>
+          <span class="text-xs uppercase text-slate-400 font-black">
+            Add Images or Videos
+          </span>
+          <input type="file"
+                 multiple
+                 accept="image/*,video/*"
+                 class="hidden"
+                 (change)="onFilesSelected($event)">
+        </label>
+
+        <!-- Preview -->
+        <div *ngIf="currentAnnouncement.attachments.length"
+             class="flex flex-wrap gap-4 mt-4">
+
+          <div *ngFor="let file of currentAnnouncement.attachments; let i = index"
+               class="relative w-28 h-28 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-800">
+
+            <img *ngIf="file.type.startsWith('image/')"
+                 [src]="file.url"
+                 class="w-full h-full object-cover" />
+
+            <video *ngIf="file.type.startsWith('video/')"
+                   [src]="file.url"
+                   class="w-full h-full object-cover">
+            </video>
+
+            <button (click)="removeAttachment(i)"
+                    class="absolute top-1 right-1 bg-black/60 text-white text-xs px-1 rounded">
+              ✕
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- PRIORITY -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Priority 
+        </label>
+        <select [(ngModel)]="currentAnnouncement.priority"
+                class="w-full mt-2 bg-gray-100 dark:bg-slate-800 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+          <option value="urgent">Urgent</option>
+          <option value="high">High</option>
+          <option value="normal">Normal</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+
+      <!-- TARGET AUDIENCE -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Target Audience 
+        </label>
+
+        <div class="flex flex-wrap gap-4 mt-2 text-sm">
+
+          <label class="flex items-center gap-2">
+            <input type="checkbox"
+                   [checked]="currentAnnouncement.audience.includes('students')"
+                   (change)="updateAudience($event, 'students')">
+            Students
+          </label>
+
+          <label class="flex items-center gap-2">
+            <input type="checkbox"
+                   [checked]="currentAnnouncement.audience.includes('teachers')"
+                   (change)="updateAudience($event, 'teachers')">
+            Teachers
+          </label>
+
+          <label class="flex items-center gap-2">
+            <input type="checkbox"
+                   [checked]="currentAnnouncement.audience.includes('organizations')"
+                   (change)="updateAudience($event, 'organizations')">
+            Organizations
+          </label>
+
+          <label class="flex items-center gap-2">
+            <input type="checkbox"
+                   [checked]="currentAnnouncement.audience.includes('staff')"
+                   (change)="updateAudience($event, 'staff')">
+            Staff
+          </label>
+
+        </div>
+      </div>
+
+      <!-- SCHEDULE -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Schedule (Optional)
+        </label>
+        <input type="datetime-local"
+               [(ngModel)]="currentAnnouncement.schedule"
+               class="w-full mt-2 bg-gray-100 dark:bg-slate-800 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+        <p class="text-xs text-gray-400 mt-1">
+          Leave empty to publish immediately
+        </p>
+      </div>
+
+      <!-- EXPIRY DATE -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Expiry Date (Optional)
+        </label>
+        <input type="datetime-local"
+               [(ngModel)]="currentAnnouncement.expiryDate"
+               class="w-full mt-2 bg-gray-100 dark:bg-slate-800 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+      </div>
+
+      <!-- PIN -->
+      <div class="flex items-center gap-2 pt-2">
+        <input type="checkbox"
+               [(ngModel)]="currentAnnouncement.pinned">
+        <label class="text-sm text-gray-700 dark:text-slate-300">
+          Pin this announcement to the top
+        </label>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800">
+
+      <button (click)="submitAnnouncement()"
+              class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-xl text-sm shadow-md">
+                <i class="fas fa-paper-plane"></i> Update Announcement
+      </button>
+
+      <button (click)="closeModal()"
+              class="bg-gray-300 dark:bg-slate-700 px-6 py-2 rounded-xl text-sm">
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+</div>
