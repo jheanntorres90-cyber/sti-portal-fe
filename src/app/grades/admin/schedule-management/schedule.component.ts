@@ -359,7 +359,6 @@ export class AdminScheduleComponent implements OnInit {
       }
     ];
   }
-  
 
   // Theme management
   private checkThemePreference(): void {
