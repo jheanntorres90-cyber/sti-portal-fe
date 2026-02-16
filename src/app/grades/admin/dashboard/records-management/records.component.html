@@ -1,0 +1,657 @@
+<div class="space-y-6 p-4 sm:p-6 dark:bg-slate-950 min-h-screen pb-12">
+
+  <!-- ================= ALERT ================= -->
+  <div *ngIf="alert.show"
+       class="fixed top-6 right-6 z-50 w-80 rounded-2xl border px-4 py-3 shadow-lg flex items-start gap-3 text-sm"
+       [ngClass]="{
+        'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400': alert.type==='success',
+        'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-900/20 dark:text-rose-400': alert.type==='error',
+        'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400': alert.type==='warning',
+        'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400': alert.type==='info'
+       }">
+
+    <i class="fas mt-1"
+       [ngClass]="{
+         'fa-check-circle': alert.type==='success',
+         'fa-exclamation-circle': alert.type==='error' || alert.type==='info',
+         'fa-exclamation-triangle': alert.type==='warning'
+       }"></i>
+
+    <div class="flex justify-between w-full">
+      <span class="font-medium">{{ alert.message }}</span>
+      <button (click)="alert.show=false" class="text-xs font-black ml-4">✕</button>
+    </div>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
+      Records Management
+    </h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-2">
+      Manage students, teachers and archived records
+    </p>
+  </div>
+
+  <!-- ================= STATS ================= -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    <div (click)="switchTab('students')"
+         class="cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm hover:shadow-md transition-all">
+      <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Total Students</p>
+      <p class="text-2xl font-bold mt-2 dark:text-white">{{ stats.totalStudents }}</p>
+    </div>
+
+    <div (click)="switchTab('teachers')"
+         class="cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm hover:shadow-md transition-all">
+      <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Total Teachers</p>
+      <p class="text-2xl font-bold mt-2 dark:text-white">{{ stats.totalTeachers }}</p>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm">
+      <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Active Students</p>
+      <p class="text-2xl font-bold mt-2 dark:text-white">{{ stats.activeStudents }}</p>
+    </div>
+
+    <div (click)="switchTab('trash')"
+         class="cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm hover:shadow-md transition-all">
+      <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Deleted Records</p>
+      <p class="text-2xl font-bold mt-2 dark:text-white">{{ stats.deletedRecords }}</p>
+    </div>
+
+  </div>
+
+  <!-- ================= MAIN CARD ================= -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+
+    <!-- TABS -->
+    <div class="flex gap-6 border-b border-slate-200 dark:border-slate-800 pb-4 mb-6">
+      <button (click)="switchTab('students')"
+              [class.text-blue-600]="activeTab==='students'"
+              class="text-xs font-black uppercase tracking-widest text-slate-400 pb-2">
+        Student Records
+      </button>
+
+      <button (click)="switchTab('teachers')"
+              [class.text-blue-600]="activeTab==='teachers'"
+              class="text-xs font-black uppercase tracking-widest text-slate-400 pb-2">
+        Teacher Records
+      </button>
+
+      <button (click)="switchTab('trash')"
+              [class.text-blue-600]="activeTab==='trash'"
+              class="text-xs font-black uppercase tracking-widest text-slate-400 pb-2">
+        Trash Bin
+      </button>
+    </div>
+
+    <!-- ================= STUDENTS ================= -->
+    <div *ngIf="activeTab==='students'">
+
+      <!-- Search + Actions -->
+      <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
+
+        <input type="text"
+               [(ngModel)]="studentSearch"
+               (ngModelChange)="onStudentSearchChange()"
+               placeholder="Search students..."
+               class="bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all w-full lg:w-96" />
+
+        <div class="flex gap-3">
+          <button (click)="openAddStudentModal()"
+                  class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded-2xl transition-all">
+            Add Student
+          </button>
+
+          <button (click)="openBulkActionsModal()"
+                  class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white text-xs font-bold py-2 px-4 rounded-2xl transition-all">
+            Bulk Actions
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- TABLE -->
+      <div class="overflow-x-auto rounded-3xl border border-slate-200 dark:border-slate-800">
+
+        <table class="w-full text-left">
+
+          <thead class="bg-slate-50 dark:bg-slate-950 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
+            <tr>
+              <th class="px-6 py-4"></th>
+              <th class="px-6 py-4">Student</th>
+              <th class="px-6 py-4">Course</th>
+              <th class="px-6 py-4">Status</th>
+              <th class="px-6 py-4">Balance</th>
+              <th class="px-6 py-4">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y dark:divide-slate-800">
+
+            <tr *ngFor="let student of displayedStudents"
+                class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+
+              <td class="px-6 py-4">
+                <input type="checkbox"
+                       [checked]="selectedStudents.includes(student.id)"
+                       (change)="toggleStudentSelection(student.id)">
+              </td>
+
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <img [src]="student.avatar"
+                       class="w-10 h-10 rounded-xl object-cover border dark:border-slate-700">
+                  <div>
+                    <p class="font-bold text-sm dark:text-white">
+                      {{ student.firstName }} {{ student.lastName }}
+                    </p>
+                    <p class="text-[10px] text-slate-400 uppercase font-black">
+                      {{ student.id }}
+                    </p>
+                  </div>
+                </div>
+              </td>
+
+              <td class="px-6 py-4 text-xs dark:text-slate-400">
+                {{ student.course }}
+                <div class="uppercase text-[10px] font-black text-slate-400">
+                  {{ student.yearLevel }}
+                </div>
+              </td>
+
+              <td class="px-6 py-4">
+                <span class="text-[10px] font-black uppercase rounded-lg px-2 py-1"
+                      [ngClass]="getStatusClass(student.status)">
+                  {{ student.status }}
+                </span>
+              </td>
+
+              <td class="px-6 py-4 text-xs font-bold"
+                  [ngClass]="{
+                    'text-rose-600': student.balance > 0,
+                    'text-emerald-600': student.balance === 0
+                  }">
+                {{ student.balance > 0 ? ('₱' + student.balance.toLocaleString()) : 'Paid' }}
+              </td>
+
+              <td class="px-6 py-4 flex gap-3">
+                <button (click)="viewStudent(student)" class="text-blue-600 text-xs"><i class="fas fa-eye"></i></button>
+                <button (click)="editStudent(student)" class="text-amber-600 text-xs"><i class="fas fa-pencil"></i></button>
+                <button (click)="softDeleteStudent(student)" class="text-rose-600 text-xs"><i class="fas fa-trash"></i></button>
+              </td>
+
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex justify-between items-center mt-4 text-xs font-bold uppercase text-slate-400">
+        <span>{{ studentPaginationInfo.start }} - {{ studentPaginationInfo.end }} of {{ studentPaginationInfo.total }}</span>
+        <div class="flex gap-2">
+          <button (click)="previousStudentPage()" [disabled]="currentStudentPage===1"
+                  class="px-4 py-2 rounded-xl border dark:border-slate-700 disabled:opacity-30">
+            Prev
+          </button>
+          <button (click)="nextStudentPage()" [disabled]="currentStudentPage===studentTotalPages"
+                  class="px-4 py-2 rounded-xl border dark:border-slate-700 disabled:opacity-30">
+            Next
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+
+<!-- ================= TEACHERS ================= -->
+<div *ngIf="activeTab==='teachers'">
+
+  <!-- Search + Actions -->
+  <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
+    <button (click)="showTeacherFilters = !showTeacherFilters"
+        class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white text-xs font-bold py-2 px-4 rounded-2xl transition-all flex items-center gap-2">
+  <i class="fas fa-filter text-[10px]"></i>
+  Filters
+</button>
+    <!-- ================= STUDENT FILTERS PANEL ================= -->
+<div *ngIf="showStudentFilters"
+     class="mt-4 bg-slate-50 dark:bg-slate-800/40 p-5 rounded-3xl border border-slate-200 dark:border-slate-700">
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+    <!-- Education Level -->
+    <div>
+      <label class="text-[10px] font-black uppercase text-slate-400">Education Level</label>
+      <select [(ngModel)]="studentFilters.educationLevel"
+              class="w-full bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 text-sm dark:text-white">
+        <option>All Levels</option>
+        <option>Senior High</option>
+        <option>College</option>
+      </select>
+    </div>
+
+    <!-- Course -->
+    <div>
+      <label class="text-[10px] font-black uppercase text-slate-400">Course</label>
+      <select [(ngModel)]="studentFilters.course"
+              class="w-full bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 text-sm dark:text-white">
+        <option>All Courses</option>
+        <option>Computer Science</option>
+        <option>Information Technology</option>
+        <option>Business Administration</option>
+        <option>Engineering</option>
+      </select>
+    </div>
+
+    <!-- Year -->
+    <div>
+      <label class="text-[10px] font-black uppercase text-slate-400">Year</label>
+      <select [(ngModel)]="studentFilters.year"
+              class="w-full bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 text-sm dark:text-white">
+        <option>All Years</option>
+        <option>1st Year</option>
+        <option>2nd Year</option>
+        <option>3rd Year</option>
+        <option>4th Year</option>
+      </select>
+    </div>
+
+    <!-- Status -->
+    <div>
+      <label class="text-[10px] font-black uppercase text-slate-400">Status</label>
+      <select [(ngModel)]="studentFilters.status"
+              class="w-full bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 text-sm dark:text-white">
+        <option>All Status</option>
+        <option>Active</option>
+        <option>Inactive</option>
+        <option>Graduated</option>
+        <option>Dropped</option>
+      </select>
+    </div>
+
+  </div>
+
+  <!-- Buttons -->
+  <div class="flex justify-end gap-3 mt-5">
+
+    <button (click)="clearStudentFilters()"
+            class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+      Clear
+    </button>
+
+    <button (click)="applyStudentFilters()"
+            class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+      Apply Filters
+    </button>
+
+  </div>
+
+</div>
+
+    <!-- ================= STUDENT FILTERS PANEL ================= -->
+<div *ngIf="showStudentFilters"
+     class="mt-4 bg-slate-50 dark:bg-slate-800/40 p-5 rounded-3xl border border-slate-200 dark:border-slate-700">
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+    <!-- Education Level -->
+    <div>
+      <label class="text-[10px] font-black uppercase text-slate-400">Education Level</label>
+      <select [(ngModel)]="studentFilters.educationLevel"
+              class="w-full bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 text-sm dark:text-white">
+        <option>All Levels</option>
+        <option>Senior High</option>
+        <option>College</option>
+      </select>
+    </div>
+
+    <!-- Course -->
+    <div>
+      <label class="text-[10px] font-black uppercase text-slate-400">Course</label>
+      <select [(ngModel)]="studentFilters.course"
+              class="w-full bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 text-sm dark:text-white">
+        <option>All Courses</option>
+        <option>Computer Science</option>
+        <option>Information Technology</option>
+        <option>Business Administration</option>
+        <option>Engineering</option>
+      </select>
+    </div>
+
+    <!-- Year -->
+    <div>
+      <label class="text-[10px] font-black uppercase text-slate-400">Year</label>
+      <select [(ngModel)]="studentFilters.year"
+              class="w-full bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 text-sm dark:text-white">
+        <option>All Years</option>
+        <option>1st Year</option>
+        <option>2nd Year</option>
+        <option>3rd Year</option>
+        <option>4th Year</option>
+      </select>
+    </div>
+
+    <!-- Status -->
+    <div>
+      <label class="text-[10px] font-black uppercase text-slate-400">Status</label>
+      <select [(ngModel)]="studentFilters.status"
+              class="w-full bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 text-sm dark:text-white">
+        <option>All Status</option>
+        <option>Active</option>
+        <option>Inactive</option>
+        <option>Graduated</option>
+        <option>Dropped</option>
+      </select>
+    </div>
+
+  </div>
+
+  <!-- Buttons -->
+  <div class="flex justify-end gap-3 mt-5">
+
+    <button (click)="clearStudentFilters()"
+            class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+      Clear
+    </button>
+
+    <button (click)="applyStudentFilters()"
+            class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+      Apply Filters
+    </button>
+
+  </div>
+
+</div>
+    <input type="text"
+           [(ngModel)]="teacherSearch"
+           (ngModelChange)="onTeacherSearchChange()"
+           placeholder="Search teachers..."
+           class="bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all w-full lg:w-96" />
+
+    <div class="flex gap-3">
+      <button (click)="openAddTeacherModal()"
+              class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded-2xl transition-all">
+        Add Teacher
+      </button>
+
+      <button (click)="openBulkActionsModal()"
+              class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-white text-xs font-bold py-2 px-4 rounded-2xl transition-all">
+        Bulk Actions
+      </button>
+      <div *ngIf="showStudentFilters"
+     class="bg-slate-100 dark:bg-slate-800/60 rounded-2xl p-6 mb-6">
+  
+  <!-- Filter content here -->
+
+    </div>
+    </div>
+
+  </div>
+
+  <!-- TABLE -->
+  <div class="overflow-x-auto rounded-3xl border border-slate-200 dark:border-slate-800">
+
+    <table class="w-full text-left">
+
+      <thead class="bg-slate-50 dark:bg-slate-950 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
+        <tr>
+          <th class="px-6 py-4"></th>
+          <th class="px-6 py-4">Teacher</th>
+          <th class="px-6 py-4">Employment</th>
+          <th class="px-6 py-4">Status</th>
+          <th class="px-6 py-4">Specialization</th>
+          <th class="px-6 py-4">Hire Date</th>
+          <th class="px-6 py-4">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y dark:divide-slate-800">
+
+        <tr *ngFor="let teacher of displayedTeachers"
+            class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+
+          <!-- Checkbox -->
+          <td class="px-6 py-4">
+            <input type="checkbox"
+                   [checked]="selectedTeachers.includes(teacher.id)"
+                   (change)="toggleTeacherSelection(teacher.id)">
+          </td>
+
+          <!-- Teacher Info (Same structure as Student Info) -->
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-3">
+              <img [src]="teacher.avatar"
+                   class="w-10 h-10 rounded-xl object-cover border dark:border-slate-700">
+              <div>
+                <p class="font-bold text-sm dark:text-white">
+                  {{ teacher.firstName }} {{ teacher.lastName }}
+                </p>
+                <p class="text-[10px] text-slate-400 uppercase font-black">
+                  {{ teacher.id }}
+                </p>
+                <p class="text-[10px] text-slate-400">
+                  {{ teacher.email }}
+                </p>
+              </div>
+            </div>
+          </td>
+
+          <!-- Employment -->
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ teacher.employmentType }} - {{ teacher.designation }}
+          </td>
+
+          <!-- Status -->
+          <td class="px-6 py-4">
+            <span class="text-[10px] font-black uppercase rounded-lg px-2 py-1"
+                  [ngClass]="getStatusClass(teacher.status)">
+              {{ teacher.status }}
+            </span>
+          </td>
+
+          <!-- Specialization -->
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ teacher.specialization }}
+          </td>
+
+          <!-- Hire Date -->
+          <td class="px-6 py-4 text-xs dark:text-slate-400">
+            {{ teacher.hireDate | date:'MMM d, yyyy' }}
+          </td>
+
+          <!-- Actions -->
+          <td class="px-6 py-4 flex gap-3">
+            <button (click)="viewTeacher(teacher)" class="text-blue-600 text-xs">
+              <i class="fas fa-eye"></i>
+            </button>
+
+            <button (click)="editTeacher(teacher)" class="text-amber-600 text-xs">
+              <i class="fas fa-pencil"></i>
+            </button>
+
+            <button (click)="softDeleteTeacher(teacher)" class="text-rose-600 text-xs">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+      
+
+  <!-- Pagination (Same Style as Student) -->
+  <div class="flex justify-between items-center mt-4 text-xs font-bold uppercase text-slate-400">
+
+    <span>
+      {{ teacherPaginationInfo.start }} - {{ teacherPaginationInfo.end }}
+      of {{ teacherPaginationInfo.total }}
+    </span>
+
+    <div class="flex gap-2">
+      <button (click)="previousTeacherPage()"
+              [disabled]="currentTeacherPage===1"
+              class="px-4 py-2 rounded-xl border dark:border-slate-700 disabled:opacity-30">
+        Prev
+      </button>
+
+      <button (click)="nextTeacherPage()"
+              [disabled]="currentTeacherPage===teacherTotalPages"
+              class="px-4 py-2 rounded-xl border dark:border-slate-700 disabled:opacity-30">
+        Next
+      </button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ================= UNIVERSAL EDIT MODAL ================= -->
+<div *ngIf="showEditStudentModal || showEditTeacherModal"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl p-6 shadow-xl">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+        Edit {{ activeTab === 'students' ? 'Student' : 'Teacher' }}
+      </h2>
+
+      <button (click)="activeTab === 'students' ? closeEditStudentModal() : closeEditTeacherModal()"
+              class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- ================= STUDENT FORM ================= -->
+    <form *ngIf="activeTab === 'students' && editingStudent"
+          (ngSubmit)="updateStudent()"
+          class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">First Name</label>
+        <input [(ngModel)]="editingStudent.firstName"
+               name="editStudentFirstName"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Last Name</label>
+        <input [(ngModel)]="editingStudent.lastName"
+               name="editStudentLastName"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Student ID</label>
+        <input [(ngModel)]="editingStudent.id"
+               name="editStudentId"
+               disabled
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Course</label>
+        <input [(ngModel)]="editingStudent.course"
+               name="editStudentCourse"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Year Level</label>
+        <input [(ngModel)]="editingStudent.yearLevel"
+               name="editStudentYear"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Status</label>
+        <input [(ngModel)]="editingStudent.status"
+               name="editStudentStatus"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div class="col-span-full flex justify-end gap-3 pt-4">
+        <button type="button"
+                (click)="closeEditStudentModal()"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+          Save Changes
+        </button>
+      </div>
+
+    </form>
+
+    <!-- ================= TEACHER FORM ================= -->
+    <form *ngIf="activeTab === 'teachers' && editingTeacher"
+          (ngSubmit)="updateTeacher()"
+          class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">First Name</label>
+        <input [(ngModel)]="editingTeacher.firstName"
+               name="editTeacherFirstName"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Last Name</label>
+        <input [(ngModel)]="editingTeacher.lastName"
+               name="editTeacherLastName"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Teacher ID</label>
+        <input [(ngModel)]="editingTeacher.id"
+               name="editTeacherId"
+               disabled
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Employment Type</label>
+        <input [(ngModel)]="editingTeacher.employmentType"
+               name="editEmploymentType"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Specialization</label>
+        <input [(ngModel)]="editingTeacher.specialization"
+               name="editSpecialization"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Status</label>
+        <input [(ngModel)]="editingTeacher.status"
+               name="editTeacherStatus"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <div class="col-span-full flex justify-end gap-3 pt-4">
+        <button type="button"
+                (click)="closeEditTeacherModal()"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+          Save Changes
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

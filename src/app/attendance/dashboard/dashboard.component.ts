@@ -133,6 +133,8 @@ interface Announcement {
           </div>
         </p-card>
 
+         
+
         <p-card styleClass="shadow-sm border-none dark:bg-slate-900 h-full">
           <div class="p-2">
             <h2 class="text-xl font-heading font-semibold text-gray-800 dark:text-white mb-8">Weekly Attendance</h2>

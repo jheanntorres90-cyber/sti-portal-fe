@@ -67,6 +67,8 @@ export const GRADES_ROUTES: Routes = [
    loadComponent: () => import('./admin/schedule-management/schedule.component').then(m => m.AdminScheduleComponent)
   },
   {
+    path: 'admin-records-managament',
+    loadComponent: () => import('./admin/dashboard/records-management/records.component').then(m => m.AdminDashboardComponent)
   },
   {
     path: 'admin-announcements',
