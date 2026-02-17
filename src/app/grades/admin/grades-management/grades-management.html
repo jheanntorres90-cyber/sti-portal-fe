@@ -1,0 +1,691 @@
+<div class="p-6 md:p-8 space-y-8 bg-gray-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+
+  <!-- HEADER -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div class="relative">
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
+        Grades Management
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Monitor and manage students grades</p>
+    </div>
+  </div>
+
+  <!-- Alert Messages -->
+  <div *ngFor="let alert of alerts" 
+       class="mb-4 p-4 rounded-xl flex items-center gap-3 text-sm animate-slideDown"
+       [ngClass]="{
+         'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400': alert.type === 'info',
+         'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400': alert.type === 'success',
+         'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400': alert.type === 'warning',
+         'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400': alert.type === 'error'
+       }">
+    <i class="fas" [ngClass]="getAlertIcon(alert.type)"></i>
+    <span>{{alert.message}}</span>
+    <button (click)="removeAlert(alert.id)" 
+            class="ml-auto text-current hover:opacity-70">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+    <!-- Total Grades Entered -->
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border border-gray-200 dark:border-slate-800 transition hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+            <i class="fas fa-book text-xl"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 dark:text-white mt-6">
+            2,847
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Total Grades Entered
+          </p>
+          <p class="text-xs text-green-600 mt-2">
+            ↗ 92% completion
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Grades -->
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border border-gray-200 dark:border-slate-800 transition hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-yellow-100 text-yellow-600">
+            <i class="fas fa-clock text-xl"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 dark:text-white mt-6">
+            156
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Pending Grades
+          </p>
+          <p class="text-xs text-yellow-600 mt-2">
+            Awaiting input
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Average GPA -->
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border border-gray-200 dark:border-slate-800 transition hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-green-100 text-green-600">
+            <i class="fas fa-star text-xl"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 dark:text-white mt-6">
+            3.42
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Average GPA
+          </p>
+          <p class="text-xs text-green-600 mt-2">
+            ↗ +0.15 from last sem
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Approval -->
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border border-gray-200 dark:border-slate-800 transition hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-red-100 text-red-600">
+            <i class="fas fa-exclamation-triangle text-xl"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 dark:text-white mt-6">
+            {{pendingApprovals.length}}
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Pending Approval
+          </p>
+          <p class="text-xs text-red-600 mt-2">
+            Need review
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Grade Management Card -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-gray-200 dark:border-slate-800 overflow-hidden">
+
+    <!-- Tabs -->
+    <div class="flex border-b border-gray-200 dark:border-slate-800 text-sm font-bold uppercase overflow-x-auto">
+
+      <button (click)="switchTab('grade-approval')"
+        class="px-6 py-4 relative whitespace-nowrap transition-colors"
+        [ngClass]="activeTab === 'grade-approval' ? 'text-blue-600' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'">
+        <i class="fas fa-check-circle mr-2" 
+           [ngClass]="activeTab === 'grade-approval' ? 'text-blue-600' : 'text-gray-500'"></i>
+        Grade Approval
+        <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-red-100 text-red-600">{{pendingApprovals.length}}</span>
+        <span *ngIf="activeTab === 'grade-approval'"
+          class="absolute bottom-0 left-0 w-full h-[3px] bg-blue-600"></span>
+      </button>
+
+      <button (click)="switchTab('class-grades')"
+        class="px-6 py-4 relative whitespace-nowrap transition-colors"
+        [ngClass]="activeTab === 'class-grades' ? 'text-blue-600' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'">
+        <i class="fas fa-users mr-2"
+           [ngClass]="activeTab === 'class-grades' ? 'text-blue-600' : 'text-gray-500'"></i>
+        Class Grades
+        <span *ngIf="activeTab === 'class-grades'"
+          class="absolute bottom-0 left-0 w-full h-[3px] bg-blue-600"></span>
+      </button>
+
+      <button (click)="switchTab('individual-grades')"
+        class="px-6 py-4 relative whitespace-nowrap transition-colors"
+        [ngClass]="activeTab === 'individual-grades' ? 'text-blue-600' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'">
+        <i class="fas fa-user mr-2"
+           [ngClass]="activeTab === 'individual-grades' ? 'text-blue-600' : 'text-gray-500'"></i>
+        Individual Student
+        <span *ngIf="activeTab === 'individual-grades'"
+          class="absolute bottom-0 left-0 w-full h-[3px] bg-blue-600"></span>
+      </button>
+
+      <button (click)="switchTab('bulk-entry')"
+        class="px-6 py-4 relative whitespace-nowrap transition-colors"
+        [ngClass]="activeTab === 'bulk-entry' ? 'text-blue-600' : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'">
+        <i class="fas fa-file-upload mr-2"
+           [ngClass]="activeTab === 'bulk-entry' ? 'text-blue-600' : 'text-gray-500'"></i>
+        Bulk Entry
+        <span *ngIf="activeTab === 'bulk-entry'"
+          class="absolute bottom-0 left-0 w-full h-[3px] bg-blue-600"></span>
+      </button>
+
+    </div>
+
+    <!-- Grade Approval Tab Content -->
+    <div *ngIf="activeTab === 'grade-approval'" class="p-6 space-y-6">
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-blue-600">Pending Grade Approvals</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Review and approve teacher-submitted grades by section</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <select class="px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm"
+                  [(ngModel)]="approvalFilter" 
+                  (change)="showAlert('Filtering approvals by: ' + approvalFilter, 'info')">
+            <option>All Submissions</option>
+            <option>This Week</option>
+            <option>Last Week</option>
+            <option>This Month</option>
+          </select>
+          <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow disabled:opacity-50 disabled:cursor-not-allowed"
+                  (click)="bulkApproveGrades()"
+                  [disabled]="selectedApprovals.size === 0">
+            <i class="fas fa-check-double"></i> Bulk Approve ({{selectedApprovals.size}})
+          </button>
+        </div>
+      </div>
+
+      <!-- Approval Queue -->
+      <div class="space-y-4">
+
+        <!-- Empty State -->
+        <div *ngIf="pendingApprovals.length === 0" 
+             class="text-center py-12 bg-gray-50 dark:bg-slate-800 rounded-2xl">
+          <i class="fas fa-check-circle text-4xl text-green-500 mb-3"></i>
+          <p class="text-gray-600 dark:text-gray-400">No pending grade approvals</p>
+          <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">All teacher submissions have been reviewed</p>
+        </div>
+
+        <!-- Approval Items -->
+        <div *ngFor="let approval of pendingApprovals" 
+             class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 space-y-4 transition hover:shadow-md"
+             [ngClass]="{'border-l-4 border-l-red-500': approval.needsReview}">
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4">
+            <!-- Checkbox -->
+            <div class="flex items-center">
+              <input type="checkbox"
+                     class="w-5 h-5 rounded border-2 border-gray-300 dark:border-gray-600 accent-blue-600 cursor-pointer"
+                     [checked]="selectedApprovals.has(approval.id)"
+                     (change)="toggleApprovalSelection(approval.id)">
+            </div>
+
+            <!-- Content -->
+            <div class="flex-1">
+              <h4 class="font-semibold text-gray-800 dark:text-white">
+                {{approval.course}} ({{approval.section}})
+              </h4>
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                Submitted by {{approval.teacher}} • {{approval.gradeType}} • {{approval.studentCount}} students
+              </p>
+              <p class="text-xs text-gray-400 mt-1">Submitted {{approval.submitted}}</p>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+              <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                    [ngClass]="{
+                      'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400': approval.status === 'pending',
+                      'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400': approval.status === 'flagged',
+                      'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400': approval.status === 'approved'
+                    }">
+                {{getApprovalStatusText(approval.status)}}
+              </span>
+              <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm transition-colors"
+                      (click)="reviewSubmission(approval)">
+                Review
+              </button>
+            </div>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100 dark:border-slate-700">
+            <div>
+              <span class="text-xs text-gray-500">Grade Range:</span>
+              <p class="font-medium text-sm">{{approval.gradeRange}}</p>
+            </div>
+            <div>
+              <span class="text-xs text-gray-500">Average:</span>
+              <p class="font-medium text-sm">{{approval.average}}</p>
+            </div>
+            <div>
+              <span class="text-xs text-gray-500">Pass Rate:</span>
+              <p class="font-medium text-sm" 
+                 [ngClass]="{
+                   'text-green-600': approval.passRate >= 90,
+                   'text-yellow-600': approval.passRate >= 80 && approval.passRate < 90,
+                   'text-red-600': approval.passRate < 80
+                 }">
+                {{approval.passRate}}%
+              </p>
+            </div>
+            <div>
+              <span class="text-xs text-gray-500">Failing:</span>
+              <p class="font-medium text-sm" 
+                 [ngClass]="approval.failing > 0 ? 'text-red-600' : 'text-green-600'">
+                {{approval.failing}} students
+              </p>
+            </div>
+          </div>
+
+          <!-- Warning Alert -->
+          <div *ngIf="approval.needsReview" 
+               class="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 p-4 rounded-xl flex items-center gap-3 text-sm">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>High failure rate detected - Review recommended</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Class Grades Tab Content -->
+    <div *ngIf="activeTab === 'class-grades'" class="p-6 space-y-6">
+
+      <!-- Header -->
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-lg font-bold text-blue-600">Class Grades</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">View grades by class and section</p>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Course</label>
+          <select class="w-full mt-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm"
+                  [(ngModel)]="courseSelect" 
+                  (ngModelChange)="loadClassGrades()">
+            <option value="">Select Course</option>
+            <option value="CS101">CS101 - Programming Fundamentals</option>
+            <option value="CS201">CS201 - Data Structures</option>
+            <option value="IT101">IT101 - Computer Systems</option>
+            <option value="BA101">BA101 - Business Ethics</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Section</label>
+          <select class="w-full mt-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm"
+                  [(ngModel)]="sectionSelect" 
+                  (ngModelChange)="loadClassGrades()">
+            <option value="">Select Section</option>
+            <option value="A">Section A</option>
+            <option value="B">Section B</option>
+            <option value="C">Section C</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Grade Component</label>
+          <select class="w-full mt-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm"
+                  [(ngModel)]="gradeComponentSelect">
+            <option value="all">All Components</option>
+            <option value="prelim">Prelim (30%)</option>
+            <option value="midterm">Midterm (30%)</option>
+            <option value="final">Final (40%)</option>
+            <option value="quiz">Quizzes</option>
+            <option value="project">Projects</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-3">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-2 shadow transition-colors disabled:opacity-50"
+                (click)="exportClassGrades()"
+                [disabled]="!currentClassKey">
+          <i class="fas fa-download"></i> Export Grades
+        </button>
+        <button class="bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 px-4 py-2 rounded-xl text-sm flex items-center gap-2 transition-colors disabled:opacity-50"
+                (click)="printGrades()"
+                [disabled]="!currentClassKey">
+          <i class="fas fa-print"></i> Print Report
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+
+        <!-- Empty States -->
+        <div *ngIf="!currentClassKey" 
+             class="text-center py-12 bg-gray-50 dark:bg-slate-800 rounded-2xl">
+          <i class="fas fa-book-open text-4xl text-gray-400 mb-3"></i>
+          <p class="text-gray-600 dark:text-gray-400">Select a course and section to view grades</p>
+        </div>
+
+        <div *ngIf="currentClassKey && currentClassGrades.length === 0" 
+             class="text-center py-12 bg-gray-50 dark:bg-slate-800 rounded-2xl">
+          <i class="fas fa-file-list text-4xl text-gray-400 mb-3"></i>
+          <p class="text-gray-600 dark:text-gray-400">No grades found for this class</p>
+        </div>
+
+        <!-- Data Table -->
+        <table *ngIf="currentClassKey && currentClassGrades.length > 0" 
+               class="w-full text-sm">
+          <thead class="bg-gray-50 dark:bg-slate-800 text-xs uppercase text-gray-500">
+            <tr>
+              <th class="p-4 text-left">Student</th>
+              <th class="p-4 text-left">Prelim</th>
+              <th class="p-4 text-left">Midterm</th>
+              <th class="p-4 text-left">Final</th>
+              <th class="p-4 text-left">Final Grade</th>
+              <th class="p-4 text-left">Letter Grade</th>
+              <th class="p-4 text-left">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of currentClassGrades"
+                class="border-t border-gray-100 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 transition">
+              <td class="p-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs overflow-hidden">
+                    <img *ngIf="getStudentAvatarUrl(student.studentName)" 
+                         [src]="getStudentAvatarUrl(student.studentName)" 
+                         [alt]="student.studentName"
+                         class="w-full h-full object-cover">
+                  </div>
+                  <div>
+                    <p class="font-semibold text-gray-800 dark:text-white">{{student.studentName}}</p>
+                    <p class="text-xs text-gray-400">{{student.studentId}}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="p-4">{{student.prelim || '-'}}</td>
+              <td class="p-4">{{student.midterm || '-'}}</td>
+              <td class="p-4">{{student.final || '-'}}</td>
+              <td class="p-4 font-semibold">{{student.finalGrade || '-'}}</td>
+              <td class="p-4">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                      [ngClass]="getGradeColor(student.letterGrade)">
+                  {{student.letterGrade || 'INC'}}
+                </span>
+              </td>
+              <td class="p-4">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                      [ngClass]="getStatusColor(student.status)">
+                  {{student.status || 'Incomplete'}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- Individual Student Grades Tab -->
+    <div *ngIf="activeTab === 'individual-grades'" class="p-6 space-y-6">
+
+      <!-- Header -->
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-lg font-bold text-blue-600">Individual Student Grades</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">View and manage individual student grades</p>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Search Student</label>
+          <div class="relative mt-2">
+            <i class="fas fa-search absolute left-3 top-3.5 text-gray-400 text-sm"></i>
+            <input type="text" 
+                   [(ngModel)]="studentSearch" 
+                   (ngModelChange)="showAlert('Searching student: ' + studentSearch, 'info')"
+                   placeholder="Search by name or student ID..." 
+                   class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Academic Year</label>
+          <select class="w-full mt-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-sm"
+                  [(ngModel)]="academicYearSelect">
+            <option value="2024">2024-2025</option>
+            <option value="2023">2023-2024</option>
+            <option value="2022">2022-2023</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+
+        <!-- Empty State -->
+        <div *ngIf="!studentSearch || studentSearch.length < 2" 
+             class="text-center py-12 bg-gray-50 dark:bg-slate-800 rounded-2xl">
+          <i class="fas fa-user-search text-4xl text-gray-400 mb-3"></i>
+          <p class="text-gray-600 dark:text-gray-400">Search for a student to view their grades</p>
+        </div>
+
+        <!-- Data Table -->
+        <table *ngIf="studentSearch && studentSearch.length >= 2" 
+               class="w-full text-sm">
+          <thead class="bg-gray-50 dark:bg-slate-800 text-xs uppercase text-gray-500">
+            <tr>
+              <th class="p-4 text-left">Course</th>
+              <th class="p-4 text-left">Prelim</th>
+              <th class="p-4 text-left">Midterm</th>
+              <th class="p-4 text-left">Final</th>
+              <th class="p-4 text-left">Final Grade</th>
+              <th class="p-4 text-left">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-100 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 transition">
+              <td class="p-4 font-medium">CS101 - Programming Fundamentals</td>
+              <td class="p-4">85</td>
+              <td class="p-4">88</td>
+              <td class="p-4">90</td>
+              <td class="p-4 font-semibold">87.5</td>
+              <td class="p-4"><span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-green-100 text-green-700">Passed</span></td>
+            </tr>
+            <tr class="border-t border-gray-100 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 transition">
+              <td class="p-4 font-medium">CS201 - Data Structures</td>
+              <td class="p-4">78</td>
+              <td class="p-4">82</td>
+              <td class="p-4">85</td>
+              <td class="p-4 font-semibold">82.3</td>
+              <td class="p-4"><span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-green-100 text-green-700">Passed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- Bulk Entry Tab -->
+    <div *ngIf="activeTab === 'bulk-entry'" class="p-6 space-y-6">
+
+      <!-- Header -->
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-lg font-bold text-blue-600">Bulk Grade Entry</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Upload grades in bulk using templates</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Upload Section -->
+        <div class="lg:col-span-2 space-y-4">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Upload Type</label>
+            <select class="w-full mt-2 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm"
+                    [(ngModel)]="uploadType">
+              <option>Grade Sheet Upload</option>
+              <option>Quiz Scores</option>
+              <option>Project Grades</option>
+              <option>Final Grades</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">File Upload</label>
+            <div class="mt-2 border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-2xl p-8 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition"
+                 (click)="triggerFileUpload()">
+              <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+              <p class="text-gray-600 dark:text-gray-400">Drop your Excel/CSV file here or click to browse</p>
+              <p class="text-xs text-gray-400 mt-2">Supported formats: .xlsx, .csv (Max 10MB)</p>
+              <input type="file" accept=".csv,.xlsx,.xls" class="hidden" id="bulkGradeFile" (change)="processBulkGrades()">
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm flex items-center gap-2 shadow transition-colors"
+                    (click)="processBulkGrades()">
+              <i class="fas fa-upload"></i> Process Upload
+            </button>
+            <button class="bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 px-5 py-2 rounded-xl text-sm flex items-center gap-2 transition-colors"
+                    (click)="downloadTemplate()">
+              <i class="fas fa-download"></i> Download Template
+            </button>
+          </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="space-y-4">
+          <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6">
+            <h3 class="font-bold text-blue-700 dark:text-blue-400 mb-3 flex items-center gap-2">
+              <i class="fas fa-info-circle"></i>
+              Upload Instructions
+            </h3>
+            <div class="space-y-3 text-sm text-blue-700 dark:text-blue-400">
+              <h4 class="font-semibold">File Format Requirements</h4>
+              <ul class="list-disc list-inside space-y-1 text-blue-600 dark:text-blue-500">
+                <li>Use the provided template format</li>
+                <li>Student ID column is mandatory</li>
+                <li>Grade values must be numerical</li>
+                <li>Missing grades will be marked as incomplete</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-6">
+            <h4 class="font-bold text-gray-800 dark:text-white mb-4">Recent Uploads</h4>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-700 rounded-xl">
+                <div>
+                  <p class="font-medium text-sm">CS101_Midterm_Grades.xlsx</p>
+                  <p class="text-xs text-gray-500">Uploaded 2 hours ago • 45 records</p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-green-100 text-green-700">Success</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-700 rounded-xl">
+                <div>
+                  <p class="font-medium text-sm">IT101_Quiz_Scores.csv</p>
+                  <p class="text-xs text-gray-500">Uploaded yesterday • 38 records</p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-yellow-100 text-yellow-700">Partial</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-700 rounded-xl">
+                <div>
+                  <p class="font-medium text-sm">BA101_Projects.xlsx</p>
+                  <p class="text-xs text-gray-500">Uploaded 3 days ago • 52 records</p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-green-100 text-green-700">Success</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+<!-- Grade Review Modal -->
+<div *ngIf="isReviewModalOpen"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+     (click)="closeGradeReviewModal()">
+
+  <div class="bg-white dark:bg-slate-900 
+              w-full max-w-2xl 
+              rounded-2xl shadow-2xl 
+              overflow-hidden"
+       (click)="$event.stopPropagation()">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 dark:border-slate-800">
+      <h2 class="text-lg font-bold text-blue-600">
+        Review Grade Submission
+      </h2>
+      <button (click)="closeGradeReviewModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="p-6 space-y-6" *ngIf="selectedSubmission">
+
+      <!-- Header -->
+      <div>
+        <h3 class="font-semibold text-gray-800 dark:text-white text-lg">
+          {{selectedSubmission.course}} - {{selectedSubmission.gradeType}}
+        </h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Submitted by {{selectedSubmission.teacher}} • {{selectedSubmission.studentCount}} students
+        </p>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-center">
+          <p class="text-2xl font-bold text-gray-800 dark:text-white">{{selectedSubmission.average}}</p>
+          <p class="text-xs text-gray-500">Average Grade</p>
+        </div>
+        <div class="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-center">
+          <p class="text-2xl font-bold text-gray-800 dark:text-white">{{selectedSubmission.passRate}}%</p>
+          <p class="text-xs text-gray-500">Pass Rate</p>
+        </div>
+        <div class="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl text-center">
+          <p class="text-2xl font-bold text-gray-800 dark:text-white">{{selectedSubmission.failing}}</p>
+          <p class="text-xs text-gray-500">Failing Students</p>
+        </div>
+      </div>
+
+      <!-- Distribution -->
+      <div>
+        <h4 class="font-semibold text-sm mb-3">Grade Distribution</h4>
+        <div class="flex items-end gap-2 h-32">
+          <div class="flex-1 bg-green-600 rounded-t-lg transition-all hover:opacity-80" style="height: 60%;" title="A: 25%"></div>
+          <div class="flex-1 bg-blue-600 rounded-t-lg transition-all hover:opacity-80" style="height: 80%;" title="B: 35%"></div>
+          <div class="flex-1 bg-yellow-500 rounded-t-lg transition-all hover:opacity-80" style="height: 50%;" title="C: 28%"></div>
+          <div class="flex-1 bg-orange-500 rounded-t-lg transition-all hover:opacity-80" style="height: 20%;" title="D: 8%"></div>
+          <div class="flex-1 bg-red-600 rounded-t-lg transition-all hover:opacity-80" style="height: 10%;" title="F: 4%"></div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-slate-800">
+        <button class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow transition-colors"
+                (click)="approveSubmission()">
+          <i class="fas fa-check"></i> Approve Grades
+        </button>
+        <button class="flex-1 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 shadow transition-colors"
+                (click)="rejectSubmission()">
+          <i class="fas fa-times"></i> Request Revision
+        </button>
+        <button class="flex-1 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 px-4 py-2 rounded-xl text-sm flex items-center justify-center gap-2 transition-colors"
+                (click)="closeGradeReviewModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
