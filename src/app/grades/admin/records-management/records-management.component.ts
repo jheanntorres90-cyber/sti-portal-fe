@@ -8,6 +8,7 @@ interface Student {
   lastName: string;
   middleName: string;
   email: string;
+  dob?: string;  
   phone: string;
   educationLevel: string;
   course: string;
@@ -20,6 +21,7 @@ interface Student {
   dateOfBirth?: string;
   gender?: string;
   civilStatus?: string;
+  selected?: boolean;
 }
 
 interface Teacher {
@@ -29,6 +31,7 @@ interface Teacher {
   middleName: string;
   email: string;
   phone: string;
+  dob?: string;  
   employmentType: string;
   specialization: string;
   designation: string;
@@ -38,6 +41,7 @@ interface Teacher {
   address?: string;
   dateOfBirth?: string;
   gender?: string;
+  selected?: boolean;
 }
 
 interface TrashItem {
@@ -55,7 +59,7 @@ interface TrashItem {
   templateUrl: './records-management.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class ManageStudentsComponent implements OnInit {
+export class RecordManageStudentsComponent implements OnInit {
   // Tab management
   activeTab: 'students' | 'teachers' | 'trash' = 'students';
   
@@ -133,14 +137,16 @@ export class ManageStudentsComponent implements OnInit {
   viewingTeacher: Teacher | null = null;
   
   // Filter states
-  showStudentFilters = false;
-  showTeacherFilters = false;
+showStudentFilters = false;
+showTeacherFilters = false;
+
+
   
   // Filter models
   studentFilters = {
     educationLevel: 'All Levels',
     course: 'All Courses',
-    year: 'All Years',
+    yearLevel: '',
     status: 'All Status'
   };
   
@@ -150,6 +156,15 @@ export class ManageStudentsComponent implements OnInit {
     designation: 'All Designations',
     status: 'All Status'
   };
+  
+
+  toggleSelectAll(event: any) {
+  const checked = event.target.checked;
+  this.displayedStudents.forEach((student: any) => {
+    student.selected = checked;
+  });
+}
+
   
   // Bulk action
   bulkActionType = '';
@@ -164,11 +179,13 @@ export class ManageStudentsComponent implements OnInit {
   
   // Theme
   isDarkMode = false;
+  
 
   // Search properties
   studentSearch = '';
   teacherSearch = '';
   quickSearch = '';
+  
 
   constructor() {}
 
@@ -341,9 +358,13 @@ export class ManageStudentsComponent implements OnInit {
   }
 
   // Tab management
-  switchTab(tab: 'students' | 'teachers' | 'trash') {
-    this.activeTab = tab;
-  }
+switchTab(tab: 'students' | 'teachers' | 'trash') {
+  this.activeTab = tab;
+
+  // auto close filters
+  this.showStudentFilters = false;
+  this.showTeacherFilters = false;
+}
 
   // Student table pagination
   get studentPaginationInfo() {
@@ -459,6 +480,40 @@ export class ManageStudentsComponent implements OnInit {
     }
     this.isAllTeachersSelected = !this.isAllTeachersSelected;
   }
+moveStudentToTrash(student: Student) {
+
+  // Push to trash WITH required data field
+  this.trashData.push({
+    id: student.id,
+    name: student.firstName + ' ' + student.lastName,
+    type: 'Student',
+    deletedDate: new Date().toISOString().split('T')[0],
+    data: student   // ✅ REQUIRED FIELD
+  });
+
+  // Remove from students list
+  this.studentsData = this.studentsData.filter(s => s.id !== student.id);
+  this.filteredStudents = this.filteredStudents.filter(s => s.id !== student.id);
+
+  this.showEditStudentModal = false;
+}
+moveTeacherToTrash(teacher: Teacher) {
+
+  // Push to trash WITH required data field
+  this.trashData.push({
+    id: teacher.id,
+    name: teacher.firstName + ' ' + teacher.lastName,
+    type: 'Teacher',
+    deletedDate: new Date().toISOString().split('T')[0],
+    data: teacher   // ✅ REQUIRED FIELD
+  });
+
+  // Remove from teachers list
+  this.teachersData = this.teachersData.filter(t => t.id !== teacher.id);
+  this.filteredTeachers = this.filteredTeachers.filter(t => t.id !== teacher.id);
+
+  this.showEditTeacherModal = false;
+}
 
   // Stats
   get stats() {
@@ -483,41 +538,54 @@ export class ManageStudentsComponent implements OnInit {
   }
 
   // Filter methods
-  applyStudentFilters() {
-    this.filteredStudents = this.studentsData.filter(student => {
-      const educationLevelMatch = this.studentFilters.educationLevel === 'All Levels' || 
-                                  student.educationLevel === this.studentFilters.educationLevel;
-      const courseMatch = this.studentFilters.course === 'All Courses' || 
-                         student.course === this.studentFilters.course;
-      const yearMatch = this.studentFilters.year === 'All Years' || 
-                       student.yearLevel === this.studentFilters.year;
-      const statusMatch = this.studentFilters.status === 'All Status' || 
-                         student.status === this.studentFilters.status;
-      
-      return educationLevelMatch && courseMatch && yearMatch && statusMatch;
-    });
-    
-    this.currentStudentPage = 1;
-    this.selectedStudents = [];
-    this.isAllStudentsSelected = false;
-    this.showStudentFilters = false;
-    this.showAlert('Filters applied successfully', 'success');
-  }
+ applyStudentFilters() {
+  this.filteredStudents = this.studentsData.filter(student => {
 
-  clearStudentFilters() {
-    this.studentFilters = {
-      educationLevel: 'All Levels',
-      course: 'All Courses',
-      year: 'All Years',
-      status: 'All Status'
-    };
-    this.filteredStudents = [...this.studentsData];
-    this.currentStudentPage = 1;
-    this.selectedStudents = [];
-    this.isAllStudentsSelected = false;
-    this.showStudentFilters = false;
-    this.showAlert('Filters cleared', 'info');
-  }
+    const educationLevelMatch =
+      this.studentFilters.educationLevel === 'All Levels' ||
+      student.educationLevel === this.studentFilters.educationLevel;
+
+    const courseMatch =
+      this.studentFilters.course === 'All Courses' ||
+      student.course === this.studentFilters.course;
+
+    const yearMatch =
+      !this.studentFilters.yearLevel ||
+      this.studentFilters.yearLevel === 'All Years' ||
+      student.yearLevel === this.studentFilters.yearLevel;
+
+    const statusMatch =
+      this.studentFilters.status === 'All Status' ||
+      student.status === this.studentFilters.status;
+
+    return educationLevelMatch && courseMatch && yearMatch && statusMatch;
+  });
+
+  this.currentStudentPage = 1;
+  this.selectedStudents = [];
+  this.isAllStudentsSelected = false;
+  this.showStudentFilters = false;
+
+  this.showAlert('Filters applied successfully', 'success');
+}
+
+
+ clearStudentFilters() {
+  this.studentFilters = {
+    educationLevel: 'All Levels',
+    course: 'All Courses',
+    yearLevel: 'All Years',
+    status: 'All Status'
+  };
+
+  this.filteredStudents = [...this.studentsData];
+  this.currentStudentPage = 1;
+  this.selectedStudents = [];
+  this.isAllStudentsSelected = false;
+  this.showStudentFilters = false;
+
+  this.showAlert('Filters cleared', 'info');
+}
 
   applyTeacherFilters() {
     this.filteredTeachers = this.teachersData.filter(teacher => {

@@ -1,0 +1,1820 @@
+<div class="p-6 md:p-8 space-y-8 bg-gray-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+
+  <!-- HEADER -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div class="relative">
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
+        Records Management
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Monitor and manage records</p>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border border-gray-200 dark:border-slate-800 transition hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
+            <i class="fas fa-user-graduate text-xl"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 dark:text-white mt-6">
+            {{ stats.totalStudents }}
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Total Students
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border border-gray-200 dark:border-slate-800 transition hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-green-100 text-green-600">
+            <i class="fas fa-chalkboard-teacher text-xl"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 dark:text-white mt-6">
+            {{ stats.totalTeachers }}
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Total Teachers
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVE STUDENTS -->
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border border-gray-200 dark:border-slate-800 transition hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-yellow-100 text-yellow-600">
+            <i class="fas fa-user-check text-xl"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 dark:text-white mt-6">
+            {{ stats.activeStudents }}
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Active Students
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRASH -->
+    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-md border border-gray-200 dark:border-slate-800 transition hover:shadow-lg">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-red-100 text-red-600">
+            <i class="fas fa-trash text-xl"></i>
+          </div>
+          <h2 class="text-3xl font-black text-gray-900 dark:text-white mt-6">
+            {{ stats.deletedRecords }}
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">
+            Deleted Records
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB CARD -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-gray-200 dark:border-slate-800 overflow-hidden">
+
+    <!-- TABS -->
+    <div class="flex border-b border-gray-200 dark:border-slate-800 text-sm font-bold uppercase">
+
+      <button (click)="switchTab('students')"
+        class="px-6 py-4 relative"
+        [ngClass]="activeTab === 'students' ? 'text-blue-600' : 'text-gray-500'">
+        Students
+        <span *ngIf="activeTab === 'students'"
+          class="absolute bottom-0 left-0 w-full h-[3px] bg-blue-600"></span>
+      </button>
+
+      <button (click)="switchTab('teachers')"
+        class="px-6 py-4 relative"
+        [ngClass]="activeTab === 'teachers' ? 'text-blue-600' : 'text-gray-500'">
+        Teachers
+        <span *ngIf="activeTab === 'teachers'"
+          class="absolute bottom-0 left-0 w-full h-[3px] bg-blue-600"></span>
+      </button>
+
+      <button (click)="switchTab('trash')"
+        class="px-6 py-4 relative"
+        [ngClass]="activeTab === 'trash' ? 'text-red-600' : 'text-gray-500'">
+        Trash
+        <span *ngIf="activeTab === 'trash'" 
+          class="absolute bottom-0 left-0 w-full h-[3px] bg-red-600"></span>
+      </button>
+
+    </div>
+
+    <!-- STUDENTS TABLE -->
+    <div *ngIf="activeTab === 'students'" class="p-6 space-y-6">
+
+      <!-- SEARCH + ACTION BUTTONS (STUDENTS) -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+        <div class="relative w-full md:w-96">
+          <input
+            type="text"
+            placeholder="Search by name, student ID, or email..."
+            [(ngModel)]="studentSearch"
+            (ngModelChange)="onStudentSearchChange()"
+            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 text-sm">
+          <i class="fas fa-search absolute left-3 top-3.5 text-gray-400 text-sm"></i>
+        </div>
+
+        <div class="flex flex-wrap gap-3 items-center">
+
+          <button
+            (click)="openAddStudentModal()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-2 shadow">
+            <i class="fas fa-user-plus"></i>
+            Add Student
+          </button>
+
+          <button (click)="openBulkActionsModal()"
+            class="bg-gray-200 dark:bg-slate-700 px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+            <i class="fas fa-edit"></i>
+            Bulk Actions
+          </button>
+
+          <button
+            (click)="showStudentFilters = !showStudentFilters"
+            class="bg-gray-200 px-4 py-2 rounded-xl text-sm font-semibold">
+            <i class="fas fa-filter mr-2"></i> Filters
+          </button>
+
+          <label class="flex items-center gap-2 text-sm cursor-pointer">
+            <input
+              type="checkbox"
+              (change)="toggleSelectAll($event)"
+              class="w-4 h-4 accent-blue-600">
+            Select All
+          </label>
+
+        </div>
+      </div>
+
+      <!-- STUDENT FILTER PANEL (CORRECTLY PLACED UNDER STUDENTS TAB) -->
+      <div *ngIf="showStudentFilters && activeTab === 'students'"
+           class="bg-blue-50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-2xl p-6 space-y-6">
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Education Level
+            </label>
+            <select [(ngModel)]="studentFilters.educationLevel"
+                    class="w-full mt-2 rounded-xl border border-gray-300 dark:border-slate-600 px-4 py-2 text-sm">
+              <option value="">All Levels</option>
+              <option value="Senior High">Senior High</option>
+              <option value="College">College</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Course
+            </label>
+            <select [(ngModel)]="studentFilters.course"
+                    class="w-full mt-2 rounded-xl border border-gray-300 dark:border-slate-600 px-4 py-2 text-sm">
+              <option value="">All Courses</option>
+              <option value="BSIT">BSIT</option>
+              <option value="BSBA">BSBA</option>
+              <option value="BSED">BSED</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Year Level
+            </label>
+            <select [(ngModel)]="studentFilters.yearLevel"
+                    class="w-full mt-2 rounded-xl border border-gray-300 dark:border-slate-600 px-4 py-2 text-sm">
+              <option value="">All Years</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Status
+            </label>
+            <select [(ngModel)]="studentFilters.status"
+                    class="w-full mt-2 rounded-xl border border-gray-300 dark:border-slate-600 px-4 py-2 text-sm">
+              <option value="">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Graduated">Graduated</option>
+              <option value="Dropped">Dropped</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="flex justify-end gap-3">
+          <button (click)="applyStudentFilters()"
+            class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-xl text-sm">
+            Apply Filters
+          </button>
+
+          <button (click)="clearStudentFilters()"
+            class="bg-gray-300 dark:bg-slate-700 px-5 py-2 rounded-xl text-sm">
+            Clear All
+          </button>
+        </div>
+
+      </div>
+
+      <!-- STUDENTS TABLE -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 dark:bg-slate-800 text-xs uppercase text-gray-500">
+            <tr>
+              <!-- Checkbox Header -->
+              <th class="p-4 w-10">
+                <input
+                  type="checkbox"
+                  [checked]="isAllStudentsSelected"
+                  (change)="toggleAllStudents()"
+                  class="w-4 h-4 accent-blue-600">
+              </th>
+              <th class="p-4 text-left">Student Info</th>
+              <th class="p-4 text-left">Course</th>
+              <th class="p-4 text-left">Status</th>
+              <th class="p-4 text-left">Balance</th>
+              <th class="p-4 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of displayedStudents"
+                class="border-t border-gray-100 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 transition">
+              <td class="p-4">
+                <input type="checkbox" [(ngModel)]="student.selected" class="w-4 h-4 accent-blue-600">
+              </td>
+              <!-- Student Info -->
+              <td class="p-4 font-semibold text-gray-800 dark:text-white">
+                {{ student.firstName }} {{ student.lastName }}
+                <div class="text-xs text-gray-400">{{ student.id }}</div>
+              </td>
+              <td class="p-4 text-gray-500 dark:text-slate-400">
+                {{ student.course }}
+              </td>
+              <td class="p-4">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                  [ngClass]="student.status === 'Active' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'">
+                  {{ student.status }}
+                </span>
+              </td>
+              <td class="p-4 text-gray-500">
+                ₱ {{ student.balance | number }}
+              </td>
+              <td class="p-4">
+                <div class="flex gap-3">
+                  <!-- View -->
+                  <button (click)="viewStudent(student)"
+                    class="text-blue-600 hover:text-blue-700 text-xs">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <!-- Edit -->
+                  <button (click)="editStudent(student)"
+                    class="text-amber-600 hover:text-amber-700 text-xs">
+                    <i class="fas fa-pencil"></i>
+                  </button>
+                  <!-- Delete -->
+                  <button (click)="softDeleteStudent(student)"
+                    class="text-rose-600 hover:text-rose-700 text-xs">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="flex justify-between items-center text-xs">
+        <div>
+          Showing {{ studentPaginationInfo.start }}
+          -
+          {{ studentPaginationInfo.end }}
+          of {{ studentPaginationInfo.total }}
+        </div>
+        <div class="flex gap-2">
+          <button (click)="previousStudentPage()"
+            class="px-3 py-1 bg-gray-200 dark:bg-slate-700 rounded">
+            Prev
+          </button>
+          <button (click)="nextStudentPage()"
+            class="px-3 py-1 bg-gray-200 dark:bg-slate-700 rounded">
+            Next
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TEACHERS TABLE -->
+    <div *ngIf="activeTab === 'teachers'" class="p-6 space-y-6">
+
+      <!-- SEARCH + ACTION BUTTONS (TEACHERS) -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+        <div class="relative w-full md:w-96">
+          <input
+            type="text"
+            placeholder="Search by name, teacher ID, or email..."
+            [(ngModel)]="teacherSearch"
+            (ngModelChange)="onTeacherSearchChange()"
+            class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 text-sm">
+          <i class="fas fa-search absolute left-3 top-3.5 text-gray-400 text-sm"></i>
+        </div>
+
+        <div class="flex flex-wrap gap-3 items-center">
+
+          <button (click)="openAddTeacherModal()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm flex items-center gap-2 shadow">
+            <i class="fas fa-user-plus"></i>
+            Add Teacher
+          </button>
+
+          <button (click)="openBulkActionsModal()"
+            class="bg-gray-200 dark:bg-slate-700 px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+            <i class="fas fa-edit"></i>
+            Bulk Actions
+          </button>
+
+          <button
+            (click)="showTeacherFilters = !showTeacherFilters"
+            class="bg-gray-200 px-4 py-2 rounded-xl text-sm font-semibold">
+            <i class="fas fa-filter mr-2"></i> Filters
+          </button>
+
+          <label class="flex items-center gap-2 text-sm cursor-pointer">
+            <input
+              type="checkbox"
+              [checked]="isAllTeachersSelected"
+              (change)="toggleAllTeachers()"
+              class="w-4 h-4 accent-blue-600">
+            Select All
+          </label>
+
+        </div>
+      </div>
+
+      <!-- TEACHER FILTER PANEL (CORRECTLY PLACED UNDER TEACHERS TAB) -->
+      <div *ngIf="showTeacherFilters && activeTab === 'teachers'"
+           class="bg-blue-50 dark:bg-slate-800 border border-blue-100 dark:border-slate-700 rounded-2xl p-6 space-y-6">
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Employment Type
+            </label>
+            <select [(ngModel)]="teacherFilters.employmentType"
+                    class="w-full mt-2 rounded-xl border border-gray-300 dark:border-slate-600 px-4 py-2 text-sm">
+              <option value="">All Types</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Contractual">Contractual</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Specialization
+            </label>
+            <select [(ngModel)]="teacherFilters.specialization"
+                    class="w-full mt-2 rounded-xl border border-gray-300 dark:border-slate-600 px-4 py-2 text-sm">
+              <option value="">All Specializations</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Business Administration">Business Administration</option>
+              <option value="Engineering">Engineering</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Designation
+            </label>
+            <select [(ngModel)]="teacherFilters.designation"
+                    class="w-full mt-2 rounded-xl border border-gray-300 dark:border-slate-600 px-4 py-2 text-sm">
+              <option value="">All Designations</option>
+              <option value="Instructor">Instructor</option>
+              <option value="Assistant Professor">Assistant Professor</option>
+              <option value="Professor">Professor</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Status
+            </label>
+            <select [(ngModel)]="teacherFilters.status"
+                    class="w-full mt-2 rounded-xl border border-gray-300 dark:border-slate-600 px-4 py-2 text-sm">
+              <option value="">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="On Leave">On Leave</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="flex justify-end gap-3">
+          <button (click)="applyTeacherFilters()"
+            class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-xl text-sm">
+            Apply Filters
+          </button>
+
+          <button (click)="clearTeacherFilters()"
+            class="bg-gray-300 dark:bg-slate-700 px-5 py-2 rounded-xl text-sm">
+            Clear All
+          </button>
+        </div>
+
+      </div>
+
+      <!-- TEACHERS TABLE -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 dark:bg-slate-800 text-xs uppercase text-gray-500">
+            <tr>
+              <th class="p-4 w-10">
+                <input type="checkbox" [checked]="isAllTeachersSelected" (change)="toggleAllTeachers()" class="w-4 h-4 accent-blue-600">
+              </th>
+              <th class="p-4 text-left">Teacher</th>
+              <th class="p-4 text-left">Specialization</th>
+              <th class="p-4 text-left">Status</th>
+              <th class="p-4 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let teacher of displayedTeachers"
+                class="border-t border-gray-100 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 transition">
+              <td class="p-4">
+                <input type="checkbox" [(ngModel)]="teacher.selected" class="w-4 h-4 accent-blue-600">
+              </td>
+              <td class="p-4 font-semibold text-gray-800 dark:text-white">
+                {{ teacher.firstName }} {{ teacher.lastName }}
+                <div class="text-xs text-gray-400">{{ teacher.id }}</div>
+              </td>
+              <td class="p-4 text-gray-500 dark:text-slate-400">
+                {{ teacher.specialization }}
+              </td>
+              <td class="p-4">
+                <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                  [ngClass]="teacher.status === 'Active' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'">
+                  {{ teacher.status }}
+                </span>
+              </td>
+              <td class="p-4 flex gap-2">
+                <!-- View -->
+                <button (click)="viewTeacher(teacher)"
+                  class="text-blue-600 hover:text-blue-700 text-xs">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <!-- Edit -->
+                <button (click)="editTeacher(teacher)"
+                  class="text-amber-600 hover:text-amber-700 text-xs">
+                  <i class="fas fa-pencil"></i>
+                </button>
+                <!-- Delete -->
+                <button (click)="softDeleteTeacher(teacher)"
+                  class="text-rose-600 hover:text-rose-700 text-xs">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- TRASH TABLE -->
+    <div *ngIf="activeTab === 'trash'" class="p-6 space-y-6">
+
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+          Trash Bin
+        </h2>
+        <a href="#"
+          class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+          Recently deleted records
+        </a>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          Deleted records are kept for 30 days before being permanently removed.
+        </p>
+        <button (click)="emptyTrash()"
+          class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-xl text-sm flex items-center gap-2 shadow">
+          <i class="fas fa-trash"></i>
+          Empty Trash
+        </button>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <!-- TABLE HEADER -->
+            <thead class="bg-gray-100 dark:bg-slate-800 text-xs uppercase text-gray-500">
+              <tr>
+                <th class="px-6 py-4 text-left">Record Type</th>
+                <th class="px-6 py-4 text-left">Name</th>
+                <th class="px-6 py-4 text-left">ID</th>
+                <th class="px-6 py-4 text-left">Deleted Date</th>
+                <th class="px-6 py-4 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
+              <tr *ngFor="let record of trashData"
+                  class="hover:bg-gray-50 dark:hover:bg-slate-800 transition">
+                <td class="px-6 py-4 font-medium text-gray-700 dark:text-gray-300">
+                  {{ record.type }}
+                </td>
+                <td class="px-6 py-4 text-gray-800 dark:text-white">
+                  {{ record.name }}
+                </td>
+                <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
+                  {{ record.id }}
+                </td>
+                <td class="px-6 py-4 text-gray-500 dark:text-gray-400">
+                  {{ record.deletedDate }}
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex gap-3">
+                    <!-- Restore -->
+                    <button (click)="restoreRecord(record)"
+                      class="text-emerald-600 hover:text-emerald-700 text-sm">
+                      <i class="fas fa-undo"></i>
+                    </button>
+                    <!-- Permanent Delete -->
+                    <button (click)="permanentlyDeleteRecord(record)"
+                      class="text-rose-600 hover:text-rose-700 text-sm">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ADD STUDENT MODAL -->
+<div *ngIf="showAddStudentModal"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+
+  <div class="bg-white dark:bg-slate-900 
+              w-full max-w-4xl 
+              max-h-[90vh] 
+              rounded-2xl shadow-2xl 
+              flex flex-col">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center p-6 border-b border-gray-200 dark:border-slate-800">
+      <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+        Add New Student
+      </h2>
+      <button (click)="closeAddStudentModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- BODY (SCROLLABLE) -->
+    <div class="flex-1 overflow-y-auto p-6 space-y-6">
+
+      <!-- PERSONAL INFO -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Personal Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input type="text"
+                 [(ngModel)]="newStudent.firstName"
+                 placeholder="First Name"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm">
+          <input type="text"
+                 [(ngModel)]="newStudent.lastName"
+                 placeholder="Last Name"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm">
+          <input type="text"
+                 [(ngModel)]="newStudent.middleName"
+                 placeholder="Middle Name"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Date of Birth -->
+        <div>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+            Date of Birth
+          </label>
+          <div class="relative">
+            <input type="date"
+                   [(ngModel)]="newStudent.dob"
+                   class="w-full mt-1 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+            Gender
+          </label>
+          <select [(ngModel)]="newStudent.gender"
+                  class="w-full mt-1 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <!-- Civil Status -->
+        <div>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+            Civil Status
+          </label>
+          <select [(ngModel)]="newStudent.civilStatus"
+                  class="w-full mt-1 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+            <option value="Widowed">Widowed</option>
+            <option value="Separated">Separated</option>
+          </select>
+        </div>
+
+        <!-- CONTACT INFO -->
+        <div class="w-full">
+          <h3 class="text-sm font-bold text-blue-700 mb-4">
+            Contact Information
+          </h3>
+          <!-- Email + Phone -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 w-full">
+            <div class="w-full">
+              <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                Email Address 
+              </label>
+              <input type="email"
+                     [(ngModel)]="newStudent.email"
+                     class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                            rounded-xl px-4 py-2 text-sm 
+                            border border-gray-200 dark:border-slate-700">
+            </div>
+            <div class="w-full">
+              <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                Phone Number 
+              </label>
+              <input type="text"
+                     [(ngModel)]="newStudent.phone"
+                     class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                            rounded-xl px-4 py-2 text-sm 
+                            border border-gray-200 dark:border-slate-700">
+            </div>
+          </div>
+          <!-- ADDRESS FULL WIDTH -->
+          <div class="w-full col-span-2">
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Address 
+            </label>
+            <textarea
+              [(ngModel)]="newStudent.address"
+              class="w-full mt-2 
+                     bg-slate-50 dark:bg-slate-800 
+                     rounded-xl px-4 py-3 text-sm 
+                     border border-gray-200 dark:border-slate-700
+                     focus:ring-2 focus:ring-blue-500 
+                     focus:outline-none resize-none">
+            </textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACADEMIC INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mt-8 mb-4">
+          Academic Information
+        </h3>
+        <!-- Row 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Student ID *
+            </label>
+            <input type="text"
+                   [(ngModel)]="newStudent.studentId"
+                   placeholder="Auto-generated if empty"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                          rounded-xl px-4 py-2 text-sm 
+                          border border-gray-200 dark:border-slate-700">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Education Level *
+            </label>
+            <select [(ngModel)]="newStudent.educationLevel"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                           rounded-xl px-4 py-2 text-sm 
+                           border border-gray-200 dark:border-slate-700">
+              <option value="">Select Level</option>
+              <option value="Senior High">Senior High</option>
+              <option value="College">College</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Course *
+            </label>
+            <select [(ngModel)]="newStudent.course"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                           rounded-xl px-4 py-2 text-sm 
+                           border border-gray-200 dark:border-slate-700">
+              <option value="">Select Course</option>
+              <option value="BSIT">BSIT</option>
+              <option value="BSBA">BSBA</option>
+              <option value="BSED">BSED</option>
+            </select>
+          </div>
+        </div>
+        <!-- Row 2 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Year Level *
+            </label>
+            <select [(ngModel)]="newStudent.yearLevel"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                           rounded-xl px-4 py-2 text-sm 
+                           border border-gray-200 dark:border-slate-700">
+              <option value="">Select Year</option>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+              <option value="4">4th Year</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Enrollment Date *
+            </label>
+            <input type="date"
+                   [(ngModel)]="newStudent.enrollmentDate"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                          rounded-xl px-4 py-2 text-sm 
+                          border border-gray-200 dark:border-slate-700">
+          </div>
+        </div>
+      </div>
+
+      <!-- EMERGENCY CONTACT -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mt-10 mb-4">
+          Emergency Contact
+        </h3>
+        <!-- Row 1 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Contact Name *
+            </label>
+            <input type="text"
+                   [(ngModel)]="newStudent.emergencyName"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                          rounded-xl px-4 py-2 text-sm 
+                          border border-gray-200 dark:border-slate-700">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Relationship *
+            </label>
+            <input type="text"
+                   [(ngModel)]="newStudent.relationship"
+                   placeholder="e.g., Parent, Guardian, Spouse"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                          rounded-xl px-4 py-2 text-sm 
+                          border border-gray-200 dark:border-slate-700">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Contact Phone *
+            </label>
+            <input type="text"
+                   [(ngModel)]="newStudent.emergencyPhone"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                          rounded-xl px-4 py-2 text-sm 
+                          border border-gray-200 dark:border-slate-700">
+          </div>
+        </div>
+        <!-- Row 2 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Contact Email
+            </label>
+            <input type="email"
+                   [(ngModel)]="newStudent.emergencyEmail"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 
+                          rounded-xl px-4 py-2 text-sm 
+                          border border-gray-200 dark:border-slate-700">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-slate-800">
+      <button (click)="closeAddStudentModal()"
+              class="px-5 py-2 rounded-xl text-sm bg-gray-200 dark:bg-slate-700">
+        Cancel
+      </button>
+      <button (click)="addStudent()"
+              class="px-5 py-2 rounded-xl text-sm bg-blue-600 text-white hover:bg-blue-700">
+        Add Student
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ADD TEACHER MODAL -->
+<div *ngIf="showAddTeacherModal"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+
+  <div class="bg-white dark:bg-slate-900 
+              w-full max-w-4xl 
+              max-h-[90vh] 
+              rounded-2xl shadow-2xl 
+              flex flex-col">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center p-6 border-b border-gray-200 dark:border-slate-800">
+      <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+        Add New Teacher
+      </h2>
+      <button (click)="closeAddTeacherModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="flex-1 overflow-y-auto p-6 space-y-8">
+
+      <!-- PERSONAL INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Personal Information
+        </h3>
+        <!-- Names -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input type="text"
+                 [(ngModel)]="newTeacher.firstName"
+                 placeholder="First Name"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+          <input type="text"
+                 [(ngModel)]="newTeacher.lastName"
+                 placeholder="Last Name"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+          <input type="text"
+                 [(ngModel)]="newTeacher.middleName"
+                 placeholder="Middle Name"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+        </div>
+        <!-- DOB + Gender -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Date of Birth
+            </label>
+            <input type="date"
+                   [(ngModel)]="newTeacher.dob"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Gender
+            </label>
+            <select [(ngModel)]="newTeacher.gender"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Contact Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Email Address
+            </label>
+            <input type="email"
+                   [(ngModel)]="newTeacher.email"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Phone Number
+            </label>
+            <input type="text"
+                   [(ngModel)]="newTeacher.phone"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+            Address
+          </label>
+          <textarea
+            [(ngModel)]="newTeacher.address"
+            class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-3 text-sm border border-gray-200 dark:border-slate-700 resize-none h-24">
+          </textarea>
+        </div>
+      </div>
+
+      <!-- EMPLOYMENT INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Employment Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Teacher ID
+            </label>
+            <input type="text"
+                   [(ngModel)]="newTeacher.teacherId"
+                   placeholder="Auto-generated if empty"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Employment Type
+            </label>
+            <select [(ngModel)]="newTeacher.employmentType"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+              <option value="">Select Type</option>
+              <option value="Full-Time">Full-Time</option>
+              <option value="Part-Time">Part-Time</option>
+              <option value="Contractual">Contractual</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Specialization
+            </label>
+            <select [(ngModel)]="newTeacher.specialization"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+              <option value="">Select Specialization</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Business Administration">Business Administration</option>
+              <option value="Engineering">Engineering</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Designation
+            </label>
+            <select [(ngModel)]="newTeacher.designation"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+              <option value="">Select Designation</option>
+              <option value="Instructor">Instructor</option>
+              <option value="Assistant Professor">Assistant Professor</option>
+              <option value="Professor">Professor</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Status
+            </label>
+            <select [(ngModel)]="newTeacher.status"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Hire Date
+            </label>
+            <input type="date"
+                   [(ngModel)]="newTeacher.hireDate"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-4 py-2 text-sm border border-gray-200 dark:border-slate-700">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="flex justify-end gap-3 p-6 border-t border-gray-200 dark:border-slate-800">
+      <button (click)="closeAddTeacherModal()"
+              class="px-5 py-2 rounded-xl text-sm bg-gray-200 dark:bg-slate-700">
+        Cancel
+      </button>
+      <button (click)="addTeacher()"
+              class="px-5 py-2 rounded-xl text-sm bg-blue-600 text-white hover:bg-blue-700">
+        Add Teacher
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- VIEW STUDENT DETAILS MODAL -->
+<div *ngIf="showStudentDetailsModal"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+
+  <div class="bg-white dark:bg-slate-900 
+              w-full max-w-5xl 
+              rounded-2xl shadow-2xl 
+              overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center px-8 py-6 border-b border-gray-200 dark:border-slate-800">
+      <h2 class="text-xl font-bold text-blue-700">
+        Student Details
+      </h2>
+      <button (click)="closeStudentDetailsModal()"
+              class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="px-8 py-6 space-y-8">
+
+      <!-- PROFILE HEADER -->
+      <div class="flex items-center gap-6">
+        <!-- Avatar -->
+        <div class="w-24 h-24 rounded-full bg-blue-800 flex items-center justify-center text-white text-3xl font-bold">
+          {{ viewingStudent?.firstName?.charAt(0) }}{{ viewingStudent?.lastName?.charAt(0) }}
+        </div>
+        <!-- Name + Meta -->
+        <div>
+          <h3 class="text-2xl font-semibold text-blue-700">
+            {{ viewingStudent?.firstName }} {{ viewingStudent?.lastName }}
+          </h3>
+          <p class="text-sm text-gray-500 mt-1">
+            {{ viewingStudent?.id }} • 
+            {{ viewingStudent?.educationLevel }} • 
+            {{ viewingStudent?.course }} • 
+            {{ viewingStudent?.yearLevel }}
+          </p>
+          <span class="inline-block mt-3 px-4 py-1 rounded-full text-xs font-semibold"
+                [ngClass]="viewingStudent?.status === 'Active' 
+                           ? 'bg-green-100 text-green-700' 
+                           : 'bg-red-100 text-red-700'">
+            {{ viewingStudent?.status }}
+          </span>
+        </div>
+      </div>
+
+      <hr class="border-gray-200 dark:border-slate-700">
+
+      <!-- PERSONAL INFORMATION -->
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-6">
+          Personal Information
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+          <div>
+            <p class="text-gray-500">Full Name</p>
+            <p class="font-medium">
+              {{ viewingStudent?.firstName }} {{ viewingStudent?.middleName }} {{ viewingStudent?.lastName }}
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-500">Email</p>
+            <p class="font-medium">{{ viewingStudent?.email }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500">Phone</p>
+            <p class="font-medium">{{ viewingStudent?.phone }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACADEMIC INFORMATION -->
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-6">
+          Academic Information
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+          <div>
+            <p class="text-gray-500">Education Level</p>
+            <p class="font-medium">{{ viewingStudent?.educationLevel }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500">Course</p>
+            <p class="font-medium">{{ viewingStudent?.course }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500">Year Level</p>
+            <p class="font-medium">{{ viewingStudent?.yearLevel }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500">Enrollment Date</p>
+            <p class="font-medium">{{ viewingStudent?.enrollmentDate }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500">Balance</p>
+            <p class="font-medium">₱ {{ viewingStudent?.balance | number }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="flex justify-end gap-4 px-8 py-6 border-t border-gray-200 dark:border-slate-800">
+      <button (click)="closeStudentDetailsModal()"
+              class="px-6 py-2 rounded-xl bg-gray-200 dark:bg-slate-700 text-sm">
+        Close
+      </button>
+      <button (click)="editStudent(viewingStudent!)"
+              class="px-6 py-2 rounded-xl bg-blue-800 text-white text-sm hover:bg-blue-900">
+        Edit Student
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- VIEW TEACHER DETAILS MODAL -->
+<div *ngIf="showTeacherDetailsModal"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+
+  <div class="bg-white dark:bg-slate-900 
+              w-full max-w-5xl 
+              rounded-2xl shadow-2xl 
+              overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center px-8 py-6 border-b border-gray-200 dark:border-slate-800">
+      <h2 class="text-xl font-bold text-blue-700">
+        Teacher Details
+      </h2>
+      <button (click)="closeTeacherDetailsModal()"
+              class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="px-8 py-6 space-y-8">
+
+      <!-- PROFILE HEADER -->
+      <div class="flex items-center gap-6">
+        <!-- Avatar -->
+        <div class="w-24 h-24 rounded-full bg-blue-800 flex items-center justify-center text-white text-3xl font-bold">
+          {{ viewingTeacher?.firstName?.charAt(0) }}{{ viewingTeacher?.lastName?.charAt(0) }}
+        </div>
+        <!-- Name + Meta -->
+        <div>
+          <h3 class="text-2xl font-semibold text-blue-700">
+            {{ viewingTeacher?.firstName }} {{ viewingTeacher?.lastName }}
+          </h3>
+          <p class="text-sm text-gray-500 mt-1">
+            {{ viewingTeacher?.id }} • 
+            {{ viewingTeacher?.employmentType }} • 
+            {{ viewingTeacher?.specialization }} • 
+            {{ viewingTeacher?.designation }}
+          </p>
+          <span class="inline-block mt-3 px-4 py-1 rounded-full text-xs font-semibold"
+                [ngClass]="viewingTeacher?.status === 'Active' 
+                           ? 'bg-green-100 text-green-700' 
+                           : 'bg-red-100 text-red-700'">
+            {{ viewingTeacher?.status }}
+          </span>
+        </div>
+      </div>
+
+      <hr class="border-gray-200 dark:border-slate-700">
+
+      <!-- PERSONAL INFORMATION -->
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-6">
+          Personal Information
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+          <div>
+            <p class="text-gray-500">Full Name</p>
+            <p class="font-medium">
+              {{ viewingTeacher?.firstName }} {{ viewingTeacher?.middleName }} {{ viewingTeacher?.lastName }}
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-500">Email</p>
+            <p class="font-medium">
+              {{ viewingTeacher?.email }}
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-500">Phone</p>
+            <p class="font-medium">
+              {{ viewingTeacher?.phone }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMPLOYMENT INFORMATION -->
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-6">
+          Employment Information
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+          <div>
+            <p class="text-gray-500">Employment Type</p>
+            <p class="font-medium">
+              {{ viewingTeacher?.employmentType }}
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-500">Specialization</p>
+            <p class="font-medium">
+              {{ viewingTeacher?.specialization }}
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-500">Designation</p>
+            <p class="font-medium">
+              {{ viewingTeacher?.designation }}
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-500">Hire Date</p>
+            <p class="font-medium">
+              {{ viewingTeacher?.hireDate }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="flex justify-end gap-4 px-8 py-6 border-t border-gray-200 dark:border-slate-800">
+      <button (click)="closeTeacherDetailsModal()"
+              class="px-6 py-2 rounded-xl bg-gray-200 dark:bg-slate-700 text-sm">
+        Close
+      </button>
+      <button (click)="editTeacher(viewingTeacher!)"
+              class="px-6 py-2 rounded-xl bg-blue-800 text-white text-sm hover:bg-blue-900">
+        Edit Teacher
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- EDIT STUDENT MODAL -->
+<div *ngIf="showEditStudentModal"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+
+  <div class="bg-white dark:bg-slate-900
+              w-full max-w-4xl
+              max-h-[90vh]
+              rounded-2xl shadow-2xl
+              flex flex-col
+              overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center px-8 py-6 border-b border-gray-200 dark:border-slate-800">
+      <h2 class="text-xl font-semibold text-blue-700">
+        Edit Student
+      </h2>
+      <button (click)="closeEditStudentModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+
+    <!-- SCROLLABLE BODY -->
+    <form id="editStudentForm"
+      (ngSubmit)="updateStudent()"
+      class="flex-1 overflow-y-auto px-8 py-6 space-y-8 text-sm">
+
+      <!-- PERSONAL INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Personal Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              First Name
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingStudent!.firstName"
+                   name="firstName"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Last Name
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingStudent!.lastName"
+                   name="lastName"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Middle Name
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingStudent!.middleName"
+                   name="middleName"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Date of Birth
+            </label>
+            <input type="date"
+                   [(ngModel)]="editingStudent!.dob"
+                   name="dob"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Gender
+            </label>
+            <select [(ngModel)]="editingStudent!.gender"
+                    name="gender"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option value="">Select Gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Civil Status
+            </label>
+            <select [(ngModel)]="editingStudent!.civilStatus"
+                    name="civilStatus"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option>Single</option>
+              <option>Married</option>
+              <option>Widowed</option>
+              <option>Separated</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Contact Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Email Address
+            </label>
+            <input type="email"
+                   [(ngModel)]="editingStudent!.email"
+                   name="email"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Phone Number
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingStudent!.phone"
+                   name="phone"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+        </div>
+        <div class="mt-6">
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+            Address
+          </label>
+          <textarea rows="3"
+                    [(ngModel)]="editingStudent!.address"
+                    name="address"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white resize-none">
+          </textarea>
+        </div>
+      </div>
+
+      <!-- ACADEMIC INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Academic Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Student ID
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingStudent!.id"
+                   name="studentId"
+                   disabled
+                   class="w-full mt-2 bg-gray-100 dark:bg-slate-700
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Education Level
+            </label>
+            <select [(ngModel)]="editingStudent!.educationLevel"
+                    name="educationLevel"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option>Senior High</option>
+              <option>College</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Course
+            </label>
+            <select [(ngModel)]="editingStudent!.course"
+                    name="course"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option>BSIT</option>
+              <option>BSCS</option>
+              <option>BSBA</option>
+              <option>BSTM</option>
+              <option>BPSYCH</option>
+              <option>STEM</option>
+              <option>HUMMS</option>
+              <option>ICT</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Year Level
+            </label>
+            <select [(ngModel)]="editingStudent!.yearLevel"
+                    name="yearLevel"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option>1st Year</option>
+              <option>2nd Year</option>
+              <option>3rd Year</option>
+              <option>4th Year</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Status
+            </label>
+            <select [(ngModel)]="editingStudent!.status"
+                    name="status"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Balance
+            </label>
+            <input type="number"
+                   [(ngModel)]="editingStudent!.balance"
+                   name="balance"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- FOOTER -->
+    <div class="flex justify-between items-center px-8 py-5 border-t border-gray-200 dark:border-slate-800">
+      <button type="button"
+              (click)="moveStudentToTrash(editingStudent!)"
+              class="px-5 py-2 rounded-xl text-xs font-bold bg-red-600 text-white hover:bg-red-700">
+        Move to Trash
+      </button>
+      <div class="flex gap-3">
+        <button type="button"
+                (click)="closeEditStudentModal()"
+                class="px-5 py-2 rounded-xl text-xs font-bold bg-gray-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+        <button type="submit"
+          form="editStudentForm"
+          class="px-5 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+          Update Student
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- EDIT TEACHER MODAL -->
+<div *ngIf="showEditTeacherModal"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+
+  <div class="bg-white dark:bg-slate-900
+              w-full max-w-4xl
+              max-h-[90vh]
+              rounded-2xl shadow-2xl
+              flex flex-col
+              overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center px-8 py-6 border-b border-gray-200 dark:border-slate-800">
+      <h2 class="text-xl font-semibold text-blue-700">
+        Edit Teacher
+      </h2>
+      <button (click)="closeEditTeacherModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+
+    <!-- SCROLLABLE BODY -->
+    <form id="editTeacherForm"
+      (ngSubmit)="updateTeacher()"
+      class="flex-1 overflow-y-auto px-8 py-6 space-y-8 text-sm">
+
+      <!-- PERSONAL INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Personal Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              First Name 
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingTeacher!.firstName"
+                   name="firstName"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Last Name 
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingTeacher!.lastName"
+                   name="lastName"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Middle Name
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingTeacher!.middleName"
+                   name="middleName"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Date of Birth 
+            </label>
+            <input type="date"
+                   [(ngModel)]="editingTeacher!.dob"
+                   name="dob"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Gender 
+            </label>
+            <select [(ngModel)]="editingTeacher!.gender"
+                    name="gender"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Contact Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Email Address 
+            </label>
+            <input type="email"
+                   [(ngModel)]="editingTeacher!.email"
+                   name="email"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Phone Number 
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingTeacher!.phone"
+                   name="phone"
+                   class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+        </div>
+        <div class="mt-6">
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+            Address 
+          </label>
+          <textarea rows="3"
+                    [(ngModel)]="editingTeacher!.address"
+                    name="address"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white resize-none">
+          </textarea>
+        </div>
+      </div>
+
+      <!-- EMPLOYMENT INFORMATION -->
+      <div>
+        <h3 class="text-sm font-bold text-blue-700 mb-4">
+          Employment Information
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Teacher ID 
+            </label>
+            <input type="text"
+                   [(ngModel)]="editingTeacher!.id"
+                   name="teacherId"
+                   disabled
+                   class="w-full mt-2 bg-gray-100 dark:bg-slate-700
+                          border border-gray-300 dark:border-slate-600
+                          rounded-xl px-4 py-2 dark:text-white">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Employment Type 
+            </label>
+            <select [(ngModel)]="editingTeacher!.employmentType"
+                    name="employmentType"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Contractual">Contractual</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Specialization 
+            </label>
+            <select [(ngModel)]="editingTeacher!.specialization"
+                    name="specialization"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option>Computer Science</option>
+              <option>Information Technology</option>
+              <option>Business Administration</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Designation 
+            </label>
+            <select [(ngModel)]="editingTeacher!.designation"
+                    name="designation"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option>Instructor</option>
+              <option>Assistant Professor</option>
+              <option>Professor</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              Status 
+            </label>
+            <select [(ngModel)]="editingTeacher!.status"
+                    name="status"
+                    class="w-full mt-2 bg-slate-50 dark:bg-slate-800
+                           border border-gray-300 dark:border-slate-600
+                           rounded-xl px-4 py-2 dark:text-white">
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- FOOTER -->
+    <div class="flex justify-between items-center px-8 py-5 border-t border-gray-200 dark:border-slate-800">
+      <button type="button"
+              (click)="moveTeacherToTrash(editingTeacher!)"
+              class="px-5 py-2 rounded-xl text-xs font-bold bg-red-600 text-white hover:bg-red-700">
+        Move to Trash
+      </button>
+      <div class="flex gap-3">
+        <button type="button"
+                (click)="closeEditTeacherModal()"
+                class="px-5 py-2 rounded-xl text-xs font-bold bg-gray-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+        <button type="submit"
+          form="editTeacherForm"
+          class="px-5 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+          Update Teacher
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
