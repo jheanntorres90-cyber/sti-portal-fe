@@ -78,6 +78,10 @@ export const GRADES_ROUTES: Routes = [
     path: 'admin-data-management',
     loadComponent: () => import('./admin/data-management/data-management.component').then(m => m.AdminDataManagementComponent)
   },
+  {
+    path: 'admin-grades-management',
+    loadComponent: () => import('./admin/grades-management/grades-management').then(m => m.AdminGradesManagement)
+  },
   
   {
     path: '',
