@@ -67,8 +67,8 @@ export const GRADES_ROUTES: Routes = [
    loadComponent: () => import('./admin/schedule-management/schedule.component').then(m => m.AdminScheduleComponent)
   },
   {
-    path: 'admin-records-managament',
-    loadComponent: () => import('./admin/dashboard/records-management/records.component').then(m => m.AdminDashboardComponent)
+    path: 'admin-records-management',
+    loadComponent: () => import('./admin/records-management/records-management.component').then(m => m.RecordManageStudentsComponent)
   },
   {
     path: 'admin-announcements',
@@ -78,6 +78,7 @@ export const GRADES_ROUTES: Routes = [
     path: 'admin-data-management',
     loadComponent: () => import('./admin/data-management/data-management.component').then(m => m.AdminDataManagementComponent)
   },
+  
   {
     path: '',
     redirectTo: 'dashboard',
