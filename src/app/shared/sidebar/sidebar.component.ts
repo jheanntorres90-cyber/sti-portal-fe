@@ -93,6 +93,7 @@ import { AvatarModule } from 'primeng/avatar';
         
               <a routerLink="/grades/parent-dashboard" routerLinkActive="active-grade" class="nav-item">Dashboard</a>
               <a routerLink="/grades/parent-child-grades" routerLinkActive="active-grade" class="nav-item">Child's Grades</a>
+              <a routerLink="/grades/parent-child-schedule" routerLinkActive="active-grade" class="nav-item">Child's Schedule</a>
             
             </div>
           </div>
