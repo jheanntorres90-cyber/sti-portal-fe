@@ -1,0 +1,328 @@
+<div class="p-4 sm:p-6 space-y-6 bg-gray-50 dark:bg-slate-950 min-h-screen animate-fadeIn">
+  <!-- Welcome Section -->
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Child's Grades</h2>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Monitor your child's academic performance</p>
+  </div>
+
+  <!-- Student Selector -->
+  <div class="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify-center text-white font-bold text-lg">
+        HY
+      </div>
+      <div>
+        <h3 class="font-bold text-gray-800 dark:text-white">{{ selectedStudentName }}</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400">{{ selectedStudentDetails }}</p>
+      </div>
+    </div>
+    <div>
+      <select 
+        [(ngModel)]="selectedStudent" 
+        (ngModelChange)="onStudentChange($event)"
+        class="w-full sm:w-64 px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+      >
+        <option *ngFor="let student of students" [value]="student.id">
+          {{ student.name }} - {{ student.course }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-4 shadow-sm">
+    <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4 items-end">
+      <div class="col-span-1 sm:col-span-1 lg:col-span-1">
+        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">School Year & Term</label>
+        <select 
+          [(ngModel)]="selectedTerm"
+          (ngModelChange)="onFilterChange()"
+          class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+        >
+          <option *ngFor="let term of terms" [value]="term">{{ term }}</option>
+        </select>
+      </div>
+
+      <div class="col-span-1 sm:col-span-1 lg:col-span-1">
+        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Grade Level</label>
+        <select 
+          [(ngModel)]="selectedGradeLevel"
+          (ngModelChange)="onFilterChange()"
+          class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+        >
+          <option *ngFor="let level of gradeLevels" [value]="level">{{ level }}</option>
+        </select>
+      </div>
+
+      <div class="col-span-1 sm:col-span-1 lg:col-span-1">
+        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Status</label>
+        <select 
+          [(ngModel)]="selectedStatus"
+          (ngModelChange)="onFilterChange()"
+          class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+        >
+          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+
+      <div class="col-span-1 sm:col-span-3 lg:col-span-2 flex justify-end">
+        <button 
+          (click)="clearFilters()"
+          class="px-4 py-2.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors"
+        >
+          <i class="fas fa-times mr-2"></i>Clear Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Academic Summary -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div *ngFor="let stat of academicStats" 
+         class="bg-white dark:bg-slate-900 border dark:border-slate-800 p-6 rounded-2xl shadow-sm flex items-center gap-4 hover:translate-y-[-2px] transition-all duration-300">
+      <div [ngClass]="{
+        'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': stat.color === 'blue',
+        'bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400': stat.color === 'purple',
+        'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400': stat.color === 'green'
+      }" class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl">
+        <i [class]="stat.icon"></i>
+      </div>
+      <div>
+        <p class="text-3xl font-bold text-gray-800 dark:text-white leading-none">{{ stat.value }}</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mt-1">{{ stat.label }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Term Grades -->
+  <div class="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+    <div class="p-6 border-b dark:border-slate-800 flex items-center justify-between">
+      <div>
+        <h3 class="text-lg font-bold text-gray-800 dark:text-white">Current Term Grades</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ selectedTerm }}</p>
+      </div>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gray-50 dark:bg-slate-800/50 border-b dark:border-slate-700">
+          <tr>
+            <th *ngFor="let header of tableHeaders" 
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              {{ header }}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y dark:divide-slate-800">
+          <tr *ngFor="let grade of currentGrades" 
+              class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+            <td class="px-6 py-4">
+              <div class="font-medium text-gray-800 dark:text-white">{{ grade.subject }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ grade.subjectCode }}</div>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ grade.professor }}</td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-white">{{ grade.prelim }}</td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-white">{{ grade.midterm }}</td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-white">{{ grade.finals }}</td>
+            <td class="px-6 py-4">
+              <span class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ grade.finalGrade }}</span>
+            </td>
+            <td class="px-6 py-4">
+              <span [ngClass]="{
+                'px-3 py-1 text-xs font-bold rounded-full': true,
+                'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400': grade.status === 'Passed',
+                'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-400': grade.status === 'In Progress',
+                'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400': grade.status === 'Failed'
+              }">
+                {{ grade.status }}
+              </span>
+            </td>
+            <td class="px-6 py-4">
+         <button 
+           (click)="viewGradeDetails(grade)"
+           class="inline-flex items-center gap-2 px-4 py-2 bg-[#2f528f] hover:bg-[#27467a] text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
+          <i class="fas fa-eye text-sm"></i> View Details
+        </button>
+            </td>
+          </tr>
+          <tr *ngIf="currentGrades.length === 0">
+            <td colspan="8" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+              <i class="fas fa-inbox text-4xl mb-3 opacity-50"></i>
+              <p>No grades available for this term</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Previous Term Grades -->
+  <div class="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+    <div class="p-6 border-b dark:border-slate-800">
+      <h3 class="text-lg font-bold text-gray-800 dark:text-white">Previous Term Grades</h3>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">2024-2025 1st Term Tertiary</p>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gray-50 dark:bg-slate-800/50 border-b dark:border-slate-700">
+          <tr>
+            <th *ngFor="let header of tableHeaders" 
+                class="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              {{ header }}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y dark:divide-slate-800">
+          <tr *ngFor="let grade of previousGrades" 
+              class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+            <td class="px-6 py-4">
+              <div class="font-medium text-gray-800 dark:text-white">{{ grade.subject }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ grade.subjectCode }}</div>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{ grade.professor }}</td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-white">{{ grade.prelim }}</td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-white">{{ grade.midterm }}</td>
+            <td class="px-6 py-4 text-sm font-medium text-gray-800 dark:text-white">{{ grade.finals }}</td>
+            <td class="px-6 py-4">
+              <span class="text-lg font-bold text-blue-600 dark:text-blue-400">{{ grade.finalGrade }}</span>
+            </td>
+            <td class="px-6 py-4">
+              <span [ngClass]="{
+                'px-3 py-1 text-xs font-bold rounded-full': true,
+                'bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400': grade.status === 'Passed',
+                'bg-yellow-100 text-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-400': grade.status === 'In Progress',
+                'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400': grade.status === 'Failed'
+              }">
+                {{ grade.status }}
+              </span>
+            </td>
+            <td class="px-6 py-4">
+             <button 
+              (click)="viewGradeDetails(grade)"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-[#2f528f] hover:bg-[#27467a] text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
+            <i class="fas fa-eye text-sm"></i> View Details
+           </button>
+            </td>
+          </tr>
+          <tr *ngIf="previousGrades.length === 0">
+            <td colspan="8" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+              <i class="fas fa-inbox text-4xl mb-3 opacity-50"></i>
+              <p>No previous grades available</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Grade Details Modal -->
+<!-- Grade Details Modal -->
+<div *ngIf="showGradeModal"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+     (click)="closeModal()">
+
+  <div class="bg-white dark:bg-slate-900 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl"
+       (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center px-6 py-4 border-b dark:border-slate-700">
+      <h3 class="text-lg font-semibold text-blue-700 dark:text-blue-400">
+        Grade Details
+      </h3>
+
+      <button (click)="closeModal()"
+              class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-xl">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="px-6 py-5 space-y-4 text-sm">
+
+      <!-- Info Rows -->
+      <div class="flex justify-between border-b pb-3">
+        <span class="font-medium text-gray-600 dark:text-gray-400">Subject:</span>
+        <span class="text-gray-800 dark:text-white">{{ selectedGrade?.subject }}</span>
+      </div>
+
+      <div class="flex justify-between border-b pb-3">
+        <span class="font-medium text-gray-600 dark:text-gray-400">Professor:</span>
+        <span class="text-gray-800 dark:text-white">{{ selectedGrade?.professor }}</span>
+      </div>
+
+      <div class="flex justify-between border-b pb-3">
+        <span class="font-medium text-gray-600 dark:text-gray-400">Schedule:</span>
+        <span class="text-gray-800 dark:text-white">
+          {{ selectedGrade?.schedule || 'TBA' }}
+        </span>
+      </div>
+
+      <div class="flex justify-between border-b pb-3">
+        <span class="font-medium text-gray-600 dark:text-gray-400">Room:</span>
+        <span class="text-gray-800 dark:text-white">
+          {{ selectedGrade?.room || 'TBA' }}
+        </span>
+      </div>
+
+      <div class="flex justify-between border-b pb-3">
+        <span class="font-medium text-gray-600 dark:text-gray-400">Units:</span>
+        <span class="text-gray-800 dark:text-white">
+          {{ selectedGrade?.units || '3' }}
+        </span>
+      </div>
+
+      <div class="flex justify-between border-b pb-3">
+        <span class="font-medium text-gray-600 dark:text-gray-400">Final Grade:</span>
+        <span class="text-gray-800 dark:text-white font-medium">
+          {{ selectedGrade?.finalGrade }}
+        </span>
+      </div>
+
+      <div class="flex justify-between border-b pb-3 items-center">
+        <span class="font-medium text-gray-600 dark:text-gray-400">Status:</span>
+
+        <span class="px-3 py-1 text-xs font-semibold rounded-md"
+              [ngClass]="{
+                'bg-green-100 text-green-700': selectedGrade?.status === 'Passed',
+                'bg-yellow-100 text-yellow-700': selectedGrade?.status === 'In Progress',
+                'bg-red-100 text-red-700': selectedGrade?.status === 'Failed'
+              }">
+          {{ selectedGrade?.status | uppercase }}
+        </span>
+      </div>
+
+      <!-- Grade Breakdown -->
+      <div class="pt-4">
+        <h4 class="font-semibold text-gray-700 dark:text-gray-300 mb-3">
+          Grade Breakdown:
+        </h4>
+
+        <table class="w-full text-sm">
+          <thead class="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300">
+            <tr>
+              <th class="text-left px-3 py-2">Component</th>
+              <th class="text-left px-3 py-2">Percentage</th>
+              <th class="text-left px-3 py-2">Score</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y dark:divide-slate-700">
+            <tr *ngFor="let item of gradeBreakdown">
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-300">
+                {{ item.component }}
+              </td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-300">
+                {{ item.percentage }}%
+              </td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-300">
+                {{ item.score }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>

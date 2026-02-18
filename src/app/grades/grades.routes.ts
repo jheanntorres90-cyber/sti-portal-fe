@@ -87,6 +87,10 @@ export const GRADES_ROUTES: Routes = [
     loadComponent: () => import('./parent/dashboard/dashboard.component').then(m => m.ParentDashboardComponent)
   },
   {
+    path: 'parent-child-grades',
+    loadComponent: () => import('./parent/child-grades/child-grades.component').then(m => m.ChildGradesComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
