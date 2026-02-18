@@ -1,0 +1,291 @@
+<div class="p-4 sm:p-6 space-y-6 bg-gray-50 dark:bg-slate-950 min-h-screen animate-fadeIn">
+  <!-- Welcome Section -->
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Announcements</h2>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Stay updated with school news and important information</p>
+  </div>
+
+  <!-- Student Selector -->
+  <div class="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify-center text-white font-bold text-lg">
+        {{ selectedStudentAvatar }}
+      </div>
+      <div>
+        <h3 class="font-bold text-gray-800 dark:text-white">{{ selectedStudentName }}</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400">{{ selectedStudentDetails }}</p>
+      </div>
+    </div>
+    <div>
+      <select 
+        [(ngModel)]="selectedStudentId" 
+        (ngModelChange)="onStudentChange($event)"
+        class="w-full sm:w-64 px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+      >
+        <option *ngFor="let student of students" [value]="student.id">
+          {{ student.name }} - {{ student.course }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <label class="text-xs uppercase font-bold text-gray-400 mb-2 block">Category</label>
+        <select 
+          [(ngModel)]="filters.category"
+          (ngModelChange)="applyFilters()"
+          class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+        >
+          <option *ngFor="let option of categoryOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-xs uppercase font-bold text-gray-400 mb-2 block">Priority</label>
+        <select 
+          [(ngModel)]="filters.priority"
+          (ngModelChange)="applyFilters()"
+          class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+        >
+          <option *ngFor="let option of priorityOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label class="text-xs uppercase font-bold text-gray-400 mb-2 block">Date Range</label>
+        <select 
+          [(ngModel)]="filters.dateRange"
+          (ngModelChange)="applyFilters()"
+          class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+        >
+          <option *ngFor="let option of dateRangeOptions" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+
+      <div class="flex items-end">
+        <button 
+          (click)="resetFilters()"
+          class="w-full px-4 py-2.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-medium hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+        >
+          <i class="fas fa-redo mr-2"></i> Reset Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Announcements Summary -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div *ngFor="let stat of summaryStats" 
+         class="bg-white dark:bg-slate-900 border dark:border-slate-800 p-6 rounded-2xl shadow-sm flex items-center gap-4 hover:translate-y-[-2px] transition-all duration-300">
+      <div [ngClass]="{
+        'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400': stat.color === 'blue',
+        'bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400': stat.color === 'purple',
+        'bg-yellow-50 text-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-400': stat.color === 'yellow',
+        'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400': stat.color === 'green'
+      }" class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl">
+        <i [class]="stat.icon"></i>
+      </div>
+      <div>
+        <p class="text-3xl font-bold text-gray-800 dark:text-white leading-none">{{ stat.value }}</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mt-1">{{ stat.label }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Announcements List -->
+  <div class="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+    <div class="p-6 border-b dark:border-slate-800 flex items-center justify-between">
+      <h3 class="text-lg font-bold text-gray-800 dark:text-white">All Announcements</h3>
+      <span class="text-sm text-gray-500 dark:text-gray-400">{{ filteredAnnouncements.length }} announcements</span>
+    </div>
+
+    <div class="p-6 space-y-6">
+      <!-- No Announcements State -->
+      <div *ngIf="filteredAnnouncements.length === 0" 
+           class="text-center py-12">
+        <div class="text-6xl text-gray-300 dark:text-gray-600 mb-4">
+          <i class="fas fa-bullhorn"></i>
+        </div>
+        <h4 class="text-lg font-bold text-gray-600 dark:text-gray-400 mb-2">No Announcements Found</h4>
+        <p class="text-sm text-gray-500 dark:text-gray-500">Try adjusting your filters</p>
+      </div>
+
+      <!-- Announcement Cards -->
+    <div *ngFor="let announcement of filteredAnnouncements"
+     class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border dark:border-slate-800 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl cursor-pointer">
+
+  <!-- Top Row -->
+  <div class="flex justify-between items-start mb-3">
+
+    <!-- Badges -->
+    <div class="flex items-center gap-2 flex-wrap">
+
+      <span *ngIf="announcement.priority === 'High'"
+            class="px-3 py-1 bg-red-100 text-red-600 text-xs font-bold rounded-full flex items-center gap-1">
+        <i class="fas fa-exclamation-circle"></i> High Priority
+      </span>
+
+      <span *ngIf="announcement.priority === 'Medium'"
+            class="px-3 py-1 bg-yellow-100 text-yellow-600 text-xs font-bold rounded-full">
+        Medium
+      </span>
+
+      <span *ngIf="announcement.priority === 'Low'"
+            class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">
+        Low
+      </span>
+
+      <span class="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-bold rounded-full">
+        {{ announcement.category }}
+      </span>
+
+    </div>
+
+    <!-- Date -->
+    <span class="text-xs text-gray-500">
+      <i class="far fa-calendar mr-1"></i>
+      {{ announcement.date | date:'MMM dd, yyyy' }}
+    </span>
+
+  </div>
+
+  <!-- Title -->
+  <h4 class="text-xl font-bold text-gray-800 dark:text-white mb-2">
+    {{ announcement.title }}
+  </h4>
+
+  <!-- Content -->
+  <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
+    {{ announcement.content.length > 200 ? (announcement.content | slice:0:200) + '...' : announcement.content }}
+  </p>
+
+  <!-- Bottom Row -->
+  <div class="flex items-center justify-between pt-4 border-t dark:border-slate-800 text-sm">
+
+    <!-- LEFT SIDE -->
+    <div class="flex items-center gap-6 text-gray-500">
+
+      <button class="flex items-center gap-2 hover:text-gray-700 dark:hover:text-white transition">
+        <i class="far fa-check-circle"></i> Mark as Read
+      </button>
+
+      <button class="flex items-center gap-2 hover:text-gray-700 dark:hover:text-white transition">
+        <i class="fas fa-share-alt"></i> Share
+      </button>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <button
+      (click)="openAnnouncement(announcement)"
+      class="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 transition">
+      Read More
+      <i class="fas fa-chevron-right text-xs"></i>
+    </button>
+
+  </div>
+
+</div>
+
+  <!-- Announcement Modal -->
+  <div *ngIf="selectedAnnouncement" 
+       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
+    
+    <div class="bg-white dark:bg-slate-900 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+      
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 dark:border-slate-700">
+        <div>
+          <h3 class="text-xl font-bold text-gray-800 dark:text-white">{{ selectedAnnouncement.title }}</h3>
+          
+          <div class="flex flex-wrap items-center gap-3 mt-2">
+            <span *ngIf="selectedAnnouncement.priority === 'High'" 
+                  class="px-2 py-1 bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-xs font-bold rounded-full">
+              High Priority
+            </span>
+            <span class="text-xs text-gray-500 dark:text-gray-400">
+              <i class="far fa-calendar mr-1"></i> {{ selectedAnnouncement.date | date:'MMMM dd, yyyy' }}
+            </span>
+            <span class="text-xs text-gray-500 dark:text-gray-400">
+              <i class="far fa-clock mr-1"></i> {{ selectedAnnouncement.date | date:'h:mm a' }}
+            </span>
+          </div>
+        </div>
+        
+        <button (click)="closeModal()" 
+                class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xl">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-6">
+        
+        <!-- Full Content -->
+        <div class="prose dark:prose-invert max-w-none">
+          <p class="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+            {{ selectedAnnouncement.content }}
+          </p>
+        </div>
+
+        <!-- Attachments -->
+        <div *ngIf="selectedAnnouncement.attachments && selectedAnnouncement.attachments.length > 0">
+          <h4 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
+            <i class="fas fa-paperclip mr-2"></i> Attachments ({{ selectedAnnouncement.attachments.length }})
+          </h4>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div *ngFor="let attachment of selectedAnnouncement.attachments" 
+                 class="group relative rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-800">
+              
+              <!-- Image Preview -->
+              <img *ngIf="attachment.type.startsWith('image/')" 
+                   [src]="attachment.url" 
+                   [alt]="attachment.name"
+                   class="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300">
+              
+              <!-- Video Preview -->
+              <video *ngIf="attachment.type.startsWith('video/')" 
+                     [src]="attachment.url"
+                     class="w-full h-32 object-cover">
+              </video>
+              
+              <!-- File Icon for other types -->
+              <div *ngIf="!attachment.type.startsWith('image/') && !attachment.type.startsWith('video/')" 
+                   class="w-full h-32 flex flex-col items-center justify-center">
+                <i [class]="getFileIcon(attachment.type)" class="text-3xl text-gray-400 mb-2"></i>
+                <span class="text-xs text-gray-500 px-2 text-center truncate w-full">{{ attachment.name }}</span>
+              </div>
+              
+              <!-- Download Overlay -->
+              <a [href]="attachment.url" 
+                 target="_blank"
+                 class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="bg-white dark:bg-slate-900 text-gray-800 dark:text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg">
+                  <i class="fas fa-download mr-1"></i> Open
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-slate-700">
+        <button (click)="closeModal()"
+                class="px-6 py-2 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 rounded-xl text-sm font-medium hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
