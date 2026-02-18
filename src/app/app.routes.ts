@@ -3,47 +3,42 @@ import { authGuard } from './core/guards/auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { SettingsComponent } from './settings/settings.component';
+import { LandingComponent } from './landing-component/landing/landing.component';
 
 export const routes: Routes = [
-  { 
-    path: '', 
-    redirectTo: '', 
-    pathMatch: 'prefix',
-  },
-  { 
-    path: 'attendance',
-    canActivate: [authGuard],
-    loadChildren: () => import('./attendance/attendance.routes').then(m => m.ATTENDANCE_ROUTES)
-  },
-  { 
-    path: 'grades',
-    canActivate: [authGuard],
-    loadChildren: () => import('./grades/grades.routes').then(m => m.GRADES_ROUTES)
+  // PUBLIC: Landing
+  {
+    path: '',
+    loadComponent: () =>
+      import('./landing-component/landing/landing.component')
+        .then(m => m.LandingComponent),
   },
 
-  // --- NEW ROUTES START ---
-  { 
-    path: 'profile', 
+  // PROTECTED: With sidebar + header
+  {
+    path: '',
     canActivate: [authGuard],
-    component: ProfileComponent 
+    loadComponent: () =>
+      import('./shared/layout/layout.component')
+        .then(m => m.LayoutComponent),
+    children: [
+      {
+        path: 'attendance',
+        loadChildren: () =>
+          import('./attendance/attendance.routes').then(m => m.ATTENDANCE_ROUTES),
+      },
+      {
+        path: 'grades',
+        loadChildren: () =>
+          import('./grades/grades.routes').then(m => m.GRADES_ROUTES),
+      },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'notifications', component: NotificationsComponent },
+      { path: 'settings', component: SettingsComponent },
+    ],
   },
-  { 
-    path: 'notifications', 
-    canActivate: [authGuard],
-    component: NotificationsComponent 
-  },
-  { 
-    path: 'settings', 
-    canActivate: [authGuard],
-    component: SettingsComponent 
-  },
-  // --- NEW ROUTES END ---
-  { 
-    path: 'auth',
-    loadChildren: () => import('./auth/auth.routes').then(m => m.AUTH_ROUTES)
-  },
-  // { 
-  //   path: '', 
-  //   redirectTo: 'login' 
-  // }
+
+  // Optional: 404 fallback
+  { path: '**', redirectTo: '' },
 ];
+

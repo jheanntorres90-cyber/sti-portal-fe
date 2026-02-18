@@ -855,20 +855,25 @@ moveTeacherToTrash(teacher: Teacher) {
     this.viewingTeacher = null;
   }
 
-  openBulkActionsModal() {
-    if (this.activeTab === 'students' && this.selectedStudents.length === 0) {
-      this.showAlert('Please select at least one student', 'warning');
-      return;
-    }
-    if (this.activeTab === 'teachers' && this.selectedTeachers.length === 0) {
-      this.showAlert('Please select at least one teacher', 'warning');
-      return;
-    }
-    
-    this.bulkActionType = '';
-    this.bulkActionDetails = {};
-    this.showBulkActionsModal = true;
+openBulkActionsModal() {
+  let hasSelection = false;
+
+  if (this.activeTab === 'students') {
+    hasSelection = this.displayedStudents.some(s => s.selected);
   }
+
+  if (this.activeTab === 'teachers') {
+    hasSelection = this.displayedTeachers.some(t => t.selected);
+  }
+
+  if (!hasSelection) {
+    this.showAlert('Please select at least one record.', 'warning');
+    return;
+  }
+
+  this.showBulkActionsModal = true;
+}
+
 
   closeBulkActionsModal() {
     this.showBulkActionsModal = false;
@@ -1100,141 +1105,55 @@ moveTeacherToTrash(teacher: Teacher) {
   }
 
   processBulkAction() {
-    if (!this.bulkActionType) {
-      this.showAlert('Please select an action', 'warning');
-      return;
-    }
 
-    let count = 0;
-    let successMessage = '';
+  console.log('Apply clicked');
+  console.log('Selected action:', this.bulkActionType);
 
-    switch(this.bulkActionType) {
-      case 'status':
-        const newStatus = this.bulkActionDetails.newStatus;
-        if (this.activeTab === 'students') {
-          count = this.selectedStudents.length;
-          this.studentsData.forEach(student => {
-            if (this.selectedStudents.includes(student.id)) {
-              student.status = newStatus;
-            }
-          });
-          this.filteredStudents = [...this.studentsData];
-          successMessage = `Status updated to "${newStatus}" for ${count} students`;
-        } else {
-          count = this.selectedTeachers.length;
-          this.teachersData.forEach(teacher => {
-            if (this.selectedTeachers.includes(teacher.id)) {
-              teacher.status = newStatus;
-            }
-          });
-          this.filteredTeachers = [...this.teachersData];
-          successMessage = `Status updated to "${newStatus}" for ${count} teachers`;
-        }
-        break;
-
-      case 'course':
-        if (this.activeTab === 'students') {
-          const newCourse = this.bulkActionDetails.newCourse;
-          count = this.selectedStudents.length;
-          this.studentsData.forEach(student => {
-            if (this.selectedStudents.includes(student.id)) {
-              student.course = newCourse;
-            }
-          });
-          this.filteredStudents = [...this.studentsData];
-          successMessage = `${count} students transferred to ${newCourse}`;
-        } else {
-          const newSpecialization = this.bulkActionDetails.newSpecialization;
-          count = this.selectedTeachers.length;
-          this.teachersData.forEach(teacher => {
-            if (this.selectedTeachers.includes(teacher.id)) {
-              teacher.specialization = newSpecialization;
-            }
-          });
-          this.filteredTeachers = [...this.teachersData];
-          successMessage = `Specialization updated to ${newSpecialization} for ${count} teachers`;
-        }
-        break;
-
-      case 'year':
-        const newYear = this.bulkActionDetails.newYear;
-        count = this.selectedStudents.length;
-        this.studentsData.forEach(student => {
-          if (this.selectedStudents.includes(student.id)) {
-            student.yearLevel = newYear;
-          }
-        });
-        this.filteredStudents = [...this.studentsData];
-        successMessage = `Year level updated to ${newYear} for ${count} students`;
-        break;
-
-      case 'export':
-        const format = this.bulkActionDetails.exportFormat || 'csv';
-        count = this.activeTab === 'students' ? this.selectedStudents.length : this.selectedTeachers.length;
-        this.showAlert(`Exporting ${count} records as ${format.toUpperCase()}...`, 'info');
-        setTimeout(() => {
-          this.showAlert('Export completed! Download will start automatically.', 'success');
-        }, 2000);
-        break;
-
-      case 'delete':
-        if (confirm(`Are you sure you want to move ${this.selectedStudents.length || this.selectedTeachers.length} records to trash? This can be undone.`)) {
-          if (this.activeTab === 'students') {
-            count = this.selectedStudents.length;
-            this.selectedStudents.forEach(studentId => {
-              const student = this.studentsData.find(s => s.id === studentId);
-              if (student) {
-                // Move to trash
-                this.trashData.push({
-                  id: student.id,
-                  name: `${student.firstName} ${student.lastName}`,
-                  type: 'Student',
-                  deletedDate: new Date().toISOString().split('T')[0],
-                  data: student
-                });
-                
-                // Remove from active data
-                this.studentsData = this.studentsData.filter(s => s.id !== studentId);
-                this.filteredStudents = this.filteredStudents.filter(s => s.id !== studentId);
-              }
-            });
-            this.selectedStudents = [];
-            this.isAllStudentsSelected = false;
-          } else {
-            count = this.selectedTeachers.length;
-            this.selectedTeachers.forEach(teacherId => {
-              const teacher = this.teachersData.find(t => t.id === teacherId);
-              if (teacher) {
-                // Move to trash
-                this.trashData.push({
-                  id: teacher.id,
-                  name: `${teacher.firstName} ${teacher.lastName}`,
-                  type: 'Teacher',
-                  deletedDate: new Date().toISOString().split('T')[0],
-                  data: teacher
-                });
-                
-                // Remove from active data
-                this.teachersData = this.teachersData.filter(t => t.id !== teacherId);
-                this.filteredTeachers = this.filteredTeachers.filter(t => t.id !== teacherId);
-              }
-            });
-            this.selectedTeachers = [];
-            this.isAllTeachersSelected = false;
-          }
-          
-          successMessage = `${count} records moved to trash`;
-        } else {
-          return;
-        }
-        break;
-    }
-
-    if (successMessage) {
-      this.closeBulkActionsModal();
-      this.showAlert(successMessage, 'success');
-    }
+  if (!this.bulkActionType) {
+    alert('Please select an action.');
+    return;
   }
+
+  const selectedStudents = this.studentsData.filter(s => s.selected);
+  const selectedTeachers = this.teachersData.filter(t => t.selected);
+
+  if (selectedStudents.length === 0 && selectedTeachers.length === 0) {
+    alert('No records selected.');
+    return;
+  }
+
+  switch (this.bulkActionType) {
+
+    case 'updateStatus':
+      selectedStudents.forEach(s => s.status = 'Active');
+      selectedTeachers.forEach(t => t.status = 'Active');
+      break;
+
+    case 'transferCourse':
+      selectedStudents.forEach(s => s.course = 'BSIT');
+      break;
+
+    case 'updateYear':
+      selectedStudents.forEach(s => s.yearLevel = '2nd Year');
+      break;
+
+    case 'export':
+      console.log('Exporting...');
+      break;
+
+    case 'delete':
+      selectedStudents.forEach(s => this.moveStudentToTrash(s));
+      selectedTeachers.forEach(t => this.moveTeacherToTrash(t));
+      break;
+  }
+
+
+  this.showBulkActionsModal = false;
+
+ 
+  this.bulkActionType = '';
+}
+
 
   // Search methods
   onStudentSearchChange() {
