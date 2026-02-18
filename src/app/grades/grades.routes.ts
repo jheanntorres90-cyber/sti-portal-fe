@@ -111,6 +111,10 @@ export const GRADES_ROUTES: Routes = [
     loadComponent: () => import('./parent/about/about.component').then(m => m.AboutComponent)
   },
   {
+   path: 'parent-faqs',
+    loadComponent: () => import('./parent/faqs/faqs.component').then(m => m.FaqsComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
