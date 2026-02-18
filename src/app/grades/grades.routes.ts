@@ -82,7 +82,10 @@ export const GRADES_ROUTES: Routes = [
     path: 'admin-grades-management',
     loadComponent: () => import('./admin/grades-management/grades-management').then(m => m.AdminGradesManagement)
   },
-  
+  {
+    path: 'parent-dashboard',
+    loadComponent: () => import('./parent/dashboard/dashboard.component').then(m => m.ParentDashboardComponent)
+  },
   {
     path: '',
     redirectTo: 'dashboard',
