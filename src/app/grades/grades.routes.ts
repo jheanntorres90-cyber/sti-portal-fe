@@ -95,6 +95,10 @@ export const GRADES_ROUTES: Routes = [
     loadComponent: () => import('./parent/child-schedule/child-schedule.component').then(m => m.ChildScheduleComponent)
   },
   {
+    path: 'parent-announcements',
+    loadComponent: () => import('./parent/announcements/announcements.component').then(m => m.ParentAnnouncementsComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
