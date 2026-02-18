@@ -99,6 +99,10 @@ export const GRADES_ROUTES: Routes = [
     loadComponent: () => import('./parent/announcements/announcements.component').then(m => m.ParentAnnouncementsComponent)
   },
   {
+    path: 'parent-mvsh',
+    loadComponent: () => import('./parent/mvsh/mvsh.component').then(m => m.MvshComponent)
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
