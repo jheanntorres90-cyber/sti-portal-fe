@@ -8,13 +8,8 @@ import { LandingComponent } from './landing-component/landing/landing.component'
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, LandingComponent],
-  template: `
-      <main>
-        <app-landing></app-landing>
-        <router-outlet></router-outlet>
-      </main>
-  `,
+  imports: [CommonModule, RouterOutlet],
+  template: ` <router-outlet></router-outlet> `,
   styles: [
     `
       :host {
