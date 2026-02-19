@@ -1,310 +1,251 @@
-// header.component.ts
-import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+// landing.component.ts
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-
-interface CampusImage {
-  src: string;
-  alt: string;
-  title: string;
-  description: string;
-  position: number;
-}
-
-interface FaqItem {
-  question: string;
-  answer: string;
-  isOpen: boolean;
-}
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })
-export class LandingComponent {
-  isMobileMenuOpen = false;
+export class LandingComponent implements OnInit, OnDestroy {
+  // ---------- FAQ Data (from faq.component.ts) ----------
+  faqItems = [
+    {
+      question: 'How do I use my RFID tag for attendance?',
+      answer: 'Simply tap your student ID card on the RFID reader located at the classroom entrance. The system will record your attendance in real-time and notify your instructor. Ensure the card is within 2-3cm of the reader for a successful scan.',
+      isOpen: false
+    },
+    {
+      question: 'What should I do if I lose my Student ID?',
+      answer: 'Report lost ID cards immediately to the Registrar or Security Office. Once reported, the old RFID tag will be deactivated to prevent unauthorized gate entry, and a replacement card with a new unique ID will be issued.',
+      isOpen: false
+    },
+    {
+      question: 'How do parents receive attendance notifications?',
+      answer: 'Notifications are automatically sent via the Semaphore SMS gateway and email as soon as a student taps their ID at the main gate. Parents can update their contact information through the Parent Portal to ensure they receive these alerts.',
+      isOpen: false
+    },
+    {
+      question: 'Why can’t I view my grades in the portal?',
+      answer: 'Grade viewing is enabled once the accounting office clears your tuition balance. If your balance is settled and you still cannot see your grades, please contact the Registrar for system access assistance.',
+      isOpen: false
+    },
+    {
+      question: 'Is the facial recognition at the gate mandatory?',
+      answer: 'Yes, the identity verification system at the gate uses facial recognition alongside your ID scan for enhanced campus security. This ensures that the person entering the campus is the actual owner of the ID being used.',
+      isOpen: false
+    }
+  ];
+
+  // ---------- Gallery Data (from school-showcase.component.ts) ----------
+  campusImages = [
+    {
+      src: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80',
+      alt: 'Gate Entry Terminal',
+      title: 'Gate Entry Verification',
+      description: 'Facial recognition and RFID integration at the STI Bacoor main entrance.'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80',
+      alt: 'Real-time Attendance',
+      title: 'RFID Attendance Logs',
+      description: 'Automated classroom logging system with sub-second processing speed.'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80',
+      alt: 'SMS Notification System',
+      title: 'Parent Alert System',
+      description: 'Real-time SMS notifications sent via Semaphore API for student security.'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1568992688065-536aad8a12f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80',
+      alt: 'Admin Control Center',
+      title: 'Centralized Dashboard',
+      description: 'Master control panel for administrators to manage student and faculty records.'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80',
+      alt: 'Student Grade Portal',
+      title: 'Academic Grade Portal',
+      description: 'Secure access for students to view preliminary and final grades.'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80',
+      alt: 'System Security',
+      title: 'Security & Audit Logs',
+      description: 'Complete transparency of all gate and portal activity for campus safety.'
+    }
+  ];
+
+  // ---------- Gallery State ----------
   currentImageIndex = 0;
-  isScrolled = false;
+  touchStartX = 0;
+  private autoSlideInterval: any;
 
-  // Campus Images Data
-  campusImages: CampusImage[] = [
-    {
-      src: 'assets/images/ai-lab.jpg',
-      alt: 'AI Innovation Lab',
-      title: 'AI Innovation Laboratory',
-      description: 'State-of-the-art artificial intelligence research facility with real-time data processing',
-      position: 1
-    },
-    {
-      src: 'assets/images/cloud-center.jpg',
-      alt: 'Cloud Computing Center',
-      title: 'Cloud Infrastructure Hub',
-      description: 'Enterprise-grade cloud computing environment with AWS and Azure integration',
-      position: 2
-    },
-    {
-      src: 'assets/images/dev-space.jpg',
-      alt: 'Developer Space',
-      title: 'Collaborative Developer Studio',
-      description: 'Modern development environment with pair programming capabilities',
-      position: 3
-    },
-    {
-      src: 'assets/images/iot-lab.jpg',
-      alt: 'IoT Innovation Lab',
-      title: 'Internet of Things Laboratory',
-      description: 'Connected devices and smart technology innovation space',
-      position: 4
-    },
-    {
-      src: 'assets/images/robotics.jpg',
-      alt: 'Robotics Center',
-      title: 'Advanced Robotics Center',
-      description: 'Cutting-edge robotics development and testing facility',
-      position: 5
-    },
-    {
-      src: 'assets/images/ar-vr-lab.jpg',
-      alt: 'AR/VR Studio',
-      title: 'Immersive Technology Studio',
-      description: 'Virtual and augmented reality development workspace',
-      position: 6
-    }
-  ];
+  // ---------- Mobile Menu State (from header) ----------
+  isMobileMenuOpen = false;
 
-  // FAQ Items Data
-  faqItems: FaqItem[] = [
-    {
-      question: 'How do I access the developer portal?',
-      answer: 'Access the developer portal using your STI credentials through single sign-on (SSO). First-time users will need to complete the multi-factor authentication setup for enhanced security. The portal supports OAuth 2.0, biometric verification, and hardware security keys.',
-      isOpen: false
-    },
-    {
-      question: 'What development tools are available?',
-      answer: 'Our platform provides a comprehensive suite of development tools including VS Code integration, Docker containers, Git repositories, CI/CD pipelines, and cloud deployment options. You can customize your workspace with pre-configured toolchains for various tech stacks.',
-      isOpen: false
-    },
-    {
-      question: 'How do I deploy my projects?',
-      answer: 'Projects can be deployed with one-click deployment to our cloud infrastructure. We support Kubernetes orchestration, auto-scaling, and provide comprehensive monitoring tools. You can choose between staging and production environments.',
-      isOpen: false
-    },
-    {
-      question: 'Is there 24/7 technical support?',
-      answer: 'Yes, our developer support team is available 24/7 through live chat, email, and dedicated Discord channels. Enterprise customers also get access to priority support and direct Slack integration with our engineering team.',
-      isOpen: false
-    },
-    {
-      question: 'How can I collaborate with other developers?',
-      answer: 'The platform includes real-time collaboration features including pair programming sessions, code reviews, shared workspaces, and team analytics. You can create project teams, manage permissions, and track contributions.',
-      isOpen: false
-    }
-  ];
+  // ---------- Login Modal State (from login-modal & auth service simulation) ----------
+  isLoginModalOpen = false;
+  loginForm: FormGroup;
+  roles = ['STUDENT', 'PARENT', 'TEACHER', 'ADMIN'];
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  // ---------- Scroll Animation (from landing & service) ----------
+  private scrollObserver: IntersectionObserver | null = null;
+
+  constructor(private fb: FormBuilder) {
+    // Initialize login form
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+      role: ['STUDENT', Validators.required]
+    });
+  }
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.checkScroll();
-    }
+    // Start auto-slide for gallery
+    this.autoSlideInterval = setInterval(() => {
+      this.nextImage();
+    }, 4000);
+
+    // Initialize scroll animations after a short delay (to ensure DOM is ready)
+    setTimeout(() => this.initScrollAnimations(), 100);
   }
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.checkScroll();
-    }
+  ngOnDestroy() {
+    if (this.autoSlideInterval) clearInterval(this.autoSlideInterval);
+    if (this.scrollObserver) this.scrollObserver.disconnect();
   }
 
-  private checkScroll() {
-    this.isScrolled = window.scrollY > 50;
-  }
-
-  // Mobile menu toggle
-  toggleMobileMenu() {
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    if (isPlatformBrowser(this.platformId)) {
-      if (this.isMobileMenuOpen) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'auto';
-      }
-    }
-  }
-
-  // Smooth scroll to section
-scrollToSection(sectionId: string) {
-  if (!isPlatformBrowser(this.platformId)) return;
-
-  const element = document.getElementById(sectionId);
-  if (!element) return;
-
-  const header = document.querySelector('header');
-  const headerHeight = header ? header.clientHeight : 0;
-
-  const elementTop =
-    element.getBoundingClientRect().top + window.pageYOffset;
-
-  const offsetPosition = elementTop - headerHeight - 20;
-
-  window.scrollTo({
-    top: offsetPosition,
-    behavior: 'smooth'
-  });
-
-  if (this.isMobileMenuOpen) {
-    this.toggleMobileMenu();
-  }
-}
-
-
-  // Image gallery selection
-  selectImage(index: number) {
-    this.currentImageIndex = index;
-    // Ensure index wraps around
-    if (this.currentImageIndex >= this.campusImages.length) {
-      this.currentImageIndex = 0;
-    }
-    if (this.currentImageIndex < 0) {
-      this.currentImageIndex = this.campusImages.length - 1;
-    }
-  }
-
-  // Get visible images for gallery
-  get visibleImages(): CampusImage[] {
-    const visibleImages: CampusImage[] = [];
-    const totalImages = this.campusImages.length;
-    
-    // Add current image first
-    visibleImages.push(this.campusImages[this.currentImageIndex]);
-    
-    // Add next 5 images with wrapping
-    for (let i = 1; i < 6; i++) {
-      const nextIndex = (this.currentImageIndex + i) % totalImages;
-      const image = { ...this.campusImages[nextIndex] };
-      image.position = i;
-      visibleImages.push(image);
-    }
-    
-    return visibleImages;
-  }
-
-  // Get background class based on position
-  getBackgroundClass(position: number): string {
-    const baseClasses = 'tech-image-card ';
-    switch(position) {
-      case 1:
-        return baseClasses + 'col-span-1 md:col-span-1';
-      case 2:
-        return baseClasses + 'col-span-1 md:col-span-1';
-      case 3:
-        return baseClasses + 'col-span-1 md:col-span-1';
-      case 4:
-        return baseClasses + 'col-span-1 md:col-span-1 hidden md:block';
-      case 5:
-        return baseClasses + 'col-span-1 md:col-span-1 hidden md:block';
-      default:
-        return baseClasses + 'col-span-1 md:col-span-1 hidden md:block';
-    }
-  }
-
-  // FAQ toggle
+  // ---------- FAQ Methods (from faq.component.ts) ----------
   toggleFaq(index: number) {
     this.faqItems[index].isOpen = !this.faqItems[index].isOpen;
-    
-    // Close other FAQs (optional)
-    // this.faqItems.forEach((item, i) => {
-    //   if (i !== index) {
-    //     item.isOpen = false;
-    //   }
-    // });
   }
 
-  // Get icon for FAQ question
   getQuestionIcon(question: string): string {
-    const icons: { [key: string]: string } = {
-      'access': 'fa-key',
-      'tools': 'fa-tools',
-      'deploy': 'fa-cloud-upload-alt',
-      'support': 'fa-headset',
-      'collaborate': 'fa-users-cog'
-    };
-    
-    for (const key in icons) {
-      if (question.toLowerCase().includes(key)) {
-        return icons[key];
-      }
-    }
+    if (question.includes('RFID') || question.includes('attendance')) return 'fa-id-badge';
+    if (question.includes('lost') || question.includes('ID')) return 'fa-exclamation-triangle';
+    if (question.includes('parents') || question.includes('notifications')) return 'fa-sms';
+    if (question.includes('grades') || question.includes('portal')) return 'fa-graduation-cap';
+    if (question.includes('facial') || question.includes('security')) return 'fa-user-shield';
     return 'fa-question-circle';
   }
 
-  // Get pro tip based on question
   getProTip(question: string): string {
-    const tips: { [key: string]: string } = {
-      'access': 'Enable biometric authentication for faster logins while maintaining security',
-      'tools': 'Use our VS Code extension for seamless integration with the platform',
-      'deploy': 'Set up auto-scaling policies before deployment for optimal performance',
-      'support': 'Join our Discord for instant community support and developer updates',
-      'collaborate': 'Use pair programming sessions for complex problem solving'
-    };
-    
-    for (const key in tips) {
-      if (question.toLowerCase().includes(key)) {
-        return tips[key];
-      }
-    }
-    return 'Check our documentation for detailed guides and best practices';
+    if (question.includes('RFID')) return 'Avoid bending your ID card, as it might damage the internal RFID antenna.';
+    if (question.includes('lost')) return 'A temporary gate pass can be requested at the guard house while waiting for a replacement.';
+    if (question.includes('parents')) return 'Standard network rates may apply for SMS alerts depending on your service provider.';
+    if (question.includes('grades')) return 'You can download a PDF copy of your unofficial grade slip directly from the portal.';
+    if (question.includes('facial')) return 'Remove hats or heavy tinted glasses when approaching the gate camera for faster verification.';
+    return 'Contact the ICT department for technical issues regarding your portal account.';
   }
 
-  // Get resources based on question
   getResources(question: string): string {
-    const resources: { [key: string]: string } = {
-      'access': 'Authentication Guide · Security Best Practices · API Keys',
-      'tools': 'Toolchain Documentation · IDE Setup · Docker Images',
-      'deploy': 'Deployment Guide · Kubernetes Docs · Monitoring Setup',
-      'support': 'Knowledge Base · Video Tutorials · Community Forum',
-      'collaborate': 'Team Guide · Code Review Standards · Git Workflow'
-    };
-    
-    for (const key in resources) {
-      if (question.toLowerCase().includes(key)) {
-        return resources[key];
-      }
+    if (question.includes('RFID')) return 'Attendance Manual • RFID Scanner Locations';
+    if (question.includes('lost')) return 'Replacement Form • ID Fee Schedule';
+    if (question.includes('parents')) return 'SMS Setup Guide • Parent Portal Login';
+    if (question.includes('grades')) return 'Accounting Clearance • Registrar Contacts';
+    if (question.includes('facial')) return 'Campus Security Policy • Privacy Guidelines';
+    return 'User Handbook • Support Ticket • Office Directory';
+  }
+
+  // ---------- Gallery Methods (from school-showcase) ----------
+  get visibleImages() {
+    const images = [];
+    for (let i = 0; i < 4; i++) {
+      const index = (this.currentImageIndex + i) % this.campusImages.length;
+      images.push({
+        ...this.campusImages[index],
+        position: i,
+        isFeatured: i === 0
+      });
     }
-    return 'Documentation · Tutorials · Code Samples · Community';
+    return images;
   }
 
-  // Handle scroll to top
-  scrollToTop() {
-    if (isPlatformBrowser(this.platformId)) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  nextImage() {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.campusImages.length;
+  }
+
+  prevImage() {
+    this.currentImageIndex = (this.currentImageIndex - 1 + this.campusImages.length) % this.campusImages.length;
+  }
+
+  selectImage(index: number) {
+    this.currentImageIndex = index;
+  }
+
+  getBackgroundClass(position: number): string {
+    switch(position) {
+      case 2: return 'pos-2';
+      case 3: return 'pos-3';
+      default: return '';
     }
   }
 
-  // Handle button clicks
-  onLaunchPortal() {
-    console.log('Launching portal...');
-    // Add your portal launch logic here
+  // Touch events for mobile swipe
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.touches[0].clientX;
   }
 
-  onExploreTech() {
-    console.log('Exploring tech stack...');
-    // Add your tech exploration logic here
-  }
-
-  onWatchDemo() {
-    console.log('Watching demo...');
-    // Add your demo video logic here
-  }
-
-  // Clean up on destroy
-  ngOnDestroy() {
-    if (isPlatformBrowser(this.platformId)) {
-      document.body.style.overflow = 'auto';
+  @HostListener('touchend', ['$event'])
+  onTouchEnd(event: TouchEvent) {
+    const touchEndX = event.changedTouches[0].clientX;
+    const diff = touchEndX - this.touchStartX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) this.prevImage();
+      else this.nextImage();
     }
+  }
+
+  // ---------- Mobile Menu (from header) ----------
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  // ---------- Login Modal (from header + login-modal) ----------
+  openLoginModal() {
+    this.isLoginModalOpen = true;
+  }
+
+  closeModal() {
+    this.isLoginModalOpen = false;
+    this.loginForm.reset({ role: 'STUDENT' });
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      console.log('Login data:', this.loginForm.value);
+      // Here you would call your auth service
+      this.closeModal();
+    }
+  }
+
+  // ---------- Smooth Scroll (from header & hero) ----------
+  scrollToSection(sectionId: string) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    this.isMobileMenuOpen = false; // close mobile menu after click
+  }
+
+  // ---------- Scroll Animations (from landing & service) ----------
+  private initScrollAnimations() {
+    this.scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+      this.scrollObserver?.observe(el);
+    });
   }
 }
