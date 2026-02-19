@@ -1,1188 +1,491 @@
-<header class="fixed top-0 w-full bg-white/90 backdrop-blur-xl border-b border-blue-100/60 z-50 transition-all duration-500 shadow-lg hover:shadow-xl">
-  
-  <!-- Navigation -->
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class="flex items-center justify-between h-20">
-      
-      <!-- Logo with tech-blue identity -->
-      <div class="flex items-center space-x-3 group cursor-pointer">
-        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-12">
-          <span class="text-white font-bold text-lg">S</span>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-xl font-black bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
-            STI Bacoor
-          </span>
-        </div>
-      </div>
+<!-- landing.component.html -->
+<div class="min-h-screen">
 
-      <!-- Desktop Navigation with tech-blue interactions -->
-      <div class="hidden lg:flex items-center space-x-8">
-        <a (click)="scrollToSection('features')" 
-           class="relative text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-sm group">
-          <span class="relative z-10">Innovations</span>
-          <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 group-hover:w-full"></div>
-        </a>
-        
-        <a (click)="scrollToSection('showcase')" 
-           class="relative text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-sm group">
-          <span class="relative z-10">Digital Campus</span>
-          <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 group-hover:w-full"></div>
-        </a>
-        
-        <a (click)="scrollToSection('how-it-works')" 
-           class="relative text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-sm group">
-          <span class="relative z-10">Experience</span>
-          <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 group-hover:w-full"></div>
-        </a>
-        
-        <a (click)="scrollToSection('testimonials')" 
-           class="relative text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-sm group">
-          <span class="relative z-10">Success Stories</span>
-          <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 group-hover:w-full"></div>
-        </a>
-        
-        <a (click)="scrollToSection('faq')" 
-           class="relative text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-sm group">
-          <span class="relative z-10">Connect</span>
-          <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 group-hover:w-full"></div>
-        </a>
-        
-        <div class="flex items-center space-x-4 pl-4 border-l border-blue-100">
-          <button class="text-gray-600 hover:text-blue-600 font-semibold transition-all duration-300 text-sm hover:scale-105">
-            Explore Tech
-          </button>
-          <button class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2.5 rounded-2xl font-bold transition-all duration-300 hover:shadow-2xl hover:scale-105 text-sm shadow-lg hover:shadow-blue-200">
-            Launch Portal
+  <!-- ========== HEADER ========== -->
+  <header class="fixed top-0 w-full bg-white/90 backdrop-blur-xl border-b border-blue-100/60 z-50 transition-all duration-500 shadow-lg hover:shadow-xl">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo -->
+        <div class="flex items-center space-x-3 group cursor-pointer">
+          <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-12">
+            <span class="text-white font-bold text-lg">EduNexus</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-xl font-black bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">STI Bacoor</span>
+          </div>
+        </div>
+
+        <!-- Desktop nav -->
+        <div class="hidden lg:flex items-center space-x-8">
+          <a (click)="scrollToSection('features')" class="relative text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-sm group">
+            <span class="relative z-10">System Features</span>
+            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 group-hover:w-full"></div>
+          </a>
+          <a (click)="scrollToSection('showcase')" class="relative text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-sm group">
+            <span class="relative z-10">Interface Gallery</span>
+            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 group-hover:w-full"></div>
+          </a>
+          <a (click)="scrollToSection('how-it-works')" class="relative text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-sm group">
+            <span class="relative z-10">User Guide</span>
+            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 group-hover:w-full"></div>
+          </a>
+          <a (click)="scrollToSection('faq')" class="relative text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-sm group">
+            <span class="relative z-10">Help Center</span>
+            <div class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-300 group-hover:w-full"></div>
+          </a>
+          <div class="flex items-center space-x-4 pl-4 border-l border-blue-100">
+            <button (click)="openLoginModal()" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2.5 rounded-2xl font-bold transition-all duration-300 hover:shadow-2xl hover:scale-105 text-sm shadow-lg hover:shadow-blue-200">Portal Login</button>
+          </div>
+        </div>
+
+        <!-- Mobile menu button -->
+        <div class="lg:hidden">
+          <button (click)="toggleMobileMenu()" class="relative w-12 h-12 flex items-center justify-center bg-gradient-to-br from-blue-50 to-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100">
+            <div class="flex flex-col justify-center items-center w-6 h-6 relative">
+              <span [class]="'absolute w-6 h-0.5 bg-blue-600 transition-all duration-500 ' + (isMobileMenuOpen ? 'rotate-45 top-3' : 'top-1')"></span>
+              <span [class]="'absolute w-6 h-0.5 bg-blue-600 transition-all duration-300 ' + (isMobileMenuOpen ? 'opacity-0' : 'opacity-100 top-3')"></span>
+              <span [class]="'absolute w-6 h-0.5 bg-blue-600 transition-all duration-500 ' + (isMobileMenuOpen ? '-rotate-45 top-3' : 'top-5')"></span>
+            </div>
           </button>
         </div>
       </div>
+    </nav>
+  </header>
 
-      <!-- Mobile Menu Button - Tech Blue -->
-      <div class="lg:hidden">
-        <button (click)="toggleMobileMenu()" 
-                class="relative w-12 h-12 flex items-center justify-center bg-gradient-to-br from-blue-50 to-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100">
-          <div class="flex flex-col justify-center items-center w-6 h-6 relative">
-            <span [class]="'absolute w-6 h-0.5 bg-blue-600 transition-all duration-500 ' + (isMobileMenuOpen ? 'rotate-45 top-3' : 'top-1')"></span>
-            <span [class]="'absolute w-6 h-0.5 bg-blue-600 transition-all duration-300 ' + (isMobileMenuOpen ? 'opacity-0' : 'opacity-100 top-3')"></span>
-            <span [class]="'absolute w-6 h-0.5 bg-blue-600 transition-all duration-500 ' + (isMobileMenuOpen ? '-rotate-45 top-3' : 'top-5')"></span>
-          </div>
-        </button>
+  <!-- ========== HERO ========== -->
+  <section class="hero min-h-screen flex items-center justify-center text-center px-4 relative overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-cyan-50">
+    <div class="absolute inset-0 z-0 overflow-hidden">
+      <div class="absolute inset-0 opacity-[0.03] bg-circuit-pattern"></div>
+      <div class="floating-tech-elements">
+        <div class="absolute top-20 left-10 w-6 h-6 bg-blue-500 rounded-lg rotate-45 animate-float-tech opacity-60"></div>
+        <div class="absolute top-40 right-20 w-8 h-8 bg-cyan-400 rounded-full animate-float-tech opacity-40" style="animation-delay: 1.5s;"></div>
+        <div class="absolute bottom-40 left-20 w-10 h-10 bg-blue-600 rounded-lg animate-float-tech opacity-30" style="animation-delay: 2.5s;"></div>
+        <div class="absolute bottom-20 right-10 w-12 h-12 bg-cyan-500 rounded-full animate-float-tech opacity-50" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-10 left-1/4 text-blue-300/20 font-mono text-sm animate-binary-flow" style="animation-delay: 0.5s;">10101010</div>
+        <div class="absolute top-32 right-1/3 text-cyan-300/15 font-mono text-xs animate-binary-flow" style="animation-delay: 1.2s;">11001100</div>
       </div>
+      <div class="absolute -top-20 -right-20 w-60 h-60 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-10 blur-3xl animate-pulse-slow"></div>
+      <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-r from-cyan-300 to-blue-500 rounded-full opacity-5 blur-3xl animate-pulse-slow" style="animation-delay: 3s;"></div>
     </div>
-
-    <!-- Mobile Navigation Menu - Tech Blue Theme -->
-    <div [class]="'lg:hidden transition-all duration-500 overflow-hidden bg-white/95 backdrop-blur-lg rounded-3xl mt-2 shadow-2xl border border-blue-100 ' + (isMobileMenuOpen ? 'max-h-96 opacity-100 p-6' : 'max-h-0 opacity-0')">
-      <div class="space-y-4">
-        <a (click)="scrollToSection('features')" 
-           class="block text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-base py-2 border-b border-blue-50 hover:border-blue-200 hover:translate-x-2">
-          Innovations
-        </a>
-        <a (click)="scrollToSection('showcase')" 
-           class="block text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-base py-2 border-b border-blue-50 hover:border-blue-200 hover:translate-x-2">
-          Digital Campus
-        </a>
-        <a (click)="scrollToSection('how-it-works')" 
-           class="block text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-base py-2 border-b border-blue-50 hover:border-blue-200 hover:translate-x-2">
-          Experience
-        </a>
-        <a (click)="scrollToSection('testimonials')" 
-           class="block text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-base py-2 border-b border-blue-50 hover:border-blue-200 hover:translate-x-2">
-          Success Stories
-        </a>
-        <a (click)="scrollToSection('faq')" 
-           class="block text-gray-700 hover:text-blue-600 cursor-pointer transition-all duration-300 font-semibold text-base py-2 border-b border-blue-50 hover:border-blue-200 hover:translate-x-2">
-          Connect
-        </a>
-        <div class="pt-4 space-y-3">
-          <button class="w-full text-blue-600 font-semibold py-3 rounded-2xl border-2 border-blue-200 hover:border-blue-400 hover:bg-blue-50 transition-all duration-300 text-base">
-            Explore Tech
-          </button>
-          <button class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-2xl font-bold transition-all duration-300 hover:shadow-xl hover:scale-105 text-base shadow-lg">
-            Launch Portal
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
-</header>
-
-<section class="hero min-h-screen flex items-center justify-center text-center px-4 relative overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-cyan-50">
-  <!-- Animated Tech Background -->
-  <div class="absolute inset-0 z-0 overflow-hidden">
-    <!-- Circuit Board Pattern -->
-    <div class="absolute inset-0 opacity-[0.03] bg-circuit-pattern"></div>
-    
-    <!-- Floating Tech Elements -->
-    <div class="floating-tech-elements">
-      <div class="absolute top-20 left-10 w-6 h-6 bg-blue-500 rounded-lg rotate-45 animate-float-tech opacity-60"></div>
-      <div class="absolute top-40 right-20 w-8 h-8 bg-cyan-400 rounded-full animate-float-tech opacity-40" style="animation-delay: 1.5s;"></div>
-      <div class="absolute bottom-40 left-20 w-10 h-10 bg-blue-600 rounded-lg animate-float-tech opacity-30" style="animation-delay: 2.5s;"></div>
-      <div class="absolute bottom-20 right-10 w-12 h-12 bg-cyan-500 rounded-full animate-float-tech opacity-50" style="animation-delay: 1s;"></div>
-      
-      <!-- Binary Code Animation -->
-      <div class="absolute bottom-10 left-1/4 text-blue-300/20 font-mono text-sm animate-binary-flow" style="animation-delay: 0.5s;">10101010</div>
-      <div class="absolute top-32 right-1/3 text-cyan-300/15 font-mono text-xs animate-binary-flow" style="animation-delay: 1.2s;">11001100</div>
-    </div>
-
-    <!-- Gradient Orbs -->
-    <div class="absolute -top-20 -right-20 w-60 h-60 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-10 blur-3xl animate-pulse-slow"></div>
-    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-r from-cyan-300 to-blue-500 rounded-full opacity-5 blur-3xl animate-pulse-slow" style="animation-delay: 3s;"></div>
-  </div>
-
-  <!-- Hero Content -->
-  <div class="max-w-6xl mx-auto z-10 relative">
-    <div class="hero-content space-y-8">
-      
-      <!-- Tech Badge -->
-      <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-4">
-        <div class="w-3 h-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
-        <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">Version 3.0 Live</span>
-        <div class="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
-      </div>
-
-      <!-- Main Headline -->
-      <h1 class="text-4xl sm:text-5xl lg:text-7xl font-black text-gray-900 leading-tight">
-        <span class="block">Where Code Meets</span>
-        <span class="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">
-          Academic Innovation
-        </span>
-      </h1>
-      
-      <!-- Subheadline -->
-      <p class="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
-        STI Bacoor's next-generation platform transforming education through 
-        <span class="font-semibold text-blue-600">AI-driven insights</span>, 
-        <span class="font-semibold text-cyan-600">real-time collaboration</span>, and 
-        <span class="font-semibold text-blue-600">immersive digital experiences</span>.
-      </p>
-
-      <!-- Action Buttons -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-        <button class="group relative bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-10 py-5 rounded-2xl font-bold text-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/30 overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-          <div class="flex items-center justify-center gap-3 relative z-10">
-            <i class="fas fa-terminal text-sm"></i>
-            <span>Launch Developer Portal</span>
-            <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
-          </div>
-        </button>
-        
-        <button (click)="scrollToSection('showcase')" 
-                class="group border-2 border-blue-200 bg-white/60 backdrop-blur-sm text-blue-700 px-10 py-5 rounded-2xl font-bold text-lg transition-all duration-500 hover:bg-white hover:border-blue-400 hover:scale-105 hover:shadow-lg">
-          <div class="flex items-center justify-center gap-3">
-            <i class="fas fa-code-branch"></i>
-            <span>Explore Tech Stack</span>
-          </div>
-        </button>
-      </div>
-
-      <!-- Tech Stack Preview -->
-      <div class="pt-12">
-        <div class="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-6">Powered By</div>
-        <div class="flex flex-wrap justify-center items-center gap-8 opacity-60">
-          <div class="flex items-center gap-2 text-gray-700 font-mono text-sm">
-            <i class="fab fa-angular text-red-500"></i>
-            <span>Angular 16</span>
-          </div>
-          <div class="flex items-center gap-2 text-gray-700 font-mono text-sm">
-            <i class="fab fa-node-js text-green-500"></i>
-            <span>Node.js</span>
-          </div>
-          <div class="flex items-center gap-2 text-gray-700 font-mono text-sm">
-            <i class="fas fa-database text-blue-500"></i>
-            <span>MySQL</span>
-          </div>
-          <div class="flex items-center gap-2 text-gray-700 font-mono text-sm">
-            <i class="fab fa-cloudflare text-orange-500"></i>
-            <span>Cloudflare</span>
+    <div class="max-w-6xl mx-auto z-10 relative">
+      <div class="hero-content space-y-8">
+        <h1 class="text-4xl sm:text-5xl lg:text-7xl font-black text-gray-900 leading-tight">
+          <span class="block">Secure Your Campus with</span>
+          <span class="bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 bg-clip-text text-transparent">EduNexus</span>
+        </h1>
+        <p class="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
+          A comprehensive school management system for 
+          <span class="font-semibold text-cyan-600">STI College Bacoor</span> integrating 
+          <span class="font-semibold text-blue-600">Facial Recognition</span> and
+          <span class="font-semibold text-blue-600">RFID technology</span> to automate attendance and enhance student safety.
+        </p>
+        <div class="pt-12">
+          <div class="text-sm text-gray-500 uppercase tracking-wider font-semibold mb-6">Powered By</div>
+          <div class="flex flex-wrap justify-center items-center gap-8 opacity-60">
+            <div class="flex items-center gap-2 text-gray-700 font-mono text-sm"><i class="fab fa-angular text-red-500"></i><span>Angular 16</span></div>
+            <div class="flex items-center gap-2 text-gray-700 font-mono text-sm"><i class="fab fa-node-js text-green-500"></i><span>Node.js</span></div>
+            <div class="flex items-center gap-2 text-gray-700 font-mono text-sm"><i class="fas fa-database text-blue-500"></i><span>MongoDB</span></div>
+            <div class="flex items-center gap-2 text-gray-700 font-mono text-sm"><i class="fab fa-aws text-orange-500"></i><span>AWS</span></div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Scroll Indicator -->
-  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-    <div class="flex flex-col items-center gap-2 text-blue-400 animate-bounce">
-      <span class="text-sm font-semibold">Explore Platform</span>
-      <i class="fas fa-chevron-down"></i>
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+      <div class="flex flex-col items-center gap-2 text-blue-400 animate-bounce"><span class="text-sm font-semibold">Explore Platform</span><i class="fas fa-chevron-down"></i></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="stats bg-gradient-to-b from-white to-blue-50 py-16 -mt-2 relative z-20 border-t border-blue-100">
-  <!-- Background Elements -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-20"></div>
-    <div class="absolute -top-10 left-1/4 w-20 h-20 bg-blue-200 rounded-full blur-3xl opacity-30"></div>
-    <div class="absolute -bottom-10 right-1/4 w-24 h-24 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
-  </div>
-
-  <div class="max-w-6xl mx-auto px-4 relative z-10">
-    <div class="stats-grid grid grid-cols-2 lg:grid-cols-4 gap-8">
-      
-      <!-- Active Innovators -->
-      <div class="stat-item group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2">
-        <div class="relative">
-          <div class="absolute -top-2 -left-2 w-4 h-4 bg-green-400 rounded-full animate-ping opacity-60"></div>
-          <div class="absolute -top-2 -left-2 w-4 h-4 bg-green-500 rounded-full"></div>
-        </div>
-        <span class="stat-number text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block mb-2">
-          2.5K+
-        </span>
-        <p class="stat-label text-gray-600 font-semibold text-sm uppercase tracking-wide">Active Innovators</p>
-        <div class="mt-3 w-12 h-1 bg-gradient-to-r from-green-400 to-cyan-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
-      </div>
-      
-      <!-- System Uptime -->
-      <div class="stat-item group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2">
-        <div class="relative">
-          <div class="absolute -top-2 -left-2 w-4 h-4 bg-blue-400 rounded-full animate-pulse"></div>
-        </div>
-        <span class="stat-number text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block mb-2">
-          99.9%
-        </span>
-        <p class="stat-label text-gray-600 font-semibold text-sm uppercase tracking-wide">System Uptime</p>
-        <div class="mt-3 w-12 h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
-      </div>
-      
-      <!-- Tech Programs -->
-      <div class="stat-item group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2">
-        <div class="relative">
-          <div class="absolute -top-2 -left-2 w-4 h-4 bg-purple-500 rounded-full animate-bounce opacity-70" style="animation-duration: 2s;"></div>
-        </div>
-        <span class="stat-number text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block mb-2">
-          50+
-        </span>
-        <p class="stat-label text-gray-600 font-semibold text-sm uppercase tracking-wide">Tech Programs</p>
-        <div class="mt-3 w-12 h-1 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
-      </div>
-      
-      <!-- Live Support -->
-      <div class="stat-item group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2">
-        <div class="relative">
-          <div class="absolute -top-2 -left-2 w-4 h-4 bg-cyan-400 rounded-full">
-            <div class="absolute inset-1 bg-cyan-200 rounded-full animate-ping"></div>
-          </div>
-        </div>
-        <span class="stat-number text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block mb-2">
-          24/7
-        </span>
-        <p class="stat-label text-gray-600 font-semibold text-sm uppercase tracking-wide">Dev Support</p>
-        <div class="mt-3 w-12 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
-      </div>
-      
+  <!-- ========== STATS ========== -->
+  <section class="stats bg-gradient-to-b from-white to-blue-50 py-16 -mt-2 relative z-20 border-t border-blue-100">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-20"></div>
+      <div class="absolute -top-10 left-1/4 w-20 h-20 bg-blue-200 rounded-full blur-3xl opacity-30"></div>
+      <div class="absolute -bottom-10 right-1/4 w-24 h-24 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
     </div>
-
-    <!-- Bottom CTA -->
-    <div class="text-center mt-12 pt-8 border-t border-blue-100/50">
-      <p class="text-gray-600 text-lg font-light mb-4">
-        Join our growing community of tech innovators and creators
-      </p>
-      <button class="inline-flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-700 transition-colors duration-300 group">
-        <span>View Real-time Analytics</span>
-        <i class="fas fa-chart-line group-hover:translate-x-1 transition-transform duration-300"></i>
-      </button>
+    <div class="max-w-6xl mx-auto px-4 relative z-10">
+      <div class="stats-grid grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="stat-item group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2">
+          <div class="relative"><div class="absolute -top-2 -left-2 w-4 h-4 bg-green-400 rounded-full animate-ping opacity-60"></div><div class="absolute -top-2 -left-2 w-4 h-4 bg-green-500 rounded-full"></div></div>
+          <span class="stat-number text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block mb-2">3,000+</span>
+          <p class="stat-label text-gray-600 font-semibold text-sm uppercase tracking-wide">Students Tracked</p>
+          <div class="mt-3 w-12 h-1 bg-gradient-to-r from-green-400 to-cyan-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
+        </div>
+        <div class="stat-item group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2">
+          <div class="relative"><div class="absolute -top-2 -left-2 w-4 h-4 bg-blue-400 rounded-full animate-pulse"></div></div>
+          <span class="stat-number text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block mb-2">&lt; 2s</span>
+          <p class="stat-label text-gray-600 font-semibold text-sm uppercase tracking-wide">SMS Delivery Speed</p>
+          <div class="mt-3 w-12 h-1 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
+        </div>
+        <div class="stat-item group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2">
+          <div class="relative"><div class="absolute -top-2 -left-2 w-4 h-4 bg-purple-500 rounded-full animate-bounce opacity-70" style="animation-duration: 2s;"></div></div>
+          <span class="stat-number text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block mb-2">99.9%</span>
+          <p class="stat-label text-gray-600 font-semibold text-sm uppercase tracking-wide">System Reliability</p>
+          <div class="mt-3 w-12 h-1 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
+        </div>
+        <div class="stat-item group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg hover:shadow-xl hover:border-blue-200 transition-all duration-500 hover:-translate-y-2">
+          <div class="relative"><div class="absolute -top-2 -left-2 w-4 h-4 bg-cyan-400 rounded-full"><div class="absolute inset-1 bg-cyan-200 rounded-full animate-ping"></div></div></div>
+          <span class="stat-number text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent block mb-2">24/7</span>
+          <p class="stat-label text-gray-600 font-semibold text-sm uppercase tracking-wide">Hardware Monitoring</p>
+          <div class="mt-3 w-12 h-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full mx-auto group-hover:w-16 transition-all duration-300"></div>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="features py-20 bg-gradient-to-b from-white to-blue-50/30 relative overflow-hidden">
-  <!-- Background Elements -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
-    <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
-    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
-  </div>
-
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    <!-- Section Header -->
-    <div class="section-header text-center mb-16">
-      <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
-        <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
-        <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">Platform Capabilities</span>
-      </div>
-      <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-        Built for the
-        <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Next Generation</span>
-      </h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-        Experience cutting-edge tools designed for modern creators, innovators, and tech leaders.
-      </p>
+  <!-- ========== FEATURES ========== -->
+  <section id="features" class="features py-20 bg-gradient-to-b from-white to-blue-50/30 relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
     </div>
-
-    <!-- Features Grid -->
-    <div class="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      
-      <!-- AI Analytics -->
-      <div class="feature-card group animate-on-scroll">
-        <div class="relative">
-          <div class="feature-icon-wrapper">
-            <div class="feature-icon bg-gradient-to-br from-blue-500 to-cyan-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-              <i class="fas fa-brain"></i>
-            </div>
-            <div class="absolute -top-1 -right-1 w-6 h-6 bg-green-400 rounded-full border-2 border-white flex items-center justify-center">
-              <i class="fas fa-bolt text-xs text-white"></i>
-            </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="section-header text-center mb-16">
+        <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
+          <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+          <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">System Capabilities</span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">Designed for a <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Modern Campus</span></h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">EduNexus provides a comprehensive suite of tools to automate monitoring and enhance school security.</p>
+      </div>
+      <div class="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Identity Verification -->
+        <div class="feature-card group animate-on-scroll">
+          <div class="relative">
+            <div class="feature-icon-wrapper"><div class="feature-icon bg-gradient-to-br from-blue-500 to-cyan-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110"><i class="fas fa-user-check"></i></div></div>
+            <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-blue-600 transition-colors duration-300">Identity Verification</h3>
+            <p class="text-gray-600 leading-relaxed text-base font-light">Uses high-resolution cameras at main gates to verify student identity, ensuring campus security and accurate entry logs.</p>
           </div>
-          <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-blue-600 transition-colors duration-300">
-            AI Intelligence Engine
-          </h3>
-          <p class="text-gray-600 leading-relaxed text-base font-light">
-            Predictive analytics and machine learning algorithms that adapt to your learning patterns and optimize your academic journey.
-          </p>
-          <div class="mt-4 flex items-center gap-2 text-sm text-blue-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span>Explore AI Tools</span>
-            <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+        </div>
+        <!-- RFID Attendance -->
+        <div class="feature-card group animate-on-scroll">
+          <div class="relative">
+            <div class="feature-icon-wrapper"><div class="feature-icon bg-gradient-to-br from-purple-500 to-blue-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110"><i class="fas fa-id-card"></i></div></div>
+            <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-purple-600 transition-colors duration-300">RFID Attendance</h3>
+            <p class="text-gray-600 leading-relaxed text-base font-light">Contactless classroom attendance tracking using RFID technology for faster, error-free student logging.</p>
+          </div>
+        </div>
+        <!-- SMS Alerts -->
+        <div class="feature-card group animate-on-scroll">
+          <div class="relative">
+            <div class="feature-icon-wrapper"><div class="feature-icon bg-gradient-to-br from-green-500 to-emerald-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110"><i class="fas fa-comment-alt-dots"></i></div></div>
+            <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-green-600 transition-colors duration-300">SMS Alerts</h3>
+            <p class="text-gray-600 leading-relaxed text-base font-light">Instant notifications sent to parents via Semaphore SMS gateway regarding student arrival, departure, and grades.</p>
+          </div>
+        </div>
+        <!-- Academic Portal -->
+        <div class="feature-card group animate-on-scroll">
+          <div class="relative">
+            <div class="feature-icon-wrapper"><div class="feature-icon bg-gradient-to-br from-orange-500 to-red-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110"><i class="fas fa-file-invoice"></i></div></div>
+            <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-orange-600 transition-colors duration-300">Academic Portal</h3>
+            <p class="text-gray-600 leading-relaxed text-base font-light">A centralized hub for students and parents to view academic performance and grades once tuition is cleared.</p>
+          </div>
+        </div>
+        <!-- Live Monitoring -->
+        <div class="feature-card group animate-on-scroll">
+          <div class="relative">
+            <div class="feature-icon-wrapper"><div class="feature-icon bg-gradient-to-br from-indigo-500 to-purple-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110"><i class="fas fa-chart-line"></i></div></div>
+            <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-indigo-600 transition-colors duration-300">Live Monitoring</h3>
+            <p class="text-gray-600 leading-relaxed text-base font-light">Provides administrators with a real-time dashboard of student movements and classroom attendance trends.</p>
+          </div>
+        </div>
+        <!-- Schedule Control -->
+        <div class="feature-card group animate-on-scroll">
+          <div class="relative">
+            <div class="feature-icon-wrapper"><div class="feature-icon bg-gradient-to-br from-pink-500 to-rose-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110"><i class="fas fa-calendar-alt"></i></div></div>
+            <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-pink-600 transition-colors duration-300">Schedule Control</h3>
+            <p class="text-gray-600 leading-relaxed text-base font-light">Efficiently manage class schedules, holiday declarations, and school-wide announcements through the admin panel.</p>
           </div>
         </div>
       </div>
-
-      <!-- Mobile Experience -->
-      <div class="feature-card group animate-on-scroll">
-        <div class="relative">
-          <div class="feature-icon-wrapper">
-            <div class="feature-icon bg-gradient-to-br from-purple-500 to-blue-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-              <i class="fas fa-mobile-alt"></i>
-            </div>
-          </div>
-          <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-purple-600 transition-colors duration-300">
-            Cross-Platform Sync
-          </h3>
-          <p class="text-gray-600 leading-relaxed text-base font-light">
-            Seamless experience across all devices with real-time synchronization and offline capabilities.
-          </p>
-          <div class="mt-4 flex items-center gap-3 text-xs text-gray-500">
-            <span class="flex items-center gap-1"><i class="fab fa-apple"></i> iOS</span>
-            <span class="flex items-center gap-1"><i class="fab fa-android"></i> Android</span>
-            <span class="flex items-center gap-1"><i class="fas fa-desktop"></i> Web</span>
-          </div>
-        </div>
+      <div class="text-center mt-16 pt-12 border-t border-blue-100/50">
+        <p class="text-gray-600 text-lg font-light mb-6">Ready to digitize your campus management?</p>
+        <button class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"><div class="flex items-center justify-center gap-3"><i class="fas fa-rocket"></i><span>Explore Portal Features</span></div></button>
       </div>
-
-      <!-- Security -->
-      <div class="feature-card group animate-on-scroll">
-        <div class="relative">
-          <div class="feature-icon-wrapper">
-            <div class="feature-icon bg-gradient-to-br from-green-500 to-emerald-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-              <i class="fas fa-shield-alt"></i>
-            </div>
-            <div class="absolute -top-1 -right-1 w-6 h-6 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center">
-              <i class="fas fa-lock text-xs text-white"></i>
-            </div>
-          </div>
-          <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-green-600 transition-colors duration-300">
-            Enterprise Security
-          </h3>
-          <p class="text-gray-600 leading-relaxed text-base font-light">
-            Military-grade encryption, multi-factor authentication, and continuous threat monitoring to protect your data.
-          </p>
-          <div class="mt-3 inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-            <i class="fas fa-check-circle"></i>
-            <span>GDPR Compliant</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Real-time -->
-      <div class="feature-card group animate-on-scroll">
-        <div class="relative">
-          <div class="feature-icon-wrapper">
-            <div class="feature-icon bg-gradient-to-br from-orange-500 to-red-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-              <i class="fas fa-bolt"></i>
-            </div>
-          </div>
-          <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-orange-600 transition-colors duration-300">
-            Live Data Streams
-          </h3>
-          <p class="text-gray-600 leading-relaxed text-base font-light">
-            Instant notifications, live collaboration, and real-time updates powered by WebSocket technology.
-          </p>
-          <div class="mt-4 flex items-center gap-2 text-sm text-orange-600 font-semibold">
-            <div class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-            <span>Live Updates Active</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Planning -->
-      <div class="feature-card group animate-on-scroll">
-        <div class="relative">
-          <div class="feature-icon-wrapper">
-            <div class="feature-icon bg-gradient-to-br from-indigo-500 to-purple-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-              <i class="fas fa-project-diagram"></i>
-            </div>
-          </div>
-          <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-indigo-600 transition-colors duration-300">
-            Smart Roadmaps
-          </h3>
-          <p class="text-gray-600 leading-relaxed text-base font-light">
-            AI-generated learning paths, milestone tracking, and adaptive scheduling for optimal academic progression.
-          </p>
-          <div class="mt-3 inline-flex items-center gap-2 text-xs text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
-            <i class="fas fa-route"></i>
-            <span>Personalized Paths</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Collaboration -->
-      <div class="feature-card group animate-on-scroll">
-        <div class="relative">
-          <div class="feature-icon-wrapper">
-            <div class="feature-icon bg-gradient-to-br from-pink-500 to-rose-500 text-white w-16 h-16 rounded-2xl flex items-center justify-center text-2xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-              <i class="fas fa-code-branch"></i>
-            </div>
-          </div>
-          <h3 class="text-xl font-black text-gray-900 mt-6 mb-4 group-hover:text-pink-600 transition-colors duration-300">
-            Dev Collaboration
-          </h3>
-          <p class="text-gray-600 leading-relaxed text-base font-light">
-            Git-integrated project spaces, code review tools, and real-time pair programming environments.
-          </p>
-          <div class="mt-4 flex items-center gap-3 text-xs text-gray-500">
-            <span class="flex items-center gap-1"><i class="fab fa-git-alt"></i> Git</span>
-            <span class="flex items-center gap-1"><i class="fas fa-code"></i> VS Code</span>
-            <span class="flex items-center gap-1"><i class="fas fa-terminal"></i> CLI</span>
-          </div>
-        </div>
-      </div>
-
     </div>
+  </section>
 
-    <!-- Bottom CTA -->
-    <div class="text-center mt-16 pt-12 border-t border-blue-100/50">
-      <p class="text-gray-600 text-lg font-light mb-6">
-        Ready to experience the future of academic technology?
-      </p>
-      <button class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
-        <div class="flex items-center justify-center gap-3">
-          <i class="fas fa-rocket"></i>
-          <span>Launch Platform Tour</span>
+  <!-- ========== SCHOOL SHOWCASE ========== -->
+  <section id="showcase" class="campus-showcase py-20 bg-gradient-to-b from-white to-blue-50/30 relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute inset-0 opacity-[0.02] bg-circuit-pattern"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="section-header text-center mb-16">
+        <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
+          <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+          <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">Interface Preview</span>
         </div>
-      </button>
-    </div>
-  </div>
-</section>
-
-<section class="campus-showcase py-20 bg-gradient-to-b from-white to-blue-50/30 relative overflow-hidden">
-  <!-- Background Elements -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
-    <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
-    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
-    <!-- Circuit Pattern -->
-    <div class="absolute inset-0 opacity-[0.02] bg-circuit-pattern"></div>
-  </div>
-
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    <!-- Section Header -->
-    <div class="section-header text-center mb-16">
-      <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
-        <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
-        <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">Digital Campus</span>
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">Integrated <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">System Gallery</span></h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">Explore the EduNexus ecosystem, from hardware integration to user-friendly web interfaces.</p>
       </div>
-      <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-        The Future of
-        <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Tech Education</span>
-      </h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-        Step into our innovation ecosystem where cutting-edge technology meets transformative learning experiences.
-      </p>
-    </div>
-
-    <!-- Tech Gallery -->
-    <div class="tech-gallery animate-on-scroll mb-16">
-      
-      <!-- Gallery Container -->
-      <div class="gallery-container relative">
-        
-        <!-- Background Grid -->
-        <div class="background-grid grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 relative z-0">
-          
-          <!-- Background Images -->
-          <div 
-            *ngFor="let image of visibleImages.slice(1)" 
-            [class]="'tech-image-card group rounded-2xl overflow-hidden shadow-lg transition-all duration-500 cursor-pointer ' + getBackgroundClass(image.position)"
-            (click)="selectImage((currentImageIndex + image.position) % campusImages.length)">
-            
-            <!-- Image with Tech Overlay -->
-            <div class="relative overflow-hidden">
-              <img 
-                [src]="image.src" 
-                [alt]="image.alt"
-                class="w-full h-32 md:h-40 object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              
-              <!-- Tech Overlay -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end p-4">
-                <div class="text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <h4 class="font-bold text-sm md:text-base mb-1">{{ image.title }}</h4>
-                  <p class="text-xs opacity-90">{{ image.description }}</p>
+      <div class="tech-gallery animate-on-scroll mb-16">
+        <div class="gallery-container relative">
+          <div class="background-grid grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 relative z-0">
+            <div *ngFor="let image of visibleImages.slice(1)" [class]="'tech-image-card group rounded-2xl overflow-hidden shadow-lg transition-all duration-500 cursor-pointer ' + getBackgroundClass(image.position)" (click)="selectImage((currentImageIndex + image.position) % campusImages.length)">
+              <div class="relative overflow-hidden">
+                <img [src]="image.src" [alt]="image.alt" class="w-full h-32 md:h-40 object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end p-4">
+                  <div class="text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h4 class="font-bold text-sm md:text-base mb-1">{{ image.title }}</h4>
+                    <p class="text-xs opacity-90">{{ image.description }}</p>
+                  </div>
                 </div>
               </div>
-              
-              <!-- Tech Badge -->
-              <div class="absolute top-3 right-3 bg-black/60 text-white px-2 py-1 rounded-lg text-xs font-semibold backdrop-blur-sm">
-                <i class="fas fa-microchip mr-1"></i>
-                Tech
-              </div>
             </div>
           </div>
-
-        </div>
-
-        <!-- Floating Featured Tech Card -->
-        <div class="floating-tech-card absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-11/12 max-w-sm md:max-w-md">
-          <div class="tech-featured-card bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:scale-105 border border-white/20">
-            
-            <!-- Featured Image with Tech Elements -->
-            <div class="image-container relative">
-              <img 
-                [src]="visibleImages[0].src" 
-                [alt]="visibleImages[0].alt"
-                class="w-full h-48 md:h-56 object-cover"
-              />
-              
-              <!-- Advanced Gradient Overlay -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-              
-              <!-- Tech Status Badge -->
-              <div class="absolute top-4 left-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2">
-                <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                <span>INNOVATION ZONE</span>
-              </div>
-
-              <!-- Tech Info Panel -->
-              <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <div class="flex items-center gap-2 mb-2">
-                  <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                  <span class="text-xs font-semibold opacity-90">ACTIVE NOW</span>
-                </div>
-                <h3 class="text-xl md:text-2xl font-black mb-2">{{ visibleImages[0].title }}</h3>
-                <p class="text-sm opacity-90 leading-relaxed">{{ visibleImages[0].description }}</p>
-                
-                <!-- Tech Tags -->
-                <div class="flex flex-wrap gap-2 mt-3">
-                  <span class="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded-lg text-xs">AI LAB</span>
-                  <span class="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded-lg text-xs">CLOUD</span>
-                  <span class="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded-lg text-xs">IOT</span>
+          <div class="floating-tech-card absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 w-11/12 max-w-sm md:max-w-md">
+            <div class="tech-featured-card bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-500 hover:scale-105 border border-white/20">
+              <div class="image-container relative">
+                <img [src]="visibleImages[0].src" [alt]="visibleImages[0].alt" class="w-full h-48 md:h-56 object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <div class="flex items-center gap-2 mb-2"><div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div><span class="text-xs font-semibold opacity-90">ACTIVE NOW</span></div>
+                  <h3 class="text-xl md:text-2xl font-black mb-2">{{ visibleImages[0].title }}</h3>
+                  <p class="text-sm opacity-90 leading-relaxed">{{ visibleImages[0].description }}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-      </div>
-
-      <!-- Clean Navigation Dots -->
-      <div class="navigation-dots flex justify-center gap-4 mt-8">
-        <button 
-          *ngFor="let dot of campusImages; let i = index"
-          (click)="selectImage(i)"
-          class="tech-dot group relative"
-          [attr.aria-label]="'Go to ' + campusImages[i].title">
+        <div class="navigation-dots flex justify-center gap-4 mt-8">
+          <button *ngFor="let dot of campusImages; let i = index" (click)="selectImage(i)" class="tech-dot group relative" [attr.aria-label]="'Go to ' + campusImages[i].title">
             <div [class]="'w-3 h-3 rounded-full transition-all duration-300 ' + (i === currentImageIndex ? 'bg-blue-600 scale-125' : 'bg-gray-300 group-hover:bg-gray-400')"></div>
-            <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-              {{ campusImages[i].title }}
+            <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">{{ campusImages[i].title }}</div>
+          </button>
+        </div>
+      </div>
+      <div class="innovation-highlights grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div class="innovation-card group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200 animate-on-scroll">
+          <div class="innovation-icon-wrapper mb-4"><div class="innovation-icon bg-gradient-to-br from-blue-500 to-cyan-500 text-white w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110"><i class="fas fa-shield-alt"></i></div></div>
+          <h4 class="text-lg font-black text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Secure Logging</h4>
+          <p class="text-gray-600 leading-relaxed text-base font-light mb-4">Encrypted data transmission between the RFID hardware and the centralized SQL database.</p>
+          <div class="flex items-center gap-2 text-sm text-blue-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"><span>Explore Lab</span><i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i></div>
+        </div>
+        <div class="innovation-card group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200 animate-on-scroll">
+          <div class="innovation-icon-wrapper mb-4"><div class="innovation-icon bg-gradient-to-br from-purple-500 to-blue-500 text-white w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110"><i class="fas fa-sync"></i></div></div>
+          <h4 class="text-lg font-black text-gray-900 mb-3 group-hover:text-purple-600 transition-colors duration-300">Instant Sync</h4>
+          <p class="text-gray-600 leading-relaxed text-base font-light mb-4">Records are updated instantly across the student, teacher, and administrator portals.</p>
+        </div>
+        <div class="innovation-card group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200 animate-on-scroll">
+          <div class="innovation-icon-wrapper mb-4"><div class="innovation-icon bg-gradient-to-br from-green-500 to-emerald-500 text-white w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110"><i class="fas fa-mobile-alt"></i></div></div>
+          <h4 class="text-lg font-black text-gray-900 mb-3 group-hover:text-green-600 transition-colors duration-300">Responsive Design</h4>
+          <p class="text-gray-600 leading-relaxed text-base font-light mb-4">The EduNexus portal is optimized for smartphones, tablets, and desktop computers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== HOW IT WORKS ========== -->
+  <section id="how-it-works" class="tech-process py-20 bg-gradient-to-b from-white to-blue-50/30 relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute inset-0 opacity-[0.02] bg-code-pattern"></div>
+    </div>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="section-header text-center mb-16">
+        <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
+          <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+          <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">Operational Workflow</span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">How EduNexus <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Secures the Campus</span></h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">Experience the seamless integration of hardware and software designed to keep STI Bacoor students safe and parents informed.</p>
+      </div>
+      <div class="process-timeline relative">
+        <div class="process-step group flex items-start gap-8 mb-12 animate-on-scroll">
+          <div class="step-indicator flex-shrink-0 relative"><div class="step-number bg-gradient-to-br from-blue-500 to-cyan-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl"><i class="fas fa-id-card"></i></div></div>
+          <div class="step-content flex-1 pt-4">
+            <div class="flex items-center gap-3 mb-4"><h3 class="text-2xl font-black text-gray-900 group-hover:text-blue-600 transition-colors duration-300">1. Identification & Entry</h3></div>
+            <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">Students scan their RFID-enabled IDs at the STI Bacoor gate terminal. The system uses facial recognition to verify identity against the student database.</p>
+          </div>
+        </div>
+        <div class="process-step group flex items-start gap-8 mb-12 animate-on-scroll">
+          <div class="step-indicator flex-shrink-0 relative"><div class="step-number bg-gradient-to-br from-purple-500 to-blue-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl"><i class="fas fa-database"></i></div></div>
+          <div class="step-content flex-1 pt-4">
+            <div class="flex items-center gap-3 mb-4"><h3 class="text-2xl font-black text-gray-900 group-hover:text-purple-600 transition-colors duration-300">2. Real-time Logging</h3></div>
+            <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">The local server processes the UID and timestamp, immediately logging the attendance in the MySQL database and updating the Admin Dashboard.</p>
+          </div>
+        </div>
+        <div class="process-step group flex items-start gap-8 mb-12 animate-on-scroll">
+          <div class="step-indicator flex-shrink-0 relative">
+            <div class="step-number bg-gradient-to-br from-green-500 to-emerald-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl"><i class="fas fa-comment-alt-dots"></i></div>
+            <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full border-2 border-white"><div class="absolute inset-1 bg-green-200 rounded-full animate-ping"></div></div>
+          </div>
+          <div class="step-content flex-1 pt-4">
+            <div class="flex items-center gap-3 mb-4"><h3 class="text-2xl font-black text-gray-900 group-hover:text-green-600 transition-colors duration-300">3. Automated Parent Alert</h3></div>
+            <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">Upon successful verification, the Semaphore SMS Gateway triggers a notification to the registered guardian's mobile number.</p>
+          </div>
+        </div>
+        <div class="process-step group flex items-start gap-8 animate-on-scroll">
+          <div class="step-indicator flex-shrink-0 relative">
+            <div class="step-number bg-gradient-to-br from-orange-500 to-red-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl"><i class="fas fa-user-check"></i></div>
+            <div class="absolute -top-2 -right-2 w-6 h-6 bg-orange-400 rounded-full border-2 border-white flex items-center justify-center"><i class="fas fa-bolt text-xs text-white"></i></div>
+          </div>
+          <div class="step-content flex-1 pt-4">
+            <div class="flex items-center gap-3 mb-4"><h3 class="text-2xl font-black text-gray-900 group-hover:text-orange-600 transition-colors duration-300">4. Student/Admin Insights</h3></div>
+            <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">Users can log in to the EduNexus web portal to review attendance history, manage profile data, and generate periodic reports.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TESTIMONIALS ========== -->
+  <section id="testimonials" class="developer-stories py-20 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full blur-3xl opacity-30"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-100 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute inset-0 opacity-[0.02] bg-code-background"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="section-header text-center mb-16">
+        <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
+          <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+          <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">System Impact</span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">Trusted by the <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">STI Community</span></h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">Hear from the parents and educators who rely on EduNexus for a safer campus experience.</p>
+      </div>
+      <div class="stories-grid grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
+        <div class="story-card group animate-on-scroll"><div class="story-content bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200"><div class="tech-stack-badge inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full text-xs font-semibold mb-4"><i class="fab fa-python text-blue-500"></i><span>Parents</span></div><div class="quote-mark text-6xl text-blue-200 opacity-60 mb-4 transition-all duration-300 group-hover:opacity-80">"</div><p class="story-text text-gray-700 leading-relaxed text-base font-light mb-6">"Real-time SMS alerts for attendance and instant grade viewing."</p></div></div>
+        <div class="story-card group animate-on-scroll"><div class="story-content bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200"><div class="tech-stack-badge inline-flex items-center gap-2 bg-purple-50 text-purple-700 px-3 py-1.5 rounded-full text-xs font-semibold mb-4"><i class="fab fa-js-square text-purple-500"></i><span>Teachers</span></div><div class="quote-mark text-6xl text-purple-200 opacity-60 mb-4 transition-all duration-300 group-hover:opacity-80">"</div><p class="story-text text-gray-700 leading-relaxed text-base font-light mb-6">"Automated classroom logs via RFID and seamless grade management."</p></div></div>
+        <div class="story-card group animate-on-scroll"><div class="story-content bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200"><div class="tech-stack-badge inline-flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold mb-4"><i class="fab fa-docker text-green-500"></i><span>Students</span></div><div class="quote-mark text-6xl text-green-200 opacity-60 mb-4 transition-all duration-300 group-hover:opacity-80">"</div><p class="story-text text-gray-700 leading-relaxed text-base font-light mb-6">"Check personal attendance records and academic schedules anytime."</p></div></div>
+        <div class="story-card group animate-on-scroll"><div class="story-content bg-white/90 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200"><div class="tech-stack-badge inline-flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold mb-4"><i class="fab fa-docker text-green-500"></i><span>Administrators</span></div><div class="quote-mark text-6xl text-green-200 opacity-60 mb-4 transition-all duration-300 group-hover:opacity-80">"</div><p class="story-text text-gray-700 leading-relaxed text-base font-light mb-6">"Centralized control over user accounts, schedules, and reports."</p></div></div>
+      </div>
+      <div class="metrics-bar grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-12 border-t border-blue-100/50">
+        <div class="metric text-center"><div class="metric-number text-3xl font-black text-gray-900 mb-2">98%</div><div class="metric-label text-gray-600 text-sm font-semibold">Developer Satisfaction</div></div>
+        <div class="metric text-center"><div class="metric-number text-3xl font-black text-gray-900 mb-2">4.9/5</div><div class="metric-label text-gray-600 text-sm font-semibold">Platform Rating</div></div>
+        <div class="metric text-center"><div class="metric-number text-3xl font-black text-gray-900 mb-2">2.5K+</div><div class="metric-label text-gray-600 text-sm font-semibold">Active Developers</div></div>
+        <div class="metric text-center"><div class="metric-number text-3xl font-black text-gray-900 mb-2">24/7</div><div class="metric-label text-gray-600 text-sm font-semibold">Support Available</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FAQ ========== -->
+  <section id="faq" class="tech-support py-20 bg-gradient-to-b from-white to-blue-50/30 relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute inset-0 opacity-[0.02] bg-binary-pattern"></div>
+    </div>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="section-header text-center mb-16">
+        <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
+          <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+          <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">Help Center</span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">System <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Information</span></h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">Frequently asked questions and guides for the EduNexus integrated campus system.</p>
+      </div>
+      <div class="documentation-container mt-12">
+        <div *ngFor="let item of faqItems; let i = index" class="doc-item group bg-white/90 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg mb-4 transition-all duration-500 hover:shadow-xl hover:border-blue-200 animate-on-scroll">
+          <button (click)="toggleFaq(i)" class="doc-question w-full bg-transparent border-none p-6 text-left font-black text-gray-900 text-lg cursor-pointer flex items-center justify-between transition-all duration-500 hover:bg-blue-50/50 rounded-2xl" [class.active]="item.isOpen">
+            <div class="flex items-center gap-4">
+              <div class="doc-icon w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 text-white rounded-xl flex items-center justify-center text-lg transition-all duration-500 group-hover:scale-110"><i class="fas" [class]="getQuestionIcon(item.question)"></i></div>
+              <span class="text-left">{{ item.question }}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-1 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100">{{ item.isOpen ? 'CLOSE' : 'EXPAND' }}</span>
+              <i class="fas fa-chevron-down text-blue-500 transition-all duration-500 text-sm" [class.rotate-180]="item.isOpen" [class.text-cyan-500]="item.isOpen"></i>
             </div>
           </button>
-      </div>
-
-    </div>
-
-    <!-- Innovation Highlights -->
-    <div class="innovation-highlights grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-      
-      <div class="innovation-card group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200 animate-on-scroll">
-        <div class="innovation-icon-wrapper mb-4">
-          <div class="innovation-icon bg-gradient-to-br from-blue-500 to-cyan-500 text-white w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-            <i class="fas fa-robot"></i>
-          </div>
-        </div>
-        <h4 class="text-lg font-black text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">AI Innovation Lab</h4>
-        <p class="text-gray-600 leading-relaxed text-base font-light mb-4">
-          State-of-the-art artificial intelligence laboratory with cutting-edge research facilities and industry partnerships.
-        </p>
-        <div class="flex items-center gap-2 text-sm text-blue-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span>Explore Lab</span>
-          <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-        </div>
-      </div>
-
-      <div class="innovation-card group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200 animate-on-scroll">
-        <div class="innovation-icon-wrapper mb-4">
-          <div class="innovation-icon bg-gradient-to-br from-purple-500 to-blue-500 text-white w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-            <i class="fas fa-network-wired"></i>
-          </div>
-        </div>
-        <h4 class="text-lg font-black text-gray-900 mb-3 group-hover:text-purple-600 transition-colors duration-300">Tech Infrastructure</h4>
-        <p class="text-gray-600 leading-relaxed text-base font-light mb-4">
-          Enterprise-grade network infrastructure, cloud computing resources, and development environments for modern tech education.
-        </p>
-        <div class="flex items-center gap-3 text-xs text-gray-500">
-          <span class="flex items-center gap-1"><i class="fab fa-aws text-orange-500"></i> AWS</span>
-          <span class="flex items-center gap-1"><i class="fab fa-google text-blue-500"></i> Cloud</span>
-          <span class="flex items-center gap-1"><i class="fas fa-server text-green-500"></i> DevOps</span>
-        </div>
-      </div>
-
-      <div class="innovation-card group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-100/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-blue-200 animate-on-scroll">
-        <div class="innovation-icon-wrapper mb-4">
-          <div class="innovation-icon bg-gradient-to-br from-green-500 to-emerald-500 text-white w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-            <i class="fas fa-handshake"></i>
-          </div>
-        </div>
-        <h4 class="text-lg font-black text-gray-900 mb-3 group-hover:text-green-600 transition-colors duration-300">Industry Connect</h4>
-        <p class="text-gray-600 leading-relaxed text-base font-light mb-4">
-          Direct partnerships with tech giants, startup incubators, and innovation hubs for real-world experience and career placement.
-        </p>
-        <div class="mt-3 inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-full font-semibold">
-          <i class="fas fa-chart-line"></i>
-          <span>95% Placement Rate</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Bottom CTA -->
-    <div class="text-center mt-16 pt-12 border-t border-blue-100/50">
-      <p class="text-gray-600 text-lg font-light mb-6">
-        Ready to experience next-generation tech education?
-      </p>
-      <button class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
-        <div class="flex items-center justify-center gap-3">
-          <i class="fas fa-vr-cardboard"></i>
-          <span>Take Virtual Tour</span>
-        </div>
-      </button>
-    </div>
-  </div>
-</section>
-
-<section class="tech-process py-20 bg-gradient-to-b from-white to-blue-50/30 relative overflow-hidden">
-  <!-- Background Elements -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
-    <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
-    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
-    <!-- Code Pattern -->
-    <div class="absolute inset-0 opacity-[0.02] bg-code-pattern"></div>
-  </div>
-
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    <!-- Section Header -->
-    <div class="section-header text-center mb-16">
-      <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
-        <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
-        <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">Platform Onboarding</span>
-      </div>
-      <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-        Launch Your
-        <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Tech Journey</span>
-      </h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-        Get started with our next-generation platform in minutes. Designed for developers, by developers.
-      </p>
-    </div>
-
-    <!-- Process Timeline -->
-    <div class="process-timeline relative">
-      
-      <!-- Step 1: Authentication -->
-      <div class="process-step group flex items-start gap-8 mb-12 animate-on-scroll">
-        <div class="step-indicator flex-shrink-0 relative">
-          <div class="step-number bg-gradient-to-br from-blue-500 to-cyan-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl">
-            <i class="fas fa-terminal"></i>
-          </div>
-          <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full border-2 border-white flex items-center justify-center">
-            <i class="fas fa-check text-xs text-white"></i>
-          </div>
-        </div>
-        <div class="step-content flex-1 pt-4">
-          <div class="flex items-center gap-3 mb-4">
-            <h3 class="text-2xl font-black text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-              System Authentication
-            </h3>
-            <span class="bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">SECURE</span>
-          </div>
-          <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">
-            Access the platform using your STI developer credentials. Multi-factor authentication and biometric verification ensure enterprise-grade security.
-          </p>
-          <div class="tech-tags flex flex-wrap gap-2">
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">SSO</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">MFA</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">OAuth 2.0</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 2: Dashboard Setup -->
-      <div class="process-step group flex items-start gap-8 mb-12 animate-on-scroll">
-        <div class="step-indicator flex-shrink-0 relative">
-          <div class="step-number bg-gradient-to-br from-purple-500 to-blue-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl">
-            <i class="fas fa-sliders-h"></i>
-          </div>
-          <div class="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full border-2 border-white flex items-center justify-center">
-            <i class="fas fa-cog text-xs text-white animate-spin" style="animation-duration: 3s;"></i>
-          </div>
-        </div>
-        <div class="step-content flex-1 pt-4">
-          <div class="flex items-center gap-3 mb-4">
-            <h3 class="text-2xl font-black text-gray-900 group-hover:text-purple-600 transition-colors duration-300">
-              Configure Workspace
-            </h3>
-            <span class="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full">CUSTOM</span>
-          </div>
-          <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">
-            Set up your personalized development environment with pre-configured toolchains, IDE integrations, and project templates tailored to your tech stack.
-          </p>
-          <div class="tech-tags flex flex-wrap gap-2">
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">VS Code</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Docker</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Git</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 3: Real-time Sync -->
-      <div class="process-step group flex items-start gap-8 mb-12 animate-on-scroll">
-        <div class="step-indicator flex-shrink-0 relative">
-          <div class="step-number bg-gradient-to-br from-green-500 to-emerald-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl">
-            <i class="fas fa-sync-alt"></i>
-          </div>
-          <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full border-2 border-white">
-            <div class="absolute inset-1 bg-green-200 rounded-full animate-ping"></div>
-          </div>
-        </div>
-        <div class="step-content flex-1 pt-4">
-          <div class="flex items-center gap-3 mb-4">
-            <h3 class="text-2xl font-black text-gray-900 group-hover:text-green-600 transition-colors duration-300">
-              Real-time Integration
-            </h3>
-            <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">LIVE</span>
-          </div>
-          <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">
-            Connect with live data streams, collaborative coding sessions, and instant deployment pipelines. Your work syncs across all devices in real-time.
-          </p>
-          <div class="tech-tags flex flex-wrap gap-2">
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">WebSocket</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">CI/CD</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Real-time</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 4: Launch -->
-      <div class="process-step group flex items-start gap-8 animate-on-scroll">
-        <div class="step-indicator flex-shrink-0 relative">
-          <div class="step-number bg-gradient-to-br from-orange-500 to-red-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl">
-            <i class="fas fa-rocket"></i>
-          </div>
-          <div class="absolute -top-2 -right-2 w-6 h-6 bg-orange-400 rounded-full border-2 border-white flex items-center justify-center">
-            <i class="fas fa-bolt text-xs text-white"></i>
-          </div>
-        </div>
-        <div class="step-content flex-1 pt-4">
-          <div class="flex items-center gap-3 mb-4">
-            <h3 class="text-2xl font-black text-gray-900 group-hover:text-orange-600 transition-colors duration-300">
-              Deploy & Scale
-            </h3>
-            <span class="bg-orange-100 text-orange-700 text-xs font-semibold px-3 py-1 rounded-full">CLOUD</span>
-          </div>
-          <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">
-            Launch your projects to production with one-click deployment. Monitor performance, scale resources, and iterate with comprehensive analytics and insights.
-          </p>
-          <div class="tech-tags flex flex-wrap gap-2">
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">AWS</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Kubernetes</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Monitoring</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Quick Start CTA -->
-    <div class="text-center mt-16 pt-12 border-t border-blue-100/50">
-      <p class="text-gray-600 text-lg font-light mb-6">
-        Ready to start building?
-      </p>
-      <button class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
-        <div class="flex items-center justify-center gap-3">
-          <i class="fas fa-bolt"></i>
-          <span>Quick Start Guide</span>
-        </div>
-      </button>
-    </div>
-  </div>
-</section>
-<section class="tech-process py-20 bg-gradient-to-b from-white to-blue-50/30 relative overflow-hidden">
-  <!-- Background Elements -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
-    <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
-    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
-    <!-- Code Pattern -->
-    <div class="absolute inset-0 opacity-[0.02] bg-code-pattern"></div>
-  </div>
-
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    <!-- Section Header -->
-    <div class="section-header text-center mb-16">
-      <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
-        <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
-        <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">Platform Onboarding</span>
-      </div>
-      <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-        Launch Your
-        <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Tech Journey</span>
-      </h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-        Get started with our next-generation platform in minutes. Designed for developers, by developers.
-      </p>
-    </div>
-
-    <!-- Process Timeline -->
-    <div class="process-timeline relative">
-      
-      <!-- Step 1: Authentication -->
-      <div class="process-step group flex items-start gap-8 mb-12 animate-on-scroll">
-        <div class="step-indicator flex-shrink-0 relative">
-          <div class="step-number bg-gradient-to-br from-blue-500 to-cyan-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl">
-            <i class="fas fa-terminal"></i>
-          </div>
-          <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full border-2 border-white flex items-center justify-center">
-            <i class="fas fa-check text-xs text-white"></i>
-          </div>
-        </div>
-        <div class="step-content flex-1 pt-4">
-          <div class="flex items-center gap-3 mb-4">
-            <h3 class="text-2xl font-black text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-              System Authentication
-            </h3>
-            <span class="bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">SECURE</span>
-          </div>
-          <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">
-            Access the platform using your STI developer credentials. Multi-factor authentication and biometric verification ensure enterprise-grade security.
-          </p>
-          <div class="tech-tags flex flex-wrap gap-2">
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">SSO</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">MFA</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">OAuth 2.0</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 2: Dashboard Setup -->
-      <div class="process-step group flex items-start gap-8 mb-12 animate-on-scroll">
-        <div class="step-indicator flex-shrink-0 relative">
-          <div class="step-number bg-gradient-to-br from-purple-500 to-blue-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl">
-            <i class="fas fa-sliders-h"></i>
-          </div>
-          <div class="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full border-2 border-white flex items-center justify-center">
-            <i class="fas fa-cog text-xs text-white animate-spin" style="animation-duration: 3s;"></i>
-          </div>
-        </div>
-        <div class="step-content flex-1 pt-4">
-          <div class="flex items-center gap-3 mb-4">
-            <h3 class="text-2xl font-black text-gray-900 group-hover:text-purple-600 transition-colors duration-300">
-              Configure Workspace
-            </h3>
-            <span class="bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full">CUSTOM</span>
-          </div>
-          <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">
-            Set up your personalized development environment with pre-configured toolchains, IDE integrations, and project templates tailored to your tech stack.
-          </p>
-          <div class="tech-tags flex flex-wrap gap-2">
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">VS Code</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Docker</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Git</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 3: Real-time Sync -->
-      <div class="process-step group flex items-start gap-8 mb-12 animate-on-scroll">
-        <div class="step-indicator flex-shrink-0 relative">
-          <div class="step-number bg-gradient-to-br from-green-500 to-emerald-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl">
-            <i class="fas fa-sync-alt"></i>
-          </div>
-          <div class="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full border-2 border-white">
-            <div class="absolute inset-1 bg-green-200 rounded-full animate-ping"></div>
-          </div>
-        </div>
-        <div class="step-content flex-1 pt-4">
-          <div class="flex items-center gap-3 mb-4">
-            <h3 class="text-2xl font-black text-gray-900 group-hover:text-green-600 transition-colors duration-300">
-              Real-time Integration
-            </h3>
-            <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">LIVE</span>
-          </div>
-          <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">
-            Connect with live data streams, collaborative coding sessions, and instant deployment pipelines. Your work syncs across all devices in real-time.
-          </p>
-          <div class="tech-tags flex flex-wrap gap-2">
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">WebSocket</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">CI/CD</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Real-time</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 4: Launch -->
-      <div class="process-step group flex items-start gap-8 animate-on-scroll">
-        <div class="step-indicator flex-shrink-0 relative">
-          <div class="step-number bg-gradient-to-br from-orange-500 to-red-500 text-white w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl">
-            <i class="fas fa-rocket"></i>
-          </div>
-          <div class="absolute -top-2 -right-2 w-6 h-6 bg-orange-400 rounded-full border-2 border-white flex items-center justify-center">
-            <i class="fas fa-bolt text-xs text-white"></i>
-          </div>
-        </div>
-        <div class="step-content flex-1 pt-4">
-          <div class="flex items-center gap-3 mb-4">
-            <h3 class="text-2xl font-black text-gray-900 group-hover:text-orange-600 transition-colors duration-300">
-              Deploy & Scale
-            </h3>
-            <span class="bg-orange-100 text-orange-700 text-xs font-semibold px-3 py-1 rounded-full">CLOUD</span>
-          </div>
-          <p class="text-gray-600 leading-relaxed text-lg font-light mb-4">
-            Launch your projects to production with one-click deployment. Monitor performance, scale resources, and iterate with comprehensive analytics and insights.
-          </p>
-          <div class="tech-tags flex flex-wrap gap-2">
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">AWS</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Kubernetes</span>
-            <span class="bg-gray-100 text-gray-700 text-sm px-3 py-1.5 rounded-lg font-mono">Monitoring</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Quick Start CTA -->
-    <div class="text-center mt-16 pt-12 border-t border-blue-100/50">
-      <p class="text-gray-600 text-lg font-light mb-6">
-        Ready to start building?
-      </p>
-      <button class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
-        <div class="flex items-center justify-center gap-3">
-          <i class="fas fa-bolt"></i>
-          <span>Quick Start Guide</span>
-        </div>
-      </button>
-    </div>
-  </div>
-</section>
-
-<section class="tech-support py-20 bg-gradient-to-b from-white to-blue-50/30 relative overflow-hidden">
-  <!-- Background Elements -->
-  <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
-    <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full blur-3xl opacity-20"></div>
-    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-200 rounded-full blur-3xl opacity-20"></div>
-    <!-- Binary Pattern -->
-    <div class="absolute inset-0 opacity-[0.02] bg-binary-pattern"></div>
-  </div>
-
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    
-    <!-- Section Header -->
-    <div class="section-header text-center mb-16">
-      <div class="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-3 rounded-2xl shadow-lg mb-6">
-        <div class="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
-        <span class="text-sm font-semibold text-blue-700 uppercase tracking-wide">Tech Support</span>
-      </div>
-      <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">
-        Developer
-        <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Documentation</span>
-      </h2>
-      <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-        Everything you need to know about our platform, infrastructure, and development tools.
-      </p>
-    </div>
-
-    <!-- Documentation Container -->
-    <div class="documentation-container mt-12">
-      
-      <!-- Documentation Item -->
-      <div *ngFor="let item of faqItems; let i = index" 
-           class="doc-item group bg-white/90 backdrop-blur-sm rounded-2xl border border-blue-100/50 shadow-lg mb-4 transition-all duration-500 hover:shadow-xl hover:border-blue-200 animate-on-scroll">
-        <button 
-          (click)="toggleFaq(i)"
-          class="doc-question w-full bg-transparent border-none p-6 text-left font-black text-gray-900 text-lg cursor-pointer flex items-center justify-between transition-all duration-500 hover:bg-blue-50/50 rounded-2xl"
-          [class.active]="item.isOpen">
-          
-          <!-- Question with Icon -->
-          <div class="flex items-center gap-4">
-            <div class="doc-icon w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 text-white rounded-xl flex items-center justify-center text-lg transition-all duration-500 group-hover:scale-110">
-              <i class="fas" [class]="getQuestionIcon(item.question)"></i>
-            </div>
-            <span class="text-left">{{ item.question }}</span>
-          </div>
-          
-          <!-- Animated Chevron -->
-          <div class="flex items-center gap-3">
-            <span class="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-1 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100">
-              {{ item.isOpen ? 'CLOSE' : 'EXPAND' }}
-            </span>
-            <i class="fas fa-chevron-down text-blue-500 transition-all duration-500 text-sm" 
-               [class.rotate-180]="item.isOpen"
-               [class.text-cyan-500]="item.isOpen"></i>
-          </div>
-        </button>
-        
-        <!-- Answer with Tech Styling -->
-        <div class="doc-answer overflow-hidden transition-all duration-500 rounded-b-2xl"
-             [class.active]="item.isOpen"
-             [style.max-height]="item.isOpen ? '500px' : '0'"
-             [style.padding]="item.isOpen ? '0 1.5rem 1.5rem 1.5rem' : '0 1.5rem'">
-          
-          <div class="answer-content border-t border-blue-100/50 pt-6">
-            <p class="text-gray-700 leading-relaxed text-base font-light mb-4">
-              {{ item.answer }}
-            </p>
-            
-            <!-- Additional Tech Info -->
-            <div class="tech-info-grid grid grid-cols-1 md:grid-cols-2 gap-4 mt-4" *ngIf="item.isOpen">
-              <div class="tech-tip bg-blue-50/50 p-3 rounded-xl border border-blue-100">
-                <div class="flex items-center gap-2 mb-2">
-                  <i class="fas fa-lightbulb text-blue-500 text-sm"></i>
-                  <span class="text-sm font-semibold text-blue-700">Pro Tip</span>
-                </div>
-                <p class="text-xs text-blue-600 font-light">{{ getProTip(item.question) }}</p>
+          <div class="doc-answer overflow-hidden transition-all duration-500 rounded-b-2xl" [class.active]="item.isOpen" [style.max-height]="item.isOpen ? '500px' : '0'" [style.padding]="item.isOpen ? '0 1.5rem 1.5rem 1.5rem' : '0 1.5rem'">
+            <div class="answer-content border-t border-blue-100/50 pt-6">
+              <p class="text-gray-700 leading-relaxed text-base font-light mb-4">{{ item.answer }}</p>
+              <div class="tech-info-grid grid grid-cols-1 md:grid-cols-2 gap-4 mt-4" *ngIf="item.isOpen">
+                <div class="tech-tip bg-blue-50/50 p-3 rounded-xl border border-blue-100"><div class="flex items-center gap-2 mb-2"><i class="fas fa-lightbulb text-blue-500 text-sm"></i><span class="text-sm font-semibold text-blue-700">Pro Tip</span></div><p class="text-xs text-blue-600 font-light">{{ getProTip(item.question) }}</p></div>
+                <div class="tech-resources bg-cyan-50/50 p-3 rounded-xl border border-cyan-100"><div class="flex items-center gap-2 mb-2"><i class="fas fa-book text-cyan-500 text-sm"></i><span class="text-sm font-semibold text-cyan-700">Resources</span></div><p class="text-xs text-cyan-600 font-light">{{ getResources(item.question) }}</p></div>
               </div>
-              
-              <div class="tech-resources bg-cyan-50/50 p-3 rounded-xl border border-cyan-100">
-                <div class="flex items-center gap-2 mb-2">
-                  <i class="fas fa-book text-cyan-500 text-sm"></i>
-                  <span class="text-sm font-semibold text-cyan-700">Resources</span>
-                </div>
-                <p class="text-xs text-cyan-600 font-light">{{ getResources(item.question) }}</p>
+              <div class="quick-actions flex gap-3 mt-4">
+                <button class="text-xs bg-white border border-blue-200 text-blue-600 px-3 py-1.5 rounded-lg font-semibold transition-all duration-300 hover:bg-blue-50 hover:scale-105"><i class="fas fa-copy mr-1"></i>Important Note</button>
+                <button class="text-xs bg-white border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg font-semibold transition-all duration-300 hover:bg-gray-50 hover:scale-105"><i class="fas fa-share mr-1"></i>Next Steps</button>
               </div>
             </div>
-            
-            <!-- Quick Action -->
-            <div class="quick-actions flex gap-3 mt-4">
-              <button class="text-xs bg-white border border-blue-200 text-blue-600 px-3 py-1.5 rounded-lg font-semibold transition-all duration-300 hover:bg-blue-50 hover:scale-105">
-                <i class="fas fa-copy mr-1"></i>
-                Copy Code
-              </button>
-              <button class="text-xs bg-white border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg font-semibold transition-all duration-300 hover:bg-gray-50 hover:scale-105">
-                <i class="fas fa-share mr-1"></i>
-                Share
-              </button>
-            </div>
           </div>
         </div>
       </div>
-
     </div>
+  </section>
 
-    <!-- Support CTA -->
-    <div class="support-cta text-center mt-16 pt-12 border-t border-blue-100/50">
-      <div class="inline-flex items-center gap-4 bg-white/80 backdrop-blur-sm border border-blue-200 px-6 py-4 rounded-2xl shadow-lg mb-6">
-        <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-        <span class="text-sm font-semibold text-gray-700">Still need help? Our developer support team is online 24/7</span>
-      </div>
-      
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <button class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
-          <div class="flex items-center justify-center gap-3">
-            <i class="fas fa-comments"></i>
-            <span>Live Chat Support</span>
-          </div>
-        </button>
-        
-        <button class="bg-white border-2 border-blue-200 text-blue-600 px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-500 hover:scale-105 hover:shadow-lg hover:border-blue-300">
-          <div class="flex items-center justify-center gap-3">
-            <i class="fas fa-file-code"></i>
-            <span>API Documentation</span>
-          </div>
-        </button>
+  <!-- ========== CTA ========== -->
+  <section class="cta py-20 bg-gradient-to-br from-blue-900 via-blue-700 to-blue-800 text-white relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-10 left-10 w-6 h-6 bg-blue-400 rounded-full opacity-20 animate-float"></div>
+      <div class="absolute top-20 right-20 w-8 h-8 bg-blue-300 rounded-lg opacity-15 animate-float" style="animation-delay: 1s;"></div>
+      <div class="absolute bottom-20 left-20 w-10 h-10 bg-cyan-400 opacity-10 animate-float" style="animation-delay: 2s;"></div>
+      <div class="absolute bottom-10 right-10 w-12 h-12 bg-blue-200 rounded-full opacity-10 animate-float" style="animation-delay: 1.5s;"></div>
+      <div class="absolute inset-0 opacity-5 bg-grid-pattern"></div>
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-cyan-500 rounded-full mix-blend-soft-light opacity-20 blur-3xl animate-pulse-slow"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-600 rounded-full mix-blend-soft-light opacity-20 blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <div class="cta-content animate-on-scroll">
+        <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full mb-8"><div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div><span class="text-sm font-semibold text-cyan-100">Official Management System</span></div>
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight"><span class="bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">Experience a Smarter,</span><br><span class="text-cyan-300">More Secure Campus</span></h2>
+        <p class="text-xl md:text-2xl opacity-90 mb-8 max-w-3xl mx-auto leading-relaxed font-light">Join the growing number of departments at <span class="font-semibold text-cyan-200">STI College Bacoor</span> using EduNexus to automate student tracking and improve communication.</p>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-2xl mx-auto pt-8 border-t border-white/20">
+          <div class="text-center"><div class="text-2xl md:text-3xl font-bold text-cyan-300">99%</div><div class="text-sm text-cyan-100 opacity-80">Attendance Accuracy</div></div>
+          <div class="text-center"><div class="text-2xl md:text-3xl font-bold text-cyan-300">Instant</div><div class="text-sm text-cyan-100 opacity-80">Parent SMS Alerts</div></div>
+          <div class="text-center col-span-2 md:col-span-1"><div class="text-2xl md:text-3xl font-bold text-cyan-300">24/7</div><div class="text-sm text-cyan-100 opacity-80">Portal Access</div></div>
+        </div>
       </div>
     </div>
-  </div><section class="cta py-20 bg-gradient-to-br from-blue-900 via-blue-700 to-blue-800 text-white relative overflow-hidden">
-  <!-- Animated Background Elements -->
-  <div class="absolute inset-0 overflow-hidden">
-    <!-- Floating Tech Elements -->
-    <div class="absolute top-10 left-10 w-6 h-6 bg-blue-400 rounded-full opacity-20 animate-float"></div>
-    <div class="absolute top-20 right-20 w-8 h-8 bg-blue-300 rounded-lg opacity-15 animate-float" style="animation-delay: 1s;"></div>
-    <div class="absolute bottom-20 left-20 w-10 h-10 bg-cyan-400 opacity-10 animate-float" style="animation-delay: 2s;"></div>
-    <div class="absolute bottom-10 right-10 w-12 h-12 bg-blue-200 rounded-full opacity-10 animate-float" style="animation-delay: 1.5s;"></div>
-    
-    <!-- Grid Pattern -->
-    <div class="absolute inset-0 opacity-5 bg-grid-pattern"></div>
-    
-    <!-- Animated Gradient Orbs -->
-    <div class="absolute -top-40 -right-40 w-80 h-80 bg-cyan-500 rounded-full mix-blend-soft-light opacity-20 blur-3xl animate-pulse-slow"></div>
-    <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-600 rounded-full mix-blend-soft-light opacity-20 blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="tech-footer bg-gradient-to-b from-gray-50 to-white border-t border-blue-100 py-16 relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-10"></div>
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-100 rounded-full blur-3xl opacity-20"></div>
+      <div class="absolute inset-0 opacity-[0.02] bg-circuit-pattern"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="footer-content grid grid-cols-1 lg:grid-cols-5 gap-8 mb-12">
+        <div class="footer-brand lg:col-span-2">
+          <div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg"><i class="fas fa-code"></i></div><div><h3 class="text-2xl font-black text-gray-900">EduNexus</h3><p class="text-blue-600 text-sm font-semibold">STI Bacoor Capstone</p></div></div>
+          <p class="text-gray-600 leading-relaxed mb-6 text-base font-light max-w-md">A comprehensive campus management system integrating RFID technology, automated attendance, and real-time SMS notifications to enhance institutional efficiency.</p>
+          <div class="tech-stack mb-6"><p class="text-sm text-gray-500 font-semibold mb-3 uppercase tracking-wide">Built With</p><div class="flex flex-wrap gap-3"><div class="flex items-center gap-2 bg-white border border-blue-200 px-3 py-1.5 rounded-lg shadow-sm"><i class="fab fa-angular text-red-500 text-sm"></i><span class="text-xs font-mono text-gray-700">Angular</span></div><div class="flex items-center gap-2 bg-white border border-blue-200 px-3 py-1.5 rounded-lg shadow-sm"><i class="fab fa-node-js text-green-500 text-sm"></i><span class="text-xs font-mono text-gray-700">Node.js</span></div><div class="flex items-center gap-2 bg-white border border-blue-200 px-3 py-1.5 rounded-lg shadow-sm"><i class="fab fa-aws text-orange-500 text-sm"></i><span class="text-xs font-mono text-gray-700">AWS</span></div></div></div>
+          <div class="social-links"><p class="text-sm text-gray-500 font-semibold mb-3 uppercase tracking-wide">Connect With Us</p><div class="flex gap-3"><a href="#" class="social-link group bg-white border border-blue-200 text-gray-600 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 hover:bg-blue-500 hover:text-white hover:border-blue-500 hover:scale-110 hover:shadow-lg"><i class="fab fa-github text-sm group-hover:text-white"></i></a><a href="#" class="social-link group bg-white border border-blue-200 text-gray-600 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 hover:bg-blue-400 hover:text-white hover:border-blue-400 hover:scale-110 hover:shadow-lg"><i class="fab fa-twitter text-sm group-hover:text-white"></i></a><a href="#" class="social-link group bg-white border border-blue-200 text-gray-600 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:scale-110 hover:shadow-lg"><i class="fab fa-linkedin-in text-sm group-hover:text-white"></i></a><a href="#" class="social-link group bg-white border border-blue-200 text-gray-600 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 hover:bg-purple-600 hover:text-white hover:border-purple-600 hover:scale-110 hover:shadow-lg"><i class="fab fa-discord text-sm group-hover:text-white"></i></a></div></div>
+        </div>
+        <div class="footer-links"><h4 class="text-lg font-black text-gray-900 mb-4 flex items-center gap-2"><i class="text-blue-500 text-sm"></i>Navigation</h4><div class="space-y-3"><a href="#features" class="block text-gray-600 hover:text-blue-600 transition-all duration-300 text-sm font-medium group hover:translate-x-1"><i class="fas fa-chevron-right text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-2"></i>System Features</a><a href="#showcase" class="block text-gray-600 hover:text-blue-600 transition-all duration-300 text-sm font-medium group hover:translate-x-1"><i class="fas fa-chevron-right text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-2"></i>Interface Gallery</a><a href="#how-it-works" class="block text-gray-600 hover:text-blue-600 transition-all duration-300 text-sm font-medium group hover:translate-x-1"><i class="fas fa-chevron-right text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-2"></i>User Guide</a><a href="#testimonials" class="block text-gray-600 hover:text-blue-600 transition-all duration-300 text-sm font-medium group hover:translate-x-1"><i class="fas fa-chevron-right text-xs text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-2"></i>Support Center</a></div></div>
+        <div class="footer-links"><h4 class="text-lg font-black text-gray-900 mb-4 flex items-center gap-2"><i class="text-gray-400 mt-1"></i>Institution & Support</h4><div class="space-y-3"><i class="text-gray-400 mt-1"></i><p class="text-xs text-gray-500 leading-relaxed">STI College Bacoor<br>Emilio Aguinaldo Hwy<br>Bacoor, Cavite</p></div><div class="contact-info space-y-2 pt-2"><p class="text-gray-500 text-xs font-semibold">support.edunexus&#64;sti.edus</p></div></div>
+      </div>
+      <div class="footer-bottom border-t border-blue-100 pt-8"><div class="flex flex-col lg:flex-row justify-between items-center gap-4"><div class="flex items-center gap-6 text-sm"><p class="text-gray-500">&copy; 2025 <span class="font-semibold text-gray-700">EduNexus STI Portal</span>. All systems operational.</p></div></div></div>
+    </div>
+  </footer>
+
+  <!-- ========== LOGIN MODAL ========== -->
+  <div *ngIf="isLoginModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0a192f]/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+    <div class="absolute inset-0" (click)="closeModal()"></div>
+    <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden relative z-10 animate-in zoom-in-95 duration-300 border border-gray-100">
+      <div class="bg-gradient-to-br from-[#1a4b8c] to-[#2d68b8] p-5 text-center relative">
+        <button (click)="closeModal()" class="absolute top-3 right-3 text-white/50 hover:text-white transition-all"><i class="fas fa-times text-sm"></i></button>
+        <div class="w-12 h-12 bg-white rounded-xl mx-auto mb-2 flex items-center justify-center shadow-md"><i class="fas fa-user-shield text-[#1a4b8c] text-xl"></i></div>
+        <h2 class="text-white font-bold text-base tracking-tight">Portal Login</h2>
+      </div>
+      <div class="p-6">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+          <div class="flex bg-gray-100 p-1 rounded-xl mb-4">
+            <button *ngFor="let r of roles" type="button" (click)="loginForm.patchValue({role: r})" [class.bg-white]="loginForm.get('role')?.value === r" [class.text-[#1a4b8c]]="loginForm.get('role')?.value === r" [class.shadow-sm]="loginForm.get('role')?.value === r" [class.text-gray-500]="loginForm.get('role')?.value !== r" class="flex-1 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all">{{ r }}</button>
+          </div>
+          <div class="space-y-3">
+            <div class="relative"><i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i><input type="email" formControlName="email" placeholder="School Email" class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#1a4b8c] focus:bg-white outline-none transition-all text-sm"></div>
+            <div class="relative"><i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i><input type="password" formControlName="password" placeholder="Password" class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-[#1a4b8c] focus:bg-white outline-none transition-all text-sm"></div>
+          </div>
+          <div class="flex justify-end"><a href="#" class="text-[11px] font-semibold text-[#1a4b8c] hover:underline">Forgot Password?</a></div>
+          <button type="submit" [disabled]="loginForm.invalid" class="w-full bg-[#1a4b8c] hover:bg-[#2d68b8] disabled:bg-gray-300 text-white font-bold py-3 rounded-xl shadow-md transform active:scale-[0.98] transition-all text-sm mt-2">Sign In</button>
+          <p class="text-center text-[11px] text-gray-400 mt-4">STI College Bacoor • Smart Student Portal</p>
+        </form>
+      </div>
+    </div>
   </div>
-  
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-    
-    <!-- CTA Content -->
-    <div class="cta-content animate-on-scroll">
-      <!-- Badge -->
-      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-2 rounded-full mb-8">
-        <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-        <span class="text-sm font-semibold text-cyan-100">Next-Gen Learning Platform</span>
-      </div>
-      
-      <h2 class="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">
-        <span class="bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
-          Code Your Future
-        </span>
-        <br>
-        <span class="text-cyan-300">Launch Your Journey</span>
-      </h2>
-      
-      <p class="text-xl md:text-2xl opacity-90 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
-        Join the innovators, creators, and tech leaders shaping tomorrow at 
-        <span class="font-semibold text-cyan-200">STI Bacoor's Digital Campus</span>
-      </p>
-      
-      <!-- Action Buttons -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-        <button class="group relative bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/25 overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-          <div class="flex items-center justify-center gap-3 relative z-10">
-            <i class="fas fa-rocket text-sm"></i>
-            <span>Launch Portal</span>
-          </div>
-        </button>
-        
-        <button class="group border-2 border-white/30 bg-white/5 backdrop-blur-sm text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-500 hover:bg-white/10 hover:border-cyan-400 hover:scale-105">
-          <div class="flex items-center justify-center gap-3">
-            <i class="fas fa-play-circle"></i>
-            <span>Watch Demo</span>
-          </div>
-        </button>
-      </div>
-      
-      <!-- Stats -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-2xl mx-auto pt-8 border-t border-white/20">
-        <div class="text-center">
-          <div class="text-2xl md:text-3xl font-bold text-cyan-300">2K+</div>
-          <div class="text-sm text-cyan-100 opacity-80">Active Innovators</div>
-        </div>
-        <div class="text-center">
-          <div class="text-2xl md:text-3xl font-bold text-cyan-300">98%</div>
-          <div class="text-sm text-cyan-100 opacity-80">Success Rate</div>
-        </div>
-        <div class="text-center col-span-2 md:col-span-1">
-          <div class="text-2xl md:text-3xl font-bold text-cyan-300">24/7</div>
-          <div class="text-sm text-cyan-100 opacity-80">Digital Access</div>
-        </div>
-      </div>
-    </div>
-    
-  </div>
-</section>
-</section>
 
+</div>
