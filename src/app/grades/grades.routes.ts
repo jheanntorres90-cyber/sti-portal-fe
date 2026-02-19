@@ -111,10 +111,13 @@ export const GRADES_ROUTES: Routes = [
     loadComponent: () => import('./parent/about/about.component').then(m => m.AboutComponent)
   },
   {
+<<<<<<< dev/lai/Grades-Parents-About
+=======
    path: 'parent-faqs',
     loadComponent: () => import('./parent/faqs/faqs.component').then(m => m.FaqsComponent)
   },
   {
+>>>>>>> main
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
