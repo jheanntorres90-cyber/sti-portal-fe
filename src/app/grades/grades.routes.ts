@@ -1,122 +1,206 @@
 import { Routes } from '@angular/router';
 
 export const GRADES_ROUTES: Routes = [
-  // {
-  //   path: 'dashboard',
-  //   loadComponent: () => import('./dashboard/dashboard.component').then(m => m.GradesDashboardComponent)
-  // },
-  // {
-  //   path: 'my-schedule',
-  //   loadComponent: () => import('./my-schedule/my-schedule.component').then(m => m.MyScheduleComponent)
-  // },
-  // {
-  //   path: 'my-students',
-  //   loadComponent: () => import('./my-students/my-students.component').then(m => m.MyStudentsComponent)
-  // },
-  // {
-  //   // Ensure the folder is named 'upload-grades' and file is 'upload-grades.component.ts'
-  //   path: 'upload-grades',
-  //   loadComponent: () => import('./upload-grades/upload-grades.component').then(m => m.UploadGradesComponent)
-  // },
-  // {
-  //   path: 'view-grades',
-  //   loadComponent: () => import('./view-grades/view-grades.component').then(m => m.ViewGradesComponent)
-  // },
-  // {
-  //   path: 'announcements',
-  //   loadComponent: () => import('./announcements/announcements.component').then(m => m.TeacherAnnouncementsComponent)
-  // },
-  {
-    path: 'student-dashboard',
-    loadComponent: () => import('./student/dashboard.component').then(m => m.StudentDashboardComponent)
-  },
-  {
-    path: 'student-grades',
-    loadComponent: () => import('./student/grades/grades.component').then(m => m.GradesComponent)  
-  },
-  {
-    path: 'student-schedule ',
-    loadComponent: () => import('./student/schedule/schedule.component').then(m => m.MyScheduleComponent)
-  },
-  {
-    path: 'student-announcements',
-   loadComponent: () => import('./student/announcements/announcements.component').then(m => m.AnnouncementsComponent)
-  },
-  {
-    path: 'student-mvh',
-   loadComponent: () => import('./student/mvh/mvh.componnet').then(m => m.MvshComponent)
-  },
-  {
-    path: 'student-feedback',
-   loadComponent: () => import('./student/feedback/feedback.component').then(m => m.FeedbackComponent)
-  },
-  {
-    path: 'student-about',
-   loadComponent: () => import('./student/about/about.component').then(m => m.AboutComponent)
-  },
-  {
-    path: 'student-faqs',
-   loadComponent: () => import('./student/faqs/faqs.component').then(m => m.FaqsComponent)
-  },
+  //============================================
+  // ADMIN ROUTES
+  //============================================
   {
     path: 'admin-dashboard',
-    loadComponent: () => import('./admin/dashboard/dashboard.component').then(m => m.AdminDashboardComponent)
+    loadComponent: () =>
+      import('./admin/dashboard/dashboard.component').then(
+        (m) => m.AdminDashboardComponent,
+      ),
   },
   {
-   path: 'admin-schedule',
-   loadComponent: () => import('./admin/schedule-management/schedule.component').then(m => m.AdminScheduleComponent)
+    path: 'admin-schedule',
+    loadComponent: () =>
+      import('./admin/schedule-management/schedule.component').then(
+        (m) => m.AdminScheduleComponent,
+      ),
   },
   {
     path: 'admin-records-management',
-    loadComponent: () => import('./admin/records-management/records-management.component').then(m => m.RecordManageStudentsComponent)
+    loadComponent: () =>
+      import('./admin/records-management/records-management.component').then(
+        (m) => m.RecordManageStudentsComponent,
+      ),
   },
   {
     path: 'admin-announcements',
-    loadComponent: () => import('./admin/announcements/announcements.component').then(m => m.AdminAnnouncementsComponent)
+    loadComponent: () =>
+      import('./admin/announcements/announcements.component').then(
+        (m) => m.AdminAnnouncementsComponent,
+      ),
   },
   {
     path: 'admin-data-management',
-    loadComponent: () => import('./admin/data-management/data-management.component').then(m => m.AdminDataManagementComponent)
+    loadComponent: () =>
+      import('./admin/data-management/data-management.component').then(
+        (m) => m.AdminDataManagementComponent,
+      ),
   },
   {
     path: 'admin-grades-management',
-    loadComponent: () => import('./admin/grades-management/grades-management').then(m => m.AdminGradesManagement)
+    loadComponent: () =>
+      import('./admin/grades-management/grades-management').then(
+        (m) => m.AdminGradesManagement,
+      ),
+  },
+  //============================================
+  // PROFESSOR ROUTES
+  //============================================
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./prof/dashboard/dashboard.component').then(
+        (m) => m.GradesDashboardComponent,
+      ),
   },
   {
+    path: 'my-schedule',
+    loadComponent: () =>
+      import('./prof/my-schedule/my-schedule.component').then(
+        (m) => m.MyScheduleComponent,
+      ),
+  },
+  {
+    path: 'my-students',
+    loadComponent: () =>
+      import('./prof/my-students/my-students.component').then(
+        (m) => m.MyStudentsComponent,
+      ),
+  },
+  {
+    // Ensure the folder is named 'upload-grades' and file is 'upload-grades.component.ts'
+    path: 'upload-grades',
+    loadComponent: () =>
+      import('./prof/upload-grades/upload-grades.component').then(
+        (m) => m.UploadGradesComponent,
+      ),
+  },
+  {
+    path: 'view-grades',
+    loadComponent: () =>
+      import('./prof/view-grades/view-grades.component').then(
+        (m) => m.ViewGradesComponent,
+      ),
+  },
+  {
+    path: 'announcements',
+    loadComponent: () =>
+      import('./prof/announcements/announcements.component').then(
+        (m) => m.TeacherAnnouncementsComponent,
+      ),
+  },
+  //============================================
+  // STUDENT ROUTES
+  //============================================
+  {
+    path: 'student-dashboard',
+    loadComponent: () =>
+      import('./student/dashboard.component').then(
+        (m) => m.StudentDashboardComponent,
+      ),
+  },
+  {
+    path: 'student-grades',
+    loadComponent: () =>
+      import('./student/grades/grades.component').then(
+        (m) => m.GradesComponent,
+      ),
+  },
+  {
+    path: 'student-schedule ',
+    loadComponent: () =>
+      import('./student/schedule/schedule.component').then(
+        (m) => m.MyScheduleComponent,
+      ),
+  },
+  {
+    path: 'student-announcements',
+    loadComponent: () =>
+      import('./student/announcements/announcements.component').then(
+        (m) => m.AnnouncementsComponent,
+      ),
+  },
+  {
+    path: 'student-mvh',
+    loadComponent: () =>
+      import('./student/mvh/mvh.componnet').then((m) => m.MvshComponent),
+  },
+  {
+    path: 'student-feedback',
+    loadComponent: () =>
+      import('./student/feedback/feedback.component').then(
+        (m) => m.FeedbackComponent,
+      ),
+  },
+  {
+    path: 'student-about',
+    loadComponent: () =>
+      import('./student/about/about.component').then((m) => m.AboutComponent),
+  },
+  {
+    path: 'student-faqs',
+    loadComponent: () =>
+      import('./student/faqs/faqs.component').then((m) => m.FaqsComponent),
+  },
+  //============================================
+  // PARENT ROUTES
+  //============================================
+  {
     path: 'parent-dashboard',
-    loadComponent: () => import('./parent/dashboard/dashboard.component').then(m => m.ParentDashboardComponent)
+    loadComponent: () =>
+      import('./parent/dashboard/dashboard.component').then(
+        (m) => m.ParentDashboardComponent,
+      ),
   },
   {
     path: 'parent-child-grades',
-    loadComponent: () => import('./parent/child-grades/child-grades.component').then(m => m.ChildGradesComponent)
+    loadComponent: () =>
+      import('./parent/child-grades/child-grades.component').then(
+        (m) => m.ChildGradesComponent,
+      ),
   },
   {
     path: 'parent-child-schedule',
-    loadComponent: () => import('./parent/child-schedule/child-schedule.component').then(m => m.ChildScheduleComponent)
+    loadComponent: () =>
+      import('./parent/child-schedule/child-schedule.component').then(
+        (m) => m.ChildScheduleComponent,
+      ),
   },
   {
     path: 'parent-announcements',
-    loadComponent: () => import('./parent/announcements/announcements.component').then(m => m.ParentAnnouncementsComponent)
+    loadComponent: () =>
+      import('./parent/announcements/announcements.component').then(
+        (m) => m.ParentAnnouncementsComponent,
+      ),
   },
   {
     path: 'parent-mvsh',
-    loadComponent: () => import('./parent/mvsh/mvsh.component').then(m => m.MvshComponent)
+    loadComponent: () =>
+      import('./parent/mvsh/mvsh.component').then((m) => m.MvshComponent),
   },
   {
     path: 'parent-feedback',
-    loadComponent: () => import('./parent/feedback/feedback.component').then(m => m.FeedbackComponent)
+    loadComponent: () =>
+      import('./parent/feedback/feedback.component').then(
+        (m) => m.FeedbackComponent,
+      ),
   },
   {
     path: 'parent-about',
-    loadComponent: () => import('./parent/about/about.component').then(m => m.AboutComponent)
+    loadComponent: () =>
+      import('./parent/about/about.component').then((m) => m.AboutComponent),
   },
   {
-   path: 'parent-faqs',
-    loadComponent: () => import('./parent/faqs/faqs.component').then(m => m.FaqsComponent)
+    path: 'parent-faqs',
+    loadComponent: () =>
+      import('./parent/faqs/faqs.component').then((m) => m.FaqsComponent),
   },
   {
     path: '',
     redirectTo: 'dashboard',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];

@@ -112,7 +112,7 @@ export class LandingComponent implements OnInit, OnDestroy {
   // ---------- Login Modal State (from login-modal & auth service simulation) ----------
   isLoginModalOpen = false;
   loginForm: FormGroup;
-  roles = ['Student', 'Parent', 'Teacher', 'Admin'];
+  roles = ['Student', 'Parent', 'Professor', 'Admin'];
 
   // ---------- Scroll Animation (from landing & service) ----------
   private scrollObserver: IntersectionObserver | null = null;
@@ -285,7 +285,7 @@ onSubmit() {
       const roleName = (sessionUser.role_name || '').toLowerCase();
       if (roleName === 'admin') this.router.navigate(['/attendance/admin-dashboard']);
       else if (roleName === 'student') this.router.navigate(['/attendance/student-dashboard']);
-      else if (roleName === 'teacher') this.router.navigate(['/attendance/teacher-dashboard']);
+      else if (roleName === 'professor') this.router.navigate(['/attendance/teacher-dashboard']);
       else if (roleName === 'parent') this.router.navigate(['/grades/parent-dashboard']);
       else this.router.navigate(['/']);
     },
