@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { roleGuard } from '../core/guard/role.guard'; // ✅ adjust path if needed
 
 export const ATTENDANCE_ROUTES: Routes = [
   //============================================
@@ -6,6 +7,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   //============================================
   {
     path: 'admin-dashboard',
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
     loadComponent: () =>
       import('./admin/dashboard/dashboard.component').then(
         (m) => m.AdminDashboardComponent,
@@ -13,6 +16,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'admin-attendance',
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
     loadComponent: () =>
       import('./admin/attendance/attendance.component').then(
         (m) => m.AdminAttendanceComponent,
@@ -20,6 +25,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'admin-manage-students',
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
     loadComponent: () =>
       import('./admin/manage-students/manage.component').then(
         (m) => m.ManageStudentsComponent,
@@ -27,6 +34,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'admin-schedule',
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
     loadComponent: () =>
       import('./admin/schedule/schedule.component').then(
         (m) => m.AdminScheduleComponent,
@@ -34,6 +43,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'admin-announcements',
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
     loadComponent: () =>
       import('./admin/announcements/announcements').then(
         (m) => m.AdminAnnouncementsComponent,
@@ -41,6 +52,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'admin-add-new-admin',
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
     loadComponent: () =>
       import('./admin/add-new-admin/add-admin.component').then(
         (m) => m.AdminAddAdminComponent,
@@ -48,16 +61,21 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'admin-reset-password',
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
     loadComponent: () =>
       import('./admin/reset-password/reset-password.component').then(
         (m) => m.AdminResetPasswordComponent,
       ),
   },
+
   //============================================
-  // PROFESSOR ROUTES
+  // PROFESSOR / TEACHER ROUTES
   //============================================
   {
     path: 'teacher-dashboard',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
     loadComponent: () =>
       import('./prof/dashboard/dashboard.component').then(
         (m) => m.AttendanceDashboardComponent,
@@ -65,6 +83,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'attendance',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
     loadComponent: () =>
       import('./prof/attendance/attendance.component').then(
         (m) => m.TeacherAttendanceComponent,
@@ -72,6 +92,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'student-list',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
     loadComponent: () =>
       import('./prof/student-list/student-list.component').then(
         (m) => m.StudentListComponent,
@@ -79,6 +101,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'schedule',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
     loadComponent: () =>
       import('./prof/schedule/schedule.component').then(
         (m) => m.TeacherScheduleComponent,
@@ -86,6 +110,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'announcements',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
     loadComponent: () =>
       import('./prof/announcements/announcements.component').then(
         (m) => m.TeacherAnnouncementsComponent,
@@ -93,16 +119,21 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'settings',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
     loadComponent: () =>
       import('./prof/settings/settings.component').then(
         (m) => m.AttendanceSettingsComponent,
       ),
   },
+
   //============================================
   // STUDENT ROUTES
   //============================================
   {
     path: 'student-dashboard',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
     loadComponent: () =>
       import('./student/dashboard/dashboard.component').then(
         (m) => m.StudentAttendanceDashboardComponent,
@@ -110,6 +141,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'gate-attendance',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
     loadComponent: () =>
       import('./student/gate-attendance/gate-attendance.component').then(
         (m) => m.GateAttendanceComponent,
@@ -117,6 +150,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'subject-attendance',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
     loadComponent: () =>
       import('./student/subject-attendance/subject-attendance.component').then(
         (m) => m.SubjectAttendanceComponent,
@@ -124,6 +159,8 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'student-schedule',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
     loadComponent: () =>
       import('./student/schedule/schedule.component').then(
         (m) => m.StudentScheduleComponent,
@@ -131,14 +168,20 @@ export const ATTENDANCE_ROUTES: Routes = [
   },
   {
     path: 'student-announcements',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
     loadComponent: () =>
       import('./student/announcements/announcements.component').then(
         (m) => m.StudentAnnouncementsComponent,
       ),
   },
+
+  //============================================
+  // DEFAULT
+  //============================================
   {
     path: '',
-    redirectTo: 'dashboard',
     pathMatch: 'full',
+    redirectTo: 'student-dashboard',
   },
 ];

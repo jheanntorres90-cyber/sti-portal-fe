@@ -1,16 +1,12 @@
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, CanActivateFn } from '@angular/router';
+import { AuthService } from '../service/auth.service';
 
-export const authGuard = () => {
+export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
-  
-  // For demo: always authenticated
-  // In real app: check localStorage or token
-  const isAuthenticated = true;
-  
-  if (isAuthenticated) {
-    return true;
-  }
-  
-  return router.parseUrl('/auth/login');
+  const auth = inject(AuthService);
+
+  if (auth.isLoggedIn) return true;
+
+  return router.parseUrl('/'); // balik landing/login modal
 };
