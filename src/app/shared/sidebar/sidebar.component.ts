@@ -34,25 +34,25 @@ import { AvatarModule } from 'primeng/avatar';
             </button>
             
             <div *ngIf="isAttendanceOpen" class="mt-1 space-y-1 pl-4 border-l-2 border-gray-50 dark:border-white/5 ml-6">
-              <a routerLink="/attendance/dashboard" routerLinkActive="active-attendance" class="nav-item">Dashboard</a>
-              <a routerLink="/attendance/attendance" routerLinkActive="active-attendance" class="nav-item">Attendance</a>
-              <a routerLink="/attendance/student-list" routerLinkActive="active-attendance" class="nav-item">Student List</a>
-              <a routerLink="/attendance/schedule" routerLinkActive="active-attendance" class="nav-item">Schedule</a>
-              <a routerLink="/attendance/announcements" routerLinkActive="active-attendance" class="nav-item">Announcements</a>
+              <a routerLink="/attendance/dashboard" routerLinkActive="active-attendance" class="nav-item">PROF Dashboard</a>
+              <a routerLink="/attendance/attendance" routerLinkActive="active-attendance" class="nav-item">PROF Attendance</a>
+              <a routerLink="/attendance/student-list" routerLinkActive="active-attendance" class="nav-item">PROF Student List</a>
+              <a routerLink="/attendance/schedule" routerLinkActive="active-attendance" class="nav-item">PROF Schedule</a>
+              <a routerLink="/attendance/announcements" routerLinkActive="active-attendance" class="nav-item">PROF Announcements</a>
 
-              <a routerLink="/attendance/student-dashboard" routerLinkActive="active-student" class="nav-item">Dashboard</a>
-              <a routerLink="/attendance/gate-attendance" routerLinkActive="active-student" class="nav-item"> Gate Attendance</a>
-              <a routerLink="/attendance/subject-attendance" routerLinkActive="active-student" class="nav-item"> Subject Attendance</a>
-              <a routerLink="/attendance/student-schedule" routerLinkActive="active-student" class="nav-item"> Schedule </a>
-              <a routerLink="/attendance/student-announcements" routerLinkActive="active-student" class="nav-item">Announcements</a>
+              <a routerLink="/attendance/student-dashboard" routerLinkActive="active-student" class="nav-item">STU Dashboard</a>
+              <a routerLink="/attendance/gate-attendance" routerLinkActive="active-student" class="nav-item"> STU Gate Attendance</a>
+              <a routerLink="/attendance/subject-attendance" routerLinkActive="active-student" class="nav-item"> STU Subject Attendance</a>
+              <a routerLink="/attendance/student-schedule" routerLinkActive="active-student" class="nav-item"> STU Schedule </a>
+              <a routerLink="/attendance/student-announcements" routerLinkActive="active-student" class="nav-item">STU Announcements</a>
 
-              <a routerLink="/attendance/admin-dashboard" routerLinkActive="active-student" class="nav-item">Dashboard</a>
-              <a routerLink="/attendance/admin-attendance" routerLinkActive="active-student" class="nav-item">Attendance</a>
-              <a routerLink="/attendance/admin-manage-students" routerLinkActive="active-student" class="nav-item">Manage Students</a>
-              <a routerLink="/attendance/admin-schedule" routerLinkActive="active-student" class="nav-item">Schedule</a>
-              <a routerLink="/attendance/admin-announcements" routerLinkActive="active-student" class="nav-item">Announcements</a>
-              <a routerLink="/attendance/admin-add-new-admin" routerLinkActive="active-student" class="nav-item">Add New Admin</a>
-              <a routerLink="/attendance/admin-reset-password" routerLinkActive="active-student" class="nav-item">Reset Password</a>
+              <a routerLink="/attendance/admin-dashboard" routerLinkActive="active-student" class="nav-item">ADM Dashboard</a>
+              <a routerLink="/attendance/admin-attendance" routerLinkActive="active-student" class="nav-item">ADM Attendance</a>
+              <a routerLink="/attendance/admin-manage-students" routerLinkActive="active-student" class="nav-item">ADM Manage Students</a>
+              <a routerLink="/attendance/admin-schedule" routerLinkActive="active-student" class="nav-item">ADM Schedule</a>
+              <a routerLink="/attendance/admin-announcements" routerLinkActive="active-student" class="nav-item">ADM Announcements</a>
+              <a routerLink="/attendance/admin-add-new-admin" routerLinkActive="active-student" class="nav-item">ADM Add New Admin</a>
+              <a routerLink="/attendance/admin-reset-password" routerLinkActive="active-student" class="nav-item">ADM Reset Password</a>
 
             </div>
           </div>
