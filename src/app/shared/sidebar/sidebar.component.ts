@@ -29,7 +29,8 @@ import { map } from 'rxjs/operators';
 
         <nav class="flex-1 overflow-y-auto px-4 custom-scrollbar pb-6">
           
-          <div class="mb-4">
+          <!-- ✅ Attendance Portal: HIDE kapag Parent -->
+          <div class="mb-4" *ngIf="canSeeAttendancePortal()">
             <button (click)="isAttendanceOpen = !isAttendanceOpen" class="category-header group text-slate-500 dark:text-slate-400">
               <i class="pi pi-calendar-plus mr-3 group-hover:text-blue-600 transition-colors"></i>
               <span class="tracking-[0.15em]">Attendance Portal</span>
@@ -120,7 +121,7 @@ import { map } from 'rxjs/operators';
                 <a routerLink="/grades/admin-data-management" routerLinkActive="active-grade" class="nav-item">Data Management</a>
               </ng-container>
 
-              <!-- PARENT GRADE LINKS (optional) -->
+              <!-- PARENT GRADE LINKS -->
               <ng-container *ngIf="isRole('Parent')">
                 <a routerLink="/grades/parent-dashboard" routerLinkActive="active-grade" class="nav-item">Dashboard</a>
                 <a routerLink="/grades/parent-child-grades" routerLinkActive="active-grade" class="nav-item">Child's Grades</a>
@@ -186,7 +187,7 @@ import { map } from 'rxjs/operators';
 })
 export class SidebarComponent {
   isAttendanceOpen = true;
-  isGradesOpen = false;
+  isGradesOpen = true;
 
   // current user
   user$ = this.authService.user$;
@@ -207,6 +208,12 @@ export class SidebarComponent {
   isRole(role: string): boolean {
     const r = String(this.authService.currentUser?.role_name || '').toLowerCase();
     return r === role.toLowerCase();
+  }
+
+  // attendance portal is for Admin, Teacher, Student only
+  canSeeAttendancePortal(): boolean {
+    const r = String(this.authService.currentUser?.role_name || '').toLowerCase();
+    return r === 'admin' || r === 'teacher' || r === 'student';
   }
 
   logout() {
