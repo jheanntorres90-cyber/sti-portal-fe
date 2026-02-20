@@ -1,82 +1,187 @@
 import { Routes } from '@angular/router';
+import { roleGuard } from '../core/guard/role.guard'; // ✅ adjust path if needed
 
 export const ATTENDANCE_ROUTES: Routes = [
+  //============================================
+  // ADMIN ROUTES
+  //============================================
   {
-    path: 'dashboard',
-    loadComponent: () => import('./dashboard/dashboard.component').then(m => m.AttendanceDashboardComponent)
-  },
-  {
-    path: 'attendance',
-    loadComponent: () => import('./attendance/attendance.component').then(m => m.TeacherAttendanceComponent)
-  },
-  {
-    path: 'student-list',
-    loadComponent: () => import('./student-list/student-list.component').then(m => m.StudentListComponent)
-  },
-  {
-    path: 'schedule',
-    loadComponent: () => import('./schedule/schedule.component').then(m => m.TeacherScheduleComponent) 
-  },
-  {
-    path: 'announcements',
-    // UPDATED THIS LINE to match the class name below
-    loadComponent: () => import('./announcements/announcements.component').then(m => m.TeacherAnnouncementsComponent)
-  },
-  {
-    path: 'settings',
-    loadComponent: () => import('./settings/settings.component').then(m => m.AttendanceSettingsComponent)
-  },
-  {
-    path: 'student-dashboard',
-    loadComponent: () => import('./student/dashboard/dashboard.component').then(m => m.StudentAttendanceDashboardComponent)
-  },
-  {
-    path: 'gate-attendance',
-    loadComponent: () => import('./student/gate-attendance/gate-attendance.component').then(m => m.GateAttendanceComponent)
-  },
-  {
-    path: 'subject-attendance',
-    loadComponent: () => import('./student/subject-attendance/subject-attendance.component').then(m => m.SubjectAttendanceComponent)
-  },
-  {
-    path: 'student-schedule',
-    loadComponent: () => import('./student/schedule/schedule.component').then(m => m.StudentScheduleComponent)  
-  },
-  {
-    path: 'student-announcements',
-    loadComponent: () => import('./student/announcements/announcements.component').then(m => m.StudentAnnouncementsComponent)
-  },
-  {
-   path: 'admin-dashboard',
-   loadComponent: () => import('./admin/dashboard/dashboard.component').then(m => m.AdminDashboardComponent)
+    path: 'admin-dashboard',
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
+    loadComponent: () =>
+      import('./admin/dashboard/dashboard.component').then(
+        (m) => m.AdminDashboardComponent,
+      ),
   },
   {
     path: 'admin-attendance',
-    loadComponent: () => import('./admin/attendance/attendance.component').then(m => m.AdminAttendanceComponent)
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
+    loadComponent: () =>
+      import('./admin/attendance/attendance.component').then(
+        (m) => m.AdminAttendanceComponent,
+      ),
   },
   {
     path: 'admin-manage-students',
-    loadComponent: () => import('./admin/manage-students/manage.component').then(m => m.ManageStudentsComponent)
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
+    loadComponent: () =>
+      import('./admin/manage-students/manage.component').then(
+        (m) => m.ManageStudentsComponent,
+      ),
   },
   {
     path: 'admin-schedule',
-    loadComponent: () => import('./admin/schedule/schedule.component').then(m => m.AdminScheduleComponent)
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
+    loadComponent: () =>
+      import('./admin/schedule/schedule.component').then(
+        (m) => m.AdminScheduleComponent,
+      ),
   },
   {
     path: 'admin-announcements',
-    loadComponent: () => import('./admin/announcements/announcements').then(m => m.AdminAnnouncementsComponent)
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
+    loadComponent: () =>
+      import('./admin/announcements/announcements').then(
+        (m) => m.AdminAnnouncementsComponent,
+      ),
   },
   {
     path: 'admin-add-new-admin',
-    loadComponent: () => import('./admin/add-new-admin/add-admin.component').then(m => m.AdminAddAdminComponent)
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
+    loadComponent: () =>
+      import('./admin/add-new-admin/add-admin.component').then(
+        (m) => m.AdminAddAdminComponent,
+      ),
   },
   {
-  path: 'admin-reset-password',
-  loadComponent: () => import('./admin/reset-password/reset-password.component').then(m => m.AdminResetPasswordComponent)
+    path: 'admin-reset-password',
+    canActivate: [roleGuard],
+    data: { roles: ['Admin'] },
+    loadComponent: () =>
+      import('./admin/reset-password/reset-password.component').then(
+        (m) => m.AdminResetPasswordComponent,
+      ),
   },
+
+  //============================================
+  // PROFESSOR / TEACHER ROUTES
+  //============================================
+  {
+    path: 'teacher-dashboard',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
+    loadComponent: () =>
+      import('./prof/dashboard/dashboard.component').then(
+        (m) => m.AttendanceDashboardComponent,
+      ),
+  },
+  {
+    path: 'attendance',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
+    loadComponent: () =>
+      import('./prof/attendance/attendance.component').then(
+        (m) => m.TeacherAttendanceComponent,
+      ),
+  },
+  {
+    path: 'student-list',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
+    loadComponent: () =>
+      import('./prof/student-list/student-list.component').then(
+        (m) => m.StudentListComponent,
+      ),
+  },
+  {
+    path: 'schedule',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
+    loadComponent: () =>
+      import('./prof/schedule/schedule.component').then(
+        (m) => m.TeacherScheduleComponent,
+      ),
+  },
+  {
+    path: 'announcements',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
+    loadComponent: () =>
+      import('./prof/announcements/announcements.component').then(
+        (m) => m.TeacherAnnouncementsComponent,
+      ),
+  },
+  {
+    path: 'settings',
+    canActivate: [roleGuard],
+    data: { roles: ['Teacher'] },
+    loadComponent: () =>
+      import('./prof/settings/settings.component').then(
+        (m) => m.AttendanceSettingsComponent,
+      ),
+  },
+
+  //============================================
+  // STUDENT ROUTES
+  //============================================
+  {
+    path: 'student-dashboard',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
+    loadComponent: () =>
+      import('./student/dashboard/dashboard.component').then(
+        (m) => m.StudentAttendanceDashboardComponent,
+      ),
+  },
+  {
+    path: 'gate-attendance',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
+    loadComponent: () =>
+      import('./student/gate-attendance/gate-attendance.component').then(
+        (m) => m.GateAttendanceComponent,
+      ),
+  },
+  {
+    path: 'subject-attendance',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
+    loadComponent: () =>
+      import('./student/subject-attendance/subject-attendance.component').then(
+        (m) => m.SubjectAttendanceComponent,
+      ),
+  },
+  {
+    path: 'student-schedule',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
+    loadComponent: () =>
+      import('./student/schedule/schedule.component').then(
+        (m) => m.StudentScheduleComponent,
+      ),
+  },
+  {
+    path: 'student-announcements',
+    canActivate: [roleGuard],
+    data: { roles: ['Student'] },
+    loadComponent: () =>
+      import('./student/announcements/announcements.component').then(
+        (m) => m.StudentAnnouncementsComponent,
+      ),
+  },
+
+  //============================================
+  // DEFAULT
+  //============================================
   {
     path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+    redirectTo: 'student-dashboard',
+  },
 ];
