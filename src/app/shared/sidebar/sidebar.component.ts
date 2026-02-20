@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { AuthService } from '../../core/service/auth.service';
-import { map } from 'rxjs/operators';
+import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -185,9 +185,11 @@ import { map } from 'rxjs/operators';
     .custom-scrollbar::-webkit-scrollbar-thumb { @apply bg-gray-200 dark:bg-[#2a2a2a] rounded-full; }
   `],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+
   isAttendanceOpen = true;
-  isGradesOpen = true;
+  isGradesOpen = false;
 
   // current user
   user$ = this.authService.user$;
@@ -203,7 +205,29 @@ export class SidebarComponent {
     }),
   );
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {
+    this.user$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((u) => {
+        const role = String(u?.role_name || '').toLowerCase();
+
+        // Hide attendance portal if user role is parent, and open grades portal by default for parents
+        if (role === 'parent') {
+          this.isAttendanceOpen = false;
+          this.isGradesOpen = true;
+          return;
+        }
+        this.isAttendanceOpen = true;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   isRole(role: string): boolean {
     const r = String(this.authService.currentUser?.role_name || '').toLowerCase();
@@ -216,9 +240,8 @@ export class SidebarComponent {
     return r === 'admin' || r === 'teacher' || r === 'student';
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
-    // optional: redirect to landing
-    // this.router.navigate(['/']);
+    this.router.navigateByUrl('/');
   }
 }
