@@ -24,9 +24,9 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   if (ok) return true;
 
   // optional: redirect to default inside page based on role
-  if (userRole === 'admin') return router.parseUrl('/attendance/admin-dashboard');
-  if (userRole === 'teacher') return router.parseUrl('/attendance/teacher-dashboard');
-  if (userRole === 'student') return router.parseUrl('/attendance/student-dashboard');
-  if (userRole === 'parent') return router.parseUrl('/grades/parent-dashboard'); // adjust
+  // if (userRole === 'admin') return router.parseUrl('/attendance/admin-dashboard');
+  // if (userRole === 'professor') return router.parseUrl('/attendance/teacher-dashboard');
+  // if (userRole === 'student') return router.parseUrl('/attendance/student-dashboard');
+  // if (userRole === 'parent') return router.parseUrl('/grades/parent-dashboard'); // adjust
   return router.parseUrl('/');
 };

@@ -43,37 +43,37 @@ import { map, Subject, takeUntil } from 'rxjs';
               <!-- =========================
                    TEACHER LINKS
                    ========================= -->
-              <ng-container *ngIf="isRole('Teacher')">
-                <a routerLink="/attendance/teacher-dashboard" routerLinkActive="active-attendance" class="nav-item">PROF Dashboard</a>
-                <a routerLink="/attendance/attendance" routerLinkActive="active-attendance" class="nav-item">PROF Attendance</a>
-                <a routerLink="/attendance/student-list" routerLinkActive="active-attendance" class="nav-item">PROF Student List</a>
-                <a routerLink="/attendance/schedule" routerLinkActive="active-attendance" class="nav-item">PROF Schedule</a>
-                <a routerLink="/attendance/announcements" routerLinkActive="active-attendance" class="nav-item">PROF Announcements</a>
-                <a routerLink="/attendance/settings" routerLinkActive="active-attendance" class="nav-item">PROF Settings</a>
+              <ng-container *ngIf="isRole('Professor')">
+                <a routerLink="/attendance/teacher-dashboard" routerLinkActive="active-attendance" class="nav-item">Dashboard</a>
+                <a routerLink="/attendance/attendance" routerLinkActive="active-attendance" class="nav-item">Attendance</a>
+                <a routerLink="/attendance/student-list" routerLinkActive="active-attendance" class="nav-item">Student List</a>
+                <a routerLink="/attendance/schedule" routerLinkActive="active-attendance" class="nav-item">Schedule</a>
+                <a routerLink="/attendance/announcements" routerLinkActive="active-attendance" class="nav-item">Announcements</a>
+                <a routerLink="/attendance/settings" routerLinkActive="active-attendance" class="nav-item">Settings</a>
               </ng-container>
 
               <!-- =========================
                    STUDENT LINKS
                    ========================= -->
               <ng-container *ngIf="isRole('Student')">
-                <a routerLink="/attendance/student-dashboard" routerLinkActive="active-student" class="nav-item">STU Dashboard</a>
-                <a routerLink="/attendance/gate-attendance" routerLinkActive="active-student" class="nav-item">STU Gate Attendance</a>
-                <a routerLink="/attendance/subject-attendance" routerLinkActive="active-student" class="nav-item">STU Subject Attendance</a>
-                <a routerLink="/attendance/student-schedule" routerLinkActive="active-student" class="nav-item">STU Schedule</a>
-                <a routerLink="/attendance/student-announcements" routerLinkActive="active-student" class="nav-item">STU Announcements</a>
+                <a routerLink="/attendance/student-dashboard" routerLinkActive="active-student" class="nav-item">Dashboard</a>
+                <a routerLink="/attendance/gate-attendance" routerLinkActive="active-student" class="nav-item">Gate Attendance</a>
+                <a routerLink="/attendance/subject-attendance" routerLinkActive="active-student" class="nav-item">Subject Attendance</a>
+                <a routerLink="/attendance/student-schedule" routerLinkActive="active-student" class="nav-item">Schedule</a>
+                <a routerLink="/attendance/student-announcements" routerLinkActive="active-student" class="nav-item">Announcements</a>
               </ng-container>
 
               <!-- =========================
                    ADMIN LINKS
                    ========================= -->
               <ng-container *ngIf="isRole('Admin')">
-                <a routerLink="/attendance/admin-dashboard" routerLinkActive="active-student" class="nav-item">ADM Dashboard</a>
-                <a routerLink="/attendance/admin-attendance" routerLinkActive="active-student" class="nav-item">ADM Attendance</a>
-                <a routerLink="/attendance/admin-manage-students" routerLinkActive="active-student" class="nav-item">ADM Manage Students</a>
-                <a routerLink="/attendance/admin-schedule" routerLinkActive="active-student" class="nav-item">ADM Schedule</a>
-                <a routerLink="/attendance/admin-announcements" routerLinkActive="active-student" class="nav-item">ADM Announcements</a>
-                <a routerLink="/attendance/admin-add-new-admin" routerLinkActive="active-student" class="nav-item">ADM Add New Admin</a>
-                <a routerLink="/attendance/admin-reset-password" routerLinkActive="active-student" class="nav-item">ADM Reset Password</a>
+                <a routerLink="/attendance/admin-dashboard" routerLinkActive="active-student" class="nav-item">Dashboard</a>
+                <a routerLink="/attendance/admin-attendance" routerLinkActive="active-student" class="nav-item">Attendance</a>
+                <a routerLink="/attendance/admin-manage-students" routerLinkActive="active-student" class="nav-item">Manage Students</a>
+                <a routerLink="/attendance/admin-schedule" routerLinkActive="active-student" class="nav-item">Schedule</a>
+                <a routerLink="/attendance/admin-announcements" routerLinkActive="active-student" class="nav-item">Announcements</a>
+                <a routerLink="/attendance/admin-add-new-admin" routerLinkActive="active-student" class="nav-item">Add New Admin</a>
+                <a routerLink="/attendance/admin-reset-password" routerLinkActive="active-student" class="nav-item">Reset Password</a>
               </ng-container>
 
             </div>
@@ -89,8 +89,8 @@ import { map, Subject, takeUntil } from 'rxjs';
             
             <div *ngIf="isGradesOpen" class="mt-1 space-y-1 pl-4 border-l-2 border-gray-50 dark:border-white/5 ml-6">
 
-              <!-- TEACHER GRADE LINKS -->
-              <ng-container *ngIf="isRole('Teacher')">
+              <!-- PROFESSOR GRADE LINKS -->
+              <ng-container *ngIf="isRole('Professor')">
                 <a routerLink="/grades/dashboard" routerLinkActive="active-grade" class="nav-item">Dashboard</a>
                 <a routerLink="/grades/my-schedule" routerLinkActive="active-grade" class="nav-item">My Schedule</a>
                 <a routerLink="/grades/my-students" routerLinkActive="active-grade" class="nav-item">My Students</a>
@@ -237,7 +237,7 @@ export class SidebarComponent implements OnDestroy {
   // attendance portal is for Admin, Teacher, Student only
   canSeeAttendancePortal(): boolean {
     const r = String(this.authService.currentUser?.role_name || '').toLowerCase();
-    return r === 'admin' || r === 'teacher' || r === 'student';
+    return r === 'admin' || r === 'professor' || r === 'student';
   }
 
   logout(): void {

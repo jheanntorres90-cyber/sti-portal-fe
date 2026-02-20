@@ -75,7 +75,7 @@ export const ATTENDANCE_ROUTES: Routes = [
   {
     path: 'teacher-dashboard',
     canActivate: [roleGuard],
-    data: { roles: ['Teacher'] },
+    data: { roles: ['Professor'] },
     loadComponent: () =>
       import('./prof/dashboard/dashboard.component').then(
         (m) => m.AttendanceDashboardComponent,
@@ -84,7 +84,7 @@ export const ATTENDANCE_ROUTES: Routes = [
   {
     path: 'attendance',
     canActivate: [roleGuard],
-    data: { roles: ['Teacher'] },
+    data: { roles: ['Professor'] },
     loadComponent: () =>
       import('./prof/attendance/attendance.component').then(
         (m) => m.TeacherAttendanceComponent,
@@ -93,7 +93,7 @@ export const ATTENDANCE_ROUTES: Routes = [
   {
     path: 'student-list',
     canActivate: [roleGuard],
-    data: { roles: ['Teacher'] },
+    data: { roles: ['Professor'] },
     loadComponent: () =>
       import('./prof/student-list/student-list.component').then(
         (m) => m.StudentListComponent,
@@ -102,7 +102,7 @@ export const ATTENDANCE_ROUTES: Routes = [
   {
     path: 'schedule',
     canActivate: [roleGuard],
-    data: { roles: ['Teacher'] },
+    data: { roles: ['Professor'] },
     loadComponent: () =>
       import('./prof/schedule/schedule.component').then(
         (m) => m.TeacherScheduleComponent,
@@ -111,7 +111,7 @@ export const ATTENDANCE_ROUTES: Routes = [
   {
     path: 'announcements',
     canActivate: [roleGuard],
-    data: { roles: ['Teacher'] },
+    data: { roles: ['Professor'] },
     loadComponent: () =>
       import('./prof/announcements/announcements.component').then(
         (m) => m.TeacherAnnouncementsComponent,
@@ -120,7 +120,7 @@ export const ATTENDANCE_ROUTES: Routes = [
   {
     path: 'settings',
     canActivate: [roleGuard],
-    data: { roles: ['Teacher'] },
+    data: { roles: ['Professor'] },
     loadComponent: () =>
       import('./prof/settings/settings.component').then(
         (m) => m.AttendanceSettingsComponent,
