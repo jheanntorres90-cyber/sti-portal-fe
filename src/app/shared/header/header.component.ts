@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, AvatarModule, ButtonModule, BadgeModule, TooltipModule, RouterModule],
   template: `
     <header class="w-full z-40 sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 transition-colors duration-300">
-      <div class="px-6 py-3 flex items-center justify-between gap-8">
+      <div class="px-6 py-3 flex items-center justify-between">
         
         <div class="flex items-center gap-4 min-w-max">
           <div class="hidden sm:block">
@@ -23,13 +23,6 @@ import { RouterModule } from '@angular/router';
               {{ currentDate | date:'EEEE, MMM d' }}
             </p>
           </div>
-        </div>
-
-        <div class="flex-1 max-w-lg relative hidden lg:block">
-          <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input type="text" 
-                 placeholder="Search student records..." 
-                 class="w-full pl-12 pr-4 py-2 bg-gray-100/50 dark:bg-slate-800/50 border border-transparent dark:border-slate-700 rounded-xl text-xs focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all dark:text-gray-200 font-medium">
         </div>
 
         <div class="flex items-center gap-2">

@@ -31,7 +31,7 @@ interface Attachment {
   imports: [CommonModule, FormsModule],
   templateUrl: './announcements.component.html'
 })
-export class AdminAnnouncementsComponent implements OnInit {
+export class AnnouncementsComponent implements OnInit {
   // Main data
   announcements: Announcement[] = [];
   filteredAnnouncements: Announcement[] = [];
@@ -43,6 +43,7 @@ export class AdminAnnouncementsComponent implements OnInit {
   filterPriority: string = 'all';
   filterAudience: string = 'all';
   filterStatus: string = 'all';
+  filterCourse: string = 'all';
   
   // Modal states
   showModal: boolean = false;
@@ -257,12 +258,6 @@ export class AdminAnnouncementsComponent implements OnInit {
     this.showModal = true;
   }
 
-  editAnnouncement(announcement: Announcement): void {
-this.modalMode = 'edit';
-this.currentAnnouncement = { ...announcement };
-this.showModal = true;
-  }
-
   closeModal(): void {
     this.showModal = false;
     this.currentAnnouncement = this.getEmptyAnnouncement();
@@ -293,11 +288,6 @@ this.showModal = true;
       };
       
       this.announcements.unshift(newAnnouncement);
-    } else {
-      const index = this.announcements.findIndex(a => a.id === this.currentAnnouncement.id);
-      if (index !== -1) {
-        this.announcements[index] = { ...this.currentAnnouncement };
-      }
     }
 
     this.updateStats();
@@ -322,13 +312,6 @@ this.showModal = true;
     this.selectedAnnouncement = null;
   }
 
-  editFromView(): void {
-    if (this.selectedAnnouncement) {
-      this.closeViewModal();
-      this.editAnnouncement(this.selectedAnnouncement);
-    }
-  }
-
   togglePin(id: number): void {
     const announcement = this.announcements.find(a => a.id === id);
     if (announcement) {
@@ -342,17 +325,6 @@ this.showModal = true;
     const announcement = this.announcements.find(a => a.id === id);
     if (announcement) {
       announcement.status = announcement.status === 'active' ? 'inactive' : 'active';
-      this.filterAnnouncements();
-      this.updateStats();
-    }
-  }
-
-  deleteAnnouncement(id: number): void {
-    if (confirm('Are you sure you want to delete this announcement?')) {
-      this.announcements = this.announcements.filter(a => a.id !== id);
-      if (this.selectedAnnouncement?.id === id) {
-        this.closeViewModal();
-      }
       this.filterAnnouncements();
       this.updateStats();
     }
@@ -401,7 +373,9 @@ formatDate(dateStr?: string): string {
       'students': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
       'teachers': 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
       'organizations': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-      'staff': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+      'staff': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+      'parents' : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+
     };
     return classes[audience as keyof typeof classes] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400';
   }

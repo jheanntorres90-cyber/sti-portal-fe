@@ -48,7 +48,6 @@ import { map, Subject, takeUntil } from 'rxjs';
                 <a routerLink="/attendance/attendance" routerLinkActive="active-attendance" class="nav-item">Attendance</a>
                 <a routerLink="/attendance/student-list" routerLinkActive="active-attendance" class="nav-item">Student List</a>
                 <a routerLink="/attendance/schedule" routerLinkActive="active-attendance" class="nav-item">Schedule</a>
-                <a routerLink="/attendance/announcements" routerLinkActive="active-attendance" class="nav-item">Announcements</a>
                 <a routerLink="/attendance/settings" routerLinkActive="active-attendance" class="nav-item">Settings</a>
               </ng-container>
 
@@ -60,7 +59,6 @@ import { map, Subject, takeUntil } from 'rxjs';
                 <a routerLink="/attendance/gate-attendance" routerLinkActive="active-student" class="nav-item">Gate Attendance</a>
                 <a routerLink="/attendance/subject-attendance" routerLinkActive="active-student" class="nav-item">Subject Attendance</a>
                 <a routerLink="/attendance/student-schedule" routerLinkActive="active-student" class="nav-item">Schedule</a>
-                <a routerLink="/attendance/student-announcements" routerLinkActive="active-student" class="nav-item">Announcements</a>
               </ng-container>
 
               <!-- =========================
@@ -104,7 +102,6 @@ import { map, Subject, takeUntil } from 'rxjs';
                 <a routerLink="/grades/student-dashboard" routerLinkActive="active-grade" class="nav-item">Dashboard</a>
                 <a routerLink="/grades/student-grades" routerLinkActive="active-grade" class="nav-item">Grades</a>
                 <a routerLink="/grades/student-schedule" routerLinkActive="active-grade" class="nav-item">Class Schedule</a>
-                <a routerLink="/grades/student-announcements" routerLinkActive="active-grade" class="nav-item">Announcements</a>
                 <a routerLink="/grades/student-mvh" routerLinkActive="active-grade" class="nav-item">Mission, Vision & STI Hymn</a>
                 <a routerLink="/grades/student-feedback" routerLinkActive="active-grade" class="nav-item">Feedback</a>
                 <a routerLink="/grades/student-about" routerLinkActive="active-grade" class="nav-item">About</a>
@@ -117,7 +114,6 @@ import { map, Subject, takeUntil } from 'rxjs';
                 <a routerLink="/grades/admin-records-management" routerLinkActive="active-grade" class="nav-item">Records Management</a>
                 <a routerLink="/grades/admin-grades-management" routerLinkActive="active-grade" class="nav-item">Grades Management</a>
                 <a routerLink="/grades/admin-schedule" routerLinkActive="active-grade" class="nav-item">Schedule Management</a>
-                <a routerLink="/grades/admin-announcements" routerLinkActive="active-grade" class="nav-item">Announcements</a>
                 <a routerLink="/grades/admin-data-management" routerLinkActive="active-grade" class="nav-item">Data Management</a>
               </ng-container>
 
@@ -137,10 +133,14 @@ import { map, Subject, takeUntil } from 'rxjs';
           </div>
 
           <div class="mt-10 pt-6 border-t border-gray-100 dark:border-white/5">
-            <h3 class="px-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Account & System</h3>
+            <h3 class="px-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">General</h3>
             <div class="space-y-1">
               <a routerLink="/notifications" routerLinkActive="active-link" class="nav-item">
                 <i class="pi pi-bell mr-3 text-[12px]"></i> Notifications
+                <span class="ml-auto bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black">3</span>
+              </a>
+              <a routerLink="/announcements" routerLinkActive="active-link" class="nav-item">
+                <i class="pi pi-megaphone mr-3 text-[12px]"></i> Announcements
                 <span class="ml-auto bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black">3</span>
               </a>
               <a routerLink="/profile" routerLinkActive="active-link" class="nav-item">

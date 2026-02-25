@@ -4,73 +4,12 @@
   <div class="flex justify-between items-center">
     <div>
       <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
-        Announcement Management
+        Announcement
       </h1>
       <p class="text-gray-500 dark:text-slate-400">
-        Manage and monitor all announcements
+        Monitor all announcements
       </p>
     </div>
-  </div>
-
-  <!-- STATS GRID -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-xs uppercase font-bold text-gray-400">Total</p>
-          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
-            {{ stats.total }}
-          </h2>
-        </div>
-        <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-xl text-blue-600">
-          <i class="fas fa-bullhorn"></i>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-xs uppercase font-bold text-gray-400">Active</p>
-          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
-            {{ stats.active }}
-          </h2>
-        </div>
-        <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-xl text-green-600">
-          <i class="fas fa-check-circle"></i>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-xs uppercase font-bold text-gray-400">Pinned</p>
-          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
-            {{ stats.pinned }}
-          </h2>
-        </div>
-        <div class="bg-yellow-100 dark:bg-yellow-900/30 p-3 rounded-xl text-yellow-600">
-          <i class="fas fa-thumbtack"></i>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-xs uppercase font-bold text-gray-400">Total Views</p>
-          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
-            {{ stats.totalViews | number }}
-          </h2>
-        </div>
-        <div class="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-xl text-purple-600">
-          <i class="fas fa-eye"></i>
-        </div>
-      </div>
-    </div>
-
   </div>
 
   <!-- FILTER + LIST CONTAINER -->
@@ -90,45 +29,64 @@
         </button>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-6 gap-4">
 
-        <input type="text"
-          [(ngModel)]="searchTerm"
-          (input)="filterAnnouncements()"
-          placeholder="Search announcements..."
-          class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+ <!-- SEARCH -->
+  <input type="text"
+    [(ngModel)]="searchTerm"
+    (input)="filterAnnouncements()"
+    placeholder="Search announcements..."
+    class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
 
-        <select [(ngModel)]="filterPriority"
-          (change)="filterAnnouncements()"
-          class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
-          <option value="all">All Priorities</option>
-          <option value="urgent">Urgent</option>
-          <option value="high">High</option>
-          <option value="normal">Normal</option>
-          <option value="low">Low</option>
-        </select>
+  <!-- PRIORITY -->
+  <select [(ngModel)]="filterPriority"
+    (change)="filterAnnouncements()"
+    class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+    <option value="all">All Priorities</option>
+    <option value="urgent">Urgent</option>
+    <option value="high">High</option>
+    <option value="normal">Normal</option>
+    <option value="low">Low</option>
+  </select>
 
-        <select [(ngModel)]="filterAudience"
-          (change)="filterAnnouncements()"
-          class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
-          <option value="all">All Audiences</option>
-          <option value="students">Students</option>
-          <option value="teachers">Teachers</option>
-          <option value="organizations">Organizations</option>
-          <option value="staff">Staff</option>
-        </select>
+  <!-- AUDIENCE -->
+  <select [(ngModel)]="filterAudience"
+    (change)="filterAnnouncements()"
+    class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+    <option value="all">All Audiences</option>
+    <option value="students">Students</option>
+    <option value="teachers">Teachers</option>
+    <option value="organizations">Organizations</option>
+    <option value="staff">Staff</option>
+    <option value="parents">Parents</option>
+  </select>
 
-        <select [(ngModel)]="filterStatus"
-          (change)="filterAnnouncements()"
-          class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
-          <option value="all">All Status</option>
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-          <option value="scheduled">Scheduled</option>
-        </select>
+  <!-- COURSE (NEW) -->
+  <select [(ngModel)]="filterCourse"
+    (change)="filterAnnouncements()"
+    class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+    <option value="all">All Courses</option>
+    <option value="BSIT">BSIT</option>
+    <option value="BSCS">BSCS</option>
+    <option value="BSTM">BSTM</option>
+    <option value="BSPSYCH">BSPSYCH</option>
+    <option value="STEM">STEM</option>
+    <option value="HUMMS">HUMMS</option>
+    <option value="ICT">ICT</option>
+    <option value="ABM">ABM</option>
+  </select>
 
-      </div>
-    </div>
+  <!-- STATUS -->
+  <select [(ngModel)]="filterStatus"
+    (change)="filterAnnouncements()"
+    class="bg-gray-50 dark:bg-slate-800 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 dark:text-white">
+    <option value="all">All Status</option>
+    <option value="active">Active</option>
+    <option value="inactive">Inactive</option>
+    <option value="scheduled">Scheduled</option>
+  </select>
+
+</div>
 
     <!-- ANNOUNCEMENT LIST -->
     <div class="p-6 space-y-6">
@@ -223,20 +181,11 @@
             <i class="fas fa-eye mr-1"></i> View
           </button>
 
-         <button (click)="editAnnouncement(ann)"
-           class="bg-gray-200 dark:bg-slate-700 px-4 py-2 rounded-lg text-sm transition">
-         <i class="fas fa-edit mr-1"></i> Edit
-         </button>
-
           <button (click)="togglePin(ann.id)"
             class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm transition">
             {{ ann.pinned ? 'Unpin' : 'Pin' }}
           </button>
 
-          <button (click)="deleteAnnouncement(ann.id)"
-            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm transition">
-            Delete
-          </button>
         </div>
       </div>
     </div>
@@ -248,7 +197,6 @@
      class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 
   <div class="bg-white dark:bg-slate-900 w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden animate-fadeIn max-h-[90vh] flex flex-col">
-
 
     <!-- HEADER -->
     <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 dark:border-slate-700">
@@ -287,10 +235,6 @@
             Urgent Priority
           </span>
 
-          <span class="px-2 py-1 rounded-md text-[10px] font-bold uppercase bg-green-100 text-green-600"
-                *ngIf="selectedAnnouncement?.status === 'active'">
-            Active
-          </span>
         </div>
       </div>
       
@@ -352,11 +296,6 @@
     <!-- FOOTER -->
     <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-slate-700">
 
-      <button (click)="selectedAnnouncement && editAnnouncement(selectedAnnouncement)"
-        class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-xl text-sm">
-        <i class="fas fa-edit mr-1"></i> Edit Announcement
-      </button>
-
       <button (click)="closeViewModal()"
         class="bg-gray-200 dark:bg-slate-700 px-5 py-2 rounded-xl text-sm">
         Close
@@ -367,8 +306,7 @@
   </div>
 </div>
 
-
-<!-- CREATE / EDIT ANNOUNCEMENT MODAL -->
+<!-- CREATE ANNOUNCEMENT MODAL -->
 <div *ngIf="showModal"
      class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 
@@ -377,7 +315,7 @@
     <!-- HEADER -->
     <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 dark:border-slate-700">
       <h2 class="text-lg font-semibold text-gray-800 dark:text-white">
-        {{ modalMode === 'create' ? 'Create Announcement' : 'Edit Announcement' }}
+        Create Announcement
       </h2>
       <button (click)="closeModal()"
               class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-xl">
@@ -541,11 +479,11 @@
     </div>
 
     <!-- FOOTER -->
-    <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800">
+    <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-800">
 
       <button (click)="submitAnnouncement()"
               class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-xl text-sm shadow-md">
-                <i class="fas fa-paper-plane"></i> Update Announcement
+                <i class="fas fa-paper-plane"></i> Create Announcement
       </button>
 
       <button (click)="closeModal()"

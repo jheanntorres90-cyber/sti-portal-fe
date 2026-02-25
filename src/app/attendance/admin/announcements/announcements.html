@@ -21,7 +21,7 @@
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
       <div class="space-y-1.5">
-        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Audience *</label>
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Audience</label>
         <select [(ngModel)]="newAnnouncement.audience" name="audience"
           class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
           <option value="">Select Audience</option>
@@ -29,35 +29,122 @@
           <option value="Teachers">Teachers</option>
           <option value="Students">Students</option>
           <option value="Parents">Parents</option>
-          <option value="BSIT">BSIT</option>
-          <option value="BSCS">BSCS</option>
         </select>
       </div>
 
-      <div class="space-y-1.5">
-        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Course</label>
-        <select [(ngModel)]="newAnnouncement.course" name="course"
+      <!-- Priority -->
+    <div class="space-y-1.5">
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Priority</label>
+        <select [(ngModel)]="newAnnouncement.priority" name="priority"
           class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
-          <option value="BSIT">BSIT</option>
-          <option value="BSCS">BSCS</option>
-          <option value="BSTM">BSTM</option>
-          <option value="BSPSYCH">BSPSYCH</option>
-          <option value="STEM">STEM</option>
-          <option value="HUMMS">HUMMS</option>
-          <option value="ICT">ICT</option>
-          <option value="ABM">ABM</option>
-        </select>
-      </div>
+          <option value="normal">Normal</option>
+          <option value="high">High</option>
+          <option value="urgent">Urgent</option>
+         <option value="low">Low</option>
+  </select>
+</div>
 
       <div class="space-y-1.5">
-        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Subject</label>
-        <input type="text" [(ngModel)]="newAnnouncement.subject" name="subject"
-          placeholder="Enter subject"
-          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+  <label class="text-[10px] font-black uppercase text-slate-400 ml-1">
+    Course
+  </label>
+
+  <select
+    [(ngModel)]="newAnnouncement.course"
+    name="course"
+    class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+    <option value="BSIT">BSIT</option>
+    <option value="BSCS">BSCS</option>
+    <option value="BSTM">BSTM</option>
+    <option value="BSPSYCH">BSPSYCH</option>
+    <option value="STEM">STEM</option>
+    <option value="HUMMS">HUMMS</option>
+    <option value="ICT">ICT</option>
+    <option value="ABM">ABM</option>
+  </select>
+</div>
+
+      <!-- Status -->
+      <div class="space-y-1.5">
+      <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Status</label>
+     <select [(ngModel)]="newAnnouncement.status" name="status"
+    class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl 
+           px-4 py-2.5 text-sm dark:text-white 
+           focus:ring-2 ring-blue-500 transition-all">
+    <option value="active">Active</option>
+    <option value="inactive">Inactive</option>
+    <option value="scheduled">Scheduled</option>
+  </select>
+</div>
+ 
+<div class="space-y-1.5">
+  <label class="text-[10px] font-black uppercase text-slate-400 ml-1">
+    Subject
+  </label>
+  <input type="text"
+         [(ngModel)]="newAnnouncement.subject"
+         name="subject"
+         placeholder="Enter subject..."
+         class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl 
+                px-4 py-2.5 text-sm dark:text-white 
+                focus:ring-2 ring-blue-500 transition-all">
+</div>
+
+      <!-- Attachments -->
+<div class="md:col-span-3 space-y-2">
+  <label class="text-[10px] font-black uppercase text-slate-400 ml-1">
+    Attachments
+  </label>
+
+  <!-- Upload Box -->
+  <label class="flex items-center justify-center gap-2 border-2 border-dashed 
+                border-slate-300 dark:border-slate-700 rounded-2xl 
+                px-4 py-6 cursor-pointer 
+                bg-slate-50 dark:bg-slate-800 
+                hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+    <i class="fas fa-paperclip text-slate-500"></i>
+    <span class="text-xs text-slate-500 font-bold">
+      Click to upload files
+    </span>
+    <input type="file"
+           multiple
+           class="hidden"
+           (change)="onFilesSelected($event)">
+  </label>
+
+  <!-- Preview -->
+  <div *ngIf="newAnnouncement.attachments.length"
+       class="flex flex-wrap gap-3 mt-3">
+
+    <div *ngFor="let file of newAnnouncement.attachments; let i = index"
+         class="relative w-24 h-24 rounded-xl overflow-hidden border 
+                border-slate-200 dark:border-slate-700 
+                bg-slate-100 dark:bg-slate-800">
+
+      <!-- Image -->
+      <img *ngIf="file.type.startsWith('image/')"
+           [src]="file.url"
+           class="w-full h-full object-cover" />
+
+      <!-- Other -->
+      <div *ngIf="!file.type.startsWith('image/')"
+           class="flex items-center justify-center h-full text-xs text-slate-500 px-2 text-center">
+        {{ file.name }}
       </div>
+
+      <!-- Remove Button -->
+      <button type="button"
+              (click)="removeAttachment(i)"
+              class="absolute top-1 right-1 bg-black/60 text-white text-xs px-1 rounded">
+        ✕
+      </button>
+    </div>
+
+  </div>
+</div>
 
       <div class="space-y-1.5 md:col-span-3">
-        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Message *</label>
+        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Message</label>
         <textarea [(ngModel)]="newAnnouncement.message" name="message"
           rows="4"
           placeholder="Enter announcement message..."
@@ -92,7 +179,7 @@
       <input type="text" [(ngModel)]="filter.subject"
         placeholder="Search subject..."
         class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
-
+      
       <input type="date" [(ngModel)]="filter.date"
         class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
 
@@ -131,48 +218,75 @@
     <div class="overflow-x-auto">
       <table class="w-full text-left border-collapse">
         <thead class="bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
-          <tr>
-            <th class="px-6 py-4">Audience</th>
-            <th class="px-6 py-4">Subject</th>
-            <th class="px-6 py-4">Message</th>
-            <th class="px-6 py-4">Date</th>
-            <th class="px-6 py-4">Actions</th>
-          </tr>
+      <tr>
+      <th class="px-6 py-4">Audience</th>
+      <th class="px-6 py-4">Subject</th>
+      <th class="px-6 py-4">Message</th>
+      <th class="px-6 py-4">Date</th>
+      <th class="px-6 py-4">Attachments</th>
+      <th class="px-6 py-4">Actions</th>
+    </tr>
         </thead>
         <tbody class="divide-y dark:divide-slate-800">
-          <tr *ngFor="let announcement of filteredAnnouncements"
-              class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<tr *ngFor="let announcement of filteredAnnouncements"
+    class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
 
-            <td class="px-6 py-4 text-xs font-bold dark:text-white">
-              {{ announcement.audience }}
-            </td>
+  <!-- Audience -->
+  <td class="px-6 py-4 text-xs font-bold dark:text-white">
+    {{ announcement.audience }}
+  </td>
 
-            <td class="px-6 py-4 text-xs dark:text-slate-400">
-              {{ announcement.subject }}
-            </td>
+  <!-- Subject -->
+  <td class="px-6 py-4 text-xs dark:text-slate-400">
+    {{ announcement.subject }}
+  </td>
 
-            <td class="px-6 py-4 text-xs dark:text-slate-400">
-              {{ announcement.message }}
-            </td>
+  <!-- Message -->
+  <td class="px-6 py-4 text-xs dark:text-slate-400">
+    {{ announcement.message }}
+  </td>
 
-            <td class="px-6 py-4 text-xs dark:text-slate-400">
-              {{ announcement.date }}
-            </td>
+  <!-- Date -->
+  <td class="px-6 py-4 text-xs dark:text-slate-400">
+    {{ announcement.date }}
+  </td>
 
-            <td class="px-6 py-4">
-              <div class="flex gap-2">
-                <button (click)="editAnnouncement(announcement)"
-                        class="text-amber-600 hover:text-amber-700 text-xs">
-                  <i class="fas fa-pencil"></i>
-                </button>
-                <button (click)="deleteAnnouncement(announcement.id)"
-                        class="text-rose-600 hover:text-rose-700 text-xs">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-            </td>
+  <!-- Attachments -->
+  <td class="px-6 py-4 text-xs">
+    <div *ngIf="announcement.attachments?.length; else noFile"
+         class="flex items-center gap-2 flex-wrap">
 
-          </tr>
+      <a *ngFor="let file of announcement.attachments"
+         [href]="file.url"
+         target="_blank"
+         class="text-blue-600 hover:underline text-[11px] flex items-center gap-1">
+
+        <i class="fas fa-paperclip"></i>
+        {{ file.name.length > 12 ? (file.name | slice:0:12) + '...' : file.name }}
+      </a>
+
+    </div>
+
+    <ng-template #noFile>
+      <span class="text-slate-400 text-[11px]">No File</span>
+    </ng-template>
+  </td>
+
+  <!-- Actions -->
+  <td class="px-6 py-4">
+    <div class="flex gap-2">
+      <button (click)="editAnnouncement(announcement)"
+              class="text-amber-600 hover:text-amber-700 text-xs">
+        <i class="fas fa-pencil"></i>
+      </button>
+      <button (click)="deleteAnnouncement(announcement.id)"
+              class="text-rose-600 hover:text-rose-700 text-xs">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  </td>
+
+</tr>
         </tbody>
       </table>
     </div>
@@ -182,12 +296,15 @@
 
 <!-- Edit Announcement Modal -->
 <div *ngIf="isModalOpen"
-     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm 
+            flex items-center justify-center z-50 p-4 overflow-y-auto">
 
-  <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl p-6 shadow-xl">
+  <!-- Modal Container -->
+  <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl 
+              shadow-xl max-h-[90vh] flex flex-col">
 
     <!-- Header -->
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center p-6 border-b dark:border-slate-700">
       <h2 class="text-lg font-bold text-gray-800 dark:text-white">
         Edit Announcement
       </h2>
@@ -198,78 +315,181 @@
       </button>
     </div>
 
-    <!-- Form -->
-    <form (ngSubmit)="updateAnnouncement()"
-          class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <!-- Scrollable Body -->
+    <div class="p-6 overflow-y-auto flex-1">
 
-      <div>
-        <label class="text-xs uppercase text-slate-400 font-black">
-          Audience
-        </label>
-        <select [(ngModel)]="editingAnnouncement.audience"
-                name="audience"
-                class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
-          <option value="General">General</option>
-          <option value="Teachers">Teachers</option>
-          <option value="Students">Students</option>
-          <option value="Parents">Parents</option>
-          <option value="BSIT">BSIT</option>
-          <option value="BSCS">BSCS</option>
-        </select>
-      </div>
+      <form (ngSubmit)="updateAnnouncement()"
+            class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-      <div>
-        <label class="text-xs uppercase text-slate-400 font-black">
-          Course
-        </label>
-         <select [(ngModel)]="newAnnouncement.course" name="course"
-          class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
-          <option value="BSIT">BSIT</option>
-          <option value="BSCS">BSCS</option>
-          <option value="BSTM">BSTM</option>
-          <option value="BSPSYCH">BSPSYCH</option>
-          <option value="STEM">STEM</option>
-          <option value="HUMMS">HUMMS</option>
-          <option value="ICT">ICT</option>
-          <option value="ABM">ABM</option>
-        </select>
-      </div>
+        <!-- Audience -->
+        <div>
+          <label class="text-xs uppercase text-slate-400 font-black">
+            Audience
+          </label>
+          <select [(ngModel)]="editingAnnouncement.audience"
+                  name="editAudience"
+                  class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl 
+                         px-4 py-2 text-sm dark:text-white">
+            <option value="General">General</option>
+            <option value="Teachers">Teachers</option>
+            <option value="Students">Students</option>
+            <option value="Parents">Parents</option>
+          </select>
+        </div>
 
-      <div class="col-span-full">
-        <label class="text-xs uppercase text-slate-400 font-black">
-          Subject
-        </label>
-        <input type="text"
-               [(ngModel)]="editingAnnouncement.subject"
-               name="subject"
-               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
-      </div>
+        <!-- Course -->
+        <div>
+          <label class="text-xs uppercase text-slate-400 font-black">
+            Course
+          </label>
+          <select [(ngModel)]="editingAnnouncement.course"
+                  name="editCourse"
+                  class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl 
+                         px-4 py-2 text-sm dark:text-white">
+            <option value="">Select Course</option>
+            <option value="BSIT">BSIT</option>
+            <option value="BSCS">BSCS</option>
+            <option value="BSTM">BSTM</option>
+            <option value="BSPSYCH">BSPSYCH</option>
+            <option value="STEM">STEM</option>
+            <option value="HUMMS">HUMMS</option>
+            <option value="ICT">ICT</option>
+            <option value="ABM">ABM</option>
+          </select>
+        </div>
 
-      <div class="col-span-full">
-        <label class="text-xs uppercase text-slate-400 font-black">
-          Message
-        </label>
-        <textarea rows="4"
-                  [(ngModel)]="editingAnnouncement.message"
-                  name="message"
-                  class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
-        </textarea>
-      </div>
+        <!-- Priority -->
+        <div>
+          <label class="text-xs uppercase text-slate-400 font-black">
+            Priority
+          </label>
+          <select [(ngModel)]="editingAnnouncement.priority"
+                  name="editPriority"
+                  class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl 
+                         px-4 py-2 text-sm dark:text-white">
+            <option value="low">Low</option>
+            <option value="normal">Normal</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
 
-      <div class="col-span-full flex justify-end gap-3 pt-4">
-        <button type="button"
-                (click)="closeModal()"
-                class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
-          Cancel
-        </button>
+        <!-- Status -->
+        <div>
+          <label class="text-xs uppercase text-slate-400 font-black">
+            Status
+          </label>
+          <select [(ngModel)]="editingAnnouncement.status"
+                  name="editStatus"
+                  class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl 
+                         px-4 py-2 text-sm dark:text-white">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="scheduled">Scheduled</option>
+          </select>
+        </div>
 
-        <button type="submit"
-                class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
-          Save Changes
-        </button>
-      </div>
+        <!-- Subject -->
+        <div class="col-span-full">
+          <label class="text-xs uppercase text-slate-400 font-black">
+            Subject
+          </label>
+          <input type="text"
+                 [(ngModel)]="editingAnnouncement.subject"
+                 name="editSubject"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl 
+                        px-4 py-2 text-sm dark:text-white">
+        </div>
 
-    </form>
+        <!-- Message -->
+        <div class="col-span-full">
+          <label class="text-xs uppercase text-slate-400 font-black">
+            Message
+          </label>
+          <textarea rows="4"
+                    [(ngModel)]="editingAnnouncement.message"
+                    name="editMessage"
+                    class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl 
+                           px-4 py-2 text-sm dark:text-white">
+          </textarea>
+        </div>
+
+        <!-- Attachments -->
+        <div class="col-span-full space-y-2">
+          <label class="text-xs uppercase text-slate-400 font-black">
+            Attachments
+          </label>
+
+          <!-- Upload -->
+          <label class="flex items-center justify-center gap-2 border-2 border-dashed 
+                        border-slate-300 dark:border-slate-700 rounded-2xl 
+                        px-4 py-6 cursor-pointer 
+                        bg-slate-50 dark:bg-slate-800 
+                        hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+
+            <i class="fas fa-paperclip text-slate-500"></i>
+            <span class="text-xs text-slate-500 font-bold">
+              Click to upload files
+            </span>
+
+            <input type="file"
+                   multiple
+                   class="hidden"
+                   (change)="onEditFilesSelected($event)">
+          </label>
+
+          <!-- Preview -->
+          <div *ngIf="editingAnnouncement.attachments?.length"
+               class="flex flex-wrap gap-3 mt-3">
+
+            <div *ngFor="let file of editingAnnouncement.attachments; let i = index"
+                 class="relative w-24 h-24 rounded-xl overflow-hidden border 
+                        border-slate-200 dark:border-slate-700 
+                        bg-slate-100 dark:bg-slate-800">
+
+              <img *ngIf="file.type.startsWith('image/')"
+                   [src]="file.url"
+                   class="w-full h-full object-cover" />
+
+              <div *ngIf="!file.type.startsWith('image/')"
+                   class="flex items-center justify-center h-full 
+                          text-xs text-slate-500 px-2 text-center">
+                {{ file.name }}
+              </div>
+
+              <button type="button"
+                      (click)="removeEditAttachment(i)"
+                      class="absolute top-1 right-1 bg-black/60 
+                             text-white text-xs px-1 rounded">
+                ✕
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Footer (Sticky) -->
+    <div class="flex justify-end gap-3 p-4 border-t 
+                dark:border-slate-700 bg-white dark:bg-slate-900 rounded-b-3xl">
+
+      <button type="button"
+              (click)="closeModal()"
+              class="px-5 py-2 rounded-2xl text-xs font-bold 
+                     bg-slate-200 dark:bg-slate-700 dark:text-white">
+        Cancel
+      </button>
+
+      <button type="button"
+              (click)="updateAnnouncement()"
+              class="px-5 py-2 rounded-2xl text-xs font-bold 
+                     bg-blue-600 text-white hover:bg-blue-700">
+        Save Changes
+      </button>
+
+    </div>
 
   </div>
 </div>
