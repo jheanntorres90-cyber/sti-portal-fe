@@ -3,6 +3,7 @@ import { authGuard } from './core/guard/auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { SettingsComponent } from './settings/settings.component';
+import {AnnouncementsComponent} from './announcements/announcements.component'
 import { LandingComponent } from './landing-component/landing/landing.component';
 
 export const routes: Routes = [
@@ -35,6 +36,7 @@ export const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'notifications', component: NotificationsComponent },
       { path: 'settings', component: SettingsComponent },
+      {path: 'announcements', component: AnnouncementsComponent}
     ],
   },
 

@@ -2,6 +2,25 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+interface Announcement {
+  id: number;
+  audience: string;
+  course: string;
+  subject: string;
+  message: string;
+  imageName: string;
+  date: string;
+  status: 'active' | 'inactive' | 'scheduled'; 
+  attachments?: Attachment[];
+}
+
+interface Attachment {
+  name: string;
+  type: string;
+  url: string;
+  file?: File;
+}
+
 @Component({
   selector: 'app-admin-announcements',
   standalone: true,
@@ -9,7 +28,8 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './announcements.html',
 })
 export class AdminAnnouncementsComponent implements OnInit {
-  announcements: any[] = [];
+  announcements: Announcement[] = [];
+  filteredAnnouncements: Announcement[] = [];
   alerts: any[] = [];
   
   // Form models
@@ -18,22 +38,18 @@ export class AdminAnnouncementsComponent implements OnInit {
     course: '',
     subject: '',
     message: '',
-    imageFile: null as File | null
+    priority: '',
+    status: 'active', 
+    attachments: [] as Attachment[]
   };
   
   editingAnnouncement: any = null;
   
   // Filter models
   filter = {
-    audience: '',
-    course: '',
     subject: '',
     date: ''
   };
-  
-  // Image previews
-  imagePreview: string | null = null;
-  editImagePreview: string | null = null;
   
   // Modal state
   isModalOpen = false;
@@ -42,111 +58,169 @@ export class AdminAnnouncementsComponent implements OnInit {
   
   ngOnInit(): void {
     this.loadSampleData();
+    this.applyFilters();
   }
   
   loadSampleData(): void {
     this.announcements = [
       {
-        id: 0,
+        id: 1,
         audience: 'General',
         course: '',
         subject: 'System Maintenance',
         message: 'System maintenance scheduled for September 15 from 10 PM to 2 AM.',
         imageName: '',
-        date: 'Sept 7, 2025'
+        date: 'Sept 7, 2025',
+        status: 'active' 
       },
       {
-        id: 1,
+        id: 2,
         audience: 'Students',
         course: 'BSIT',
         subject: 'Midterm Examinations',
         message: 'Midterm examinations will begin on October 15. Please check your schedule.',
         imageName: '',
-        date: 'Sept 5, 2025'
+        date: 'Sept 5, 2025',
+        status: 'inactive'
       },
       {
-        id: 2,
+        id: 3,
         audience: 'Teachers',
         course: '',
         subject: 'Faculty Meeting',
         message: 'There will be a faculty meeting this Friday at 3 PM in the conference room.',
         imageName: '',
-        date: 'Sept 3, 2025'
+        date: 'Sept 3, 2025',
+        status: 'active'
       },
       {
-        id: 3,
+        id: 4,
         audience: 'Parents',
         course: '',
         subject: 'Parent-Teacher Conference',
         message: 'The parent-teacher conference is scheduled for September 20. Please confirm your attendance.',
         imageName: '',
-        date: 'Sept 1, 2025'
+        date: 'Sept 1, 2025',
+        status: 'active'
       }
     ];
+    this.filteredAnnouncements = [...this.announcements];
   }
   
-  createAnnouncement(): void {
-    if (!this.newAnnouncement.audience || !this.newAnnouncement.message) {
-      this.showAlert('Please fill in all required fields', 'error');
-      return;
+  onFilesSelected(event: any): void {
+    const files: FileList = event.target.files;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      // Accept only images for now (can be modified to accept other types)
+      if (!file.type.startsWith('image/')) {
+        continue;
+      }
+
+      this.newAnnouncement.attachments.push({
+        name: file.name,
+        type: file.type,
+        url: URL.createObjectURL(file),
+        file: file
+      });
     }
-    
-    const newAnnouncement = {
-      id: this.announcements.length,
-      audience: this.newAnnouncement.audience,
-      course: this.newAnnouncement.course || '',
-      subject: this.newAnnouncement.subject,
-      message: this.newAnnouncement.message,
-      imageName: this.newAnnouncement.imageFile ? this.newAnnouncement.imageFile.name : '',
-      date: new Date().toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric', 
-        year: 'numeric' 
-      })
-    };
-    
-    this.announcements.unshift(newAnnouncement);
-    this.resetForm();
-    this.showAlert('Announcement posted successfully!', 'success');
+
+    event.target.value = '';
+  }
+
+  removeAttachment(index: number): void {
+    this.newAnnouncement.attachments.splice(index, 1);
   }
   
+createAnnouncement(): void {
+  if (!this.newAnnouncement.audience || !this.newAnnouncement.message) {
+    this.showAlert('Please fill in all required fields', 'error');
+    return;
+  }
+
+  const newId = this.announcements.length > 0
+    ? Math.max(...this.announcements.map(a => a.id)) + 1
+    : 1;
+    
+    const newAnnouncement: Announcement = {
+    id: newId,
+    audience: this.newAnnouncement.audience,
+    course: this.newAnnouncement.course || '',
+    subject: this.newAnnouncement.subject || '',
+    message: this.newAnnouncement.message,
+    imageName: this.newAnnouncement.attachments.length > 0
+      ? this.newAnnouncement.attachments[0].name
+      : '',
+    date: new Date().toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    }),
+    status: this.newAnnouncement.status as 'active' | 'inactive' | 'scheduled',
+    attachments: [...this.newAnnouncement.attachments]
+  };
+
+  this.announcements.unshift(newAnnouncement);
+  this.filteredAnnouncements = [...this.announcements];
+
+  this.resetForm();
+  this.showAlert('Announcement posted successfully!', 'success');
+}
   resetForm(): void {
     this.newAnnouncement = {
       audience: '',
       course: '',
       subject: '',
       message: '',
-      imageFile: null
+      priority: 'normal',
+      status: 'active', 
+      attachments: []
     };
-    this.imagePreview = null;
   }
+  onEditFilesSelected(event: any): void {
+  const files: FileList = event.target.files;
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    this.editingAnnouncement.attachments.push({
+      name: file.name,
+      type: file.type,
+      url: URL.createObjectURL(file),
+      file: file
+    });
+  }
+
+  event.target.value = '';
+}
+
+removeEditAttachment(index: number): void {
+  this.editingAnnouncement.attachments.splice(index, 1);
+}
   
-  editAnnouncement(announcement: any): void {
-    this.editingAnnouncement = { ...announcement };
-    this.isModalOpen = true;
-  }
+editAnnouncement(announcement: Announcement): void {
+  this.editingAnnouncement = {
+    ...announcement,
+    attachments: announcement.attachments
+      ? [...announcement.attachments]
+      : []
+  };
+
+  this.isModalOpen = true;
+}
   
   updateAnnouncement(): void {
     if (!this.editingAnnouncement) return;
     
-    const index = this.announcements.findIndex((a: any) => a.id === this.editingAnnouncement!.id);
+    const index = this.announcements.findIndex((a: Announcement) => a.id === this.editingAnnouncement!.id);
     if (index !== -1) {
       this.announcements[index] = { ...this.editingAnnouncement };
+      this.applyFilters();
     }
     
     this.closeModal();
     this.showAlert('Announcement updated successfully!', 'success');
-  }
-  
-  removeImage(announcement: any): void {
-    const index = this.announcements.findIndex((a: any) => a.id === announcement.id);
-    if (index !== -1) {
-      this.announcements[index].imageName = '';
-      if (this.editingAnnouncement?.id === announcement.id) {
-        this.editingAnnouncement.imageName = '';
-      }
-      this.showAlert('Image removed successfully!', 'success');
-    }
   }
   
   deleteAnnouncement(id: number): void {
@@ -154,71 +228,42 @@ export class AdminAnnouncementsComponent implements OnInit {
       return;
     }
     
-    this.announcements = this.announcements.filter((a: any) => a.id !== id);
+    this.announcements = this.announcements.filter((a: Announcement) => a.id !== id);
+    this.applyFilters();
     this.showAlert('Announcement deleted successfully!', 'success');
   }
   
-  get filteredAnnouncements(): any[] {
-    return this.announcements.filter((announcement: any) => {
-      const audienceMatch = !this.filter.audience || 
-        announcement.audience.toLowerCase().includes(this.filter.audience.toLowerCase());
-      const courseMatch = !this.filter.course || 
-        (announcement.course && announcement.course.toLowerCase().includes(this.filter.course.toLowerCase()));
-      const subjectMatch = !this.filter.subject || 
-        announcement.subject.toLowerCase().includes(this.filter.subject.toLowerCase());
-      const dateMatch = !this.filter.date || 
-        announcement.date.includes(this.filter.date);
-      
-      return audienceMatch && courseMatch && subjectMatch && dateMatch;
-    });
-  }
   applyFilters(): void {
-  this.filter = { ...this.filter };
-}
+    let filtered = [...this.announcements];
 
+    if (this.filter.subject) {
+      const term = this.filter.subject.toLowerCase();
+      filtered = filtered.filter(a => 
+        a.subject.toLowerCase().includes(term) ||
+        a.message.toLowerCase().includes(term)
+      );
+    }
+
+    if (this.filter.date) {
+      filtered = filtered.filter(a => 
+        a.date.includes(this.filter.date)
+      );
+    }
+
+    this.filteredAnnouncements = filtered;
+  }
   
   clearFilters(): void {
     this.filter = {
-      audience: '',
-      course: '',
       subject: '',
       date: ''
     };
-  }
-  
-  onFileSelected(event: Event, type: 'create' | 'edit'): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      
-      if (type === 'create') {
-        this.newAnnouncement.imageFile = file;
-        this.previewImage(file, 'create');
-      } else {
-        if (this.editingAnnouncement) {
-          this.editingAnnouncement.imageName = file.name;
-          this.previewImage(file, 'edit');
-        }
-      }
-    }
-  }
-  
-  previewImage(file: File, type: 'create' | 'edit'): void {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      if (type === 'create') {
-        this.imagePreview = e.target.result;
-      } else {
-        this.editImagePreview = e.target.result;
-      }
-    };
-    reader.readAsDataURL(file);
+    this.applyFilters();
   }
   
   closeModal(): void {
     this.isModalOpen = false;
     this.editingAnnouncement = null;
-    this.editImagePreview = null;
   }
   
   @HostListener('document:keydown.escape')
@@ -228,7 +273,7 @@ export class AdminAnnouncementsComponent implements OnInit {
   
   exportToCSV(): void {
     const headers = ['Audience', 'Course', 'Subject', 'Message', 'Image', 'Date'];
-    const csvData = this.announcements.map(announcement => [
+    const csvData = this.filteredAnnouncements.map(announcement => [
       announcement.audience,
       announcement.course || '-',
       announcement.subject,
@@ -247,8 +292,23 @@ export class AdminAnnouncementsComponent implements OnInit {
   }
   
   exportToExcel(): void {
-    const table = document.querySelector('#announcementTable')?.outerHTML;
-    if (!table) return;
+    // Create a simple HTML table for export
+    let tableHtml = '<table border="1">';
+    tableHtml += '<thead><tr><th>Audience</th><th>Course</th><th>Subject</th><th>Message</th><th>Image</th><th>Date</th></tr></thead>';
+    tableHtml += '<tbody>';
+    
+    this.filteredAnnouncements.forEach(ann => {
+      tableHtml += '<tr>';
+      tableHtml += `<td>${ann.audience}</td>`;
+      tableHtml += `<td>${ann.course || '-'}</td>`;
+      tableHtml += `<td>${ann.subject}</td>`;
+      tableHtml += `<td>${ann.message}</td>`;
+      tableHtml += `<td>${ann.imageName || 'No Image'}</td>`;
+      tableHtml += `<td>${ann.date}</td>`;
+      tableHtml += '</tr>';
+    });
+    
+    tableHtml += '</tbody></table>';
     
     const html = `
       <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
@@ -270,7 +330,7 @@ export class AdminAnnouncementsComponent implements OnInit {
           <![endif]-->
         </head>
         <body>
-          ${table}
+          ${tableHtml}
         </body>
       </html>
     `;
@@ -319,15 +379,14 @@ export class AdminAnnouncementsComponent implements OnInit {
   }
   
   removeAlert(id: string): void {
-    const alertElement = document.getElementById(id);
-    if (alertElement) {
-      alertElement.classList.remove('show');
-      alertElement.classList.add('hide');
-      
-      setTimeout(() => {
-        this.alerts = this.alerts.filter((alert: any) => alert.id !== id);
-      }, 400);
+    const alertIndex = this.alerts.findIndex((alert: any) => alert.id === id);
+    if (alertIndex !== -1) {
+      this.alerts.splice(alertIndex, 1);
     }
+  }
+  
+  formatDate(date: string): string {
+    return date;
   }
   
   getAudienceBadgeClass(audience: string): string {
