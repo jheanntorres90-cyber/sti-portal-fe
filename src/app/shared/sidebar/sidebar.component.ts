@@ -66,14 +66,12 @@ import { map, Subject, takeUntil } from 'rxjs';
                    ========================= -->
               <ng-container *ngIf="isRole('Admin')">
                 <a routerLink="/attendance/admin-dashboard" routerLinkActive="active-student" class="nav-item">Dashboard</a>
-                <a routerLink="/attendance/admin-attendance" routerLinkActive="active-student" class="nav-item">Attendance</a>
-                <a routerLink="/attendance/admin-manage-students" routerLinkActive="active-student" class="nav-item">Manage Students</a>
+                <a routerLink="/attendance/admin-attendance" routerLinkActive="active-student" class="nav-item">Gate Attendance</a>
                 <a routerLink="/attendance/admin-schedule" routerLinkActive="active-student" class="nav-item">Schedule</a>
                 <a routerLink="/attendance/admin-announcements" routerLinkActive="active-student" class="nav-item">Announcements</a>
-                <a routerLink="/attendance/admin-add-new-admin" routerLinkActive="active-student" class="nav-item">Add New Admin</a>
+                <a routerLink="/attendance/admin-administration" routerLinkActive="active-student" class="nav-item">Administration Panel</a>
                 <a routerLink="/attendance/admin-reset-password" routerLinkActive="active-student" class="nav-item">Reset Password</a>
-              </ng-container>
-
+              </ng-container>  
             </div>
           </div>
 
@@ -102,10 +100,6 @@ import { map, Subject, takeUntil } from 'rxjs';
                 <a routerLink="/grades/student-dashboard" routerLinkActive="active-grade" class="nav-item">Dashboard</a>
                 <a routerLink="/grades/student-grades" routerLinkActive="active-grade" class="nav-item">Grades</a>
                 <a routerLink="/grades/student-schedule" routerLinkActive="active-grade" class="nav-item">Class Schedule</a>
-                <a routerLink="/grades/student-mvh" routerLinkActive="active-grade" class="nav-item">Mission, Vision & STI Hymn</a>
-                <a routerLink="/grades/student-feedback" routerLinkActive="active-grade" class="nav-item">Feedback</a>
-                <a routerLink="/grades/student-about" routerLinkActive="active-grade" class="nav-item">About</a>
-                <a routerLink="/grades/student-faqs" routerLinkActive="active-grade" class="nav-item">Faqs</a>
               </ng-container>
 
               <!-- ADMIN GRADE LINKS -->
@@ -122,15 +116,14 @@ import { map, Subject, takeUntil } from 'rxjs';
                 <a routerLink="/grades/parent-dashboard" routerLinkActive="active-grade" class="nav-item">Dashboard</a>
                 <a routerLink="/grades/parent-child-grades" routerLinkActive="active-grade" class="nav-item">Child's Grades</a>
                 <a routerLink="/grades/parent-child-schedule" routerLinkActive="active-grade" class="nav-item">Child's Schedule</a>
-                <a routerLink="/grades/parent-announcements" routerLinkActive="active-grade" class="nav-item">Announcements</a>
-                <a routerLink="/grades/parent-mvsh" routerLinkActive="active-grade" class="nav-item">Mission, Vision & STI Hymn</a>
-                <a routerLink="/grades/parent-feedback" routerLinkActive="active-grade" class="nav-item">Feedback</a>
-                <a routerLink="/grades/parent-about" routerLinkActive="active-grade" class="nav-item">About</a>
-                <a routerLink="/grades/parent-faqs" routerLinkActive="active-grade" class="nav-item">Faqs</a>
               </ng-container>
 
+              
             </div>
+            
           </div>
+          
+
 
           <div class="mt-10 pt-6 border-t border-gray-100 dark:border-white/5">
             <h3 class="px-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">General</h3>
@@ -143,9 +136,29 @@ import { map, Subject, takeUntil } from 'rxjs';
                 <i class="pi pi-megaphone mr-3 text-[12px]"></i> Announcements
                 <span class="ml-auto bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black">3</span>
               </a>
+              
               <a routerLink="/profile" routerLinkActive="active-link" class="nav-item">
                 <i class="pi pi-user mr-3 text-[12px]"></i> My Profile
               </a>
+              
+               <h3 class="px-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Others</h3>
+      
+               <a routerLink="/mvh" routerLinkActive="active-link" class="nav-item">
+                <i class="pi pi-bookmark mr-3 text-[12px]"></i> Mision, Vission & STI Hymn
+              </a>
+
+              <a routerLink="/feedback" routerLinkActive="active-link" class="nav-item">
+                <i class="pi pi-comments mr-3 text-[12px]"></i> Feedback
+              </a>
+
+              <a routerLink="/about" routerLinkActive="active-link" class="nav-item">
+                <i class="pi pi-flag mr-3 text-[12px]"></i> About
+              </a>
+              
+              <a routerLink="/faqs" routerLinkActive="active-link" class="nav-item">
+                <i class="pi pi-question-circle mr-3 text-[12px]"></i> Faqs
+              </a>
+
               <a routerLink="/settings" routerLinkActive="active-link" class="nav-item">
                 <i class="pi pi-cog mr-3 text-[12px]"></i> Settings
               </a>
@@ -190,6 +203,7 @@ export class SidebarComponent implements OnDestroy {
 
   isAttendanceOpen = true;
   isGradesOpen = false;
+  isAdminMainOpen = true;
 
   // current user
   user$ = this.authService.user$;

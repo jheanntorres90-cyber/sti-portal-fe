@@ -3,7 +3,11 @@ import { authGuard } from './core/guard/auth.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { SettingsComponent } from './settings/settings.component';
-import {AnnouncementsComponent} from './announcements/announcements.component'
+import {AnnouncementsComponent} from './announcements/announcements.component';
+import { MvshComponent} from './mvh/mvh.componnet';
+import { AboutComponent} from './about/about.component';
+import { FeedbackComponent} from './feedback/feedback.component';
+import {FaqsComponent} from './faqs/faqs.component'
 import { LandingComponent } from './landing-component/landing/landing.component';
 
 export const routes: Routes = [
@@ -36,7 +40,11 @@ export const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'notifications', component: NotificationsComponent },
       { path: 'settings', component: SettingsComponent },
-      {path: 'announcements', component: AnnouncementsComponent}
+      {path: 'announcements', component: AnnouncementsComponent},
+      {path: 'mvh', component: MvshComponent},
+      {path: 'feedback', component: AboutComponent},
+      {path: 'about', component: AboutComponent},
+      {path: 'faqs', component: FaqsComponent}
     ],
   },
 
