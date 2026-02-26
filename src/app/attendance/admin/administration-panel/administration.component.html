@@ -1,0 +1,582 @@
+<!-- ADMINISTRATION PANEL -->
+<div class="space-y-6 p-4 sm:p-6 animate-fadeIn dark:bg-slate-950 min-h-screen pb-12">
+
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
+      Administration Panel
+    </h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-2">Manage users, schedules, announcements, and system operations</p>
+  </div>
+
+  <!-- ==================== ADMIN MANAGEMENT SECTION ==================== -->
+  <div class="relative">
+    <!-- Section Divider with Label -->
+    <div class="flex items-center gap-3 mb-4">
+      <div class="h-8 w-1 bg-blue-600 rounded-full"></div>
+      <div>
+        <h2 class="text-sm font-black uppercase tracking-wider text-blue-600 dark:text-blue-400">
+          Admin Management
+        </h2>
+        <p class="text-[10px] text-slate-500 dark:text-slate-400">Create and manage administrator accounts</p>
+      </div>
+    </div>
+
+    <!-- Register Admin Card -->
+    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm mb-6">
+
+      <h2 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white mb-6">
+        Register New Admin
+      </h2>
+
+      <form [formGroup]="adminForm"
+            (ngSubmit)="onSubmit()"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- Full Name -->
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400">Full Name *</label>
+          <input formControlName="fullName"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+        </div>
+
+        <!-- Email -->
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400">Email *</label>
+          <input formControlName="email"
+                 type="email"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+        </div>
+
+        <!-- Username -->
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400">Username *</label>
+          <input formControlName="username"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+        </div>
+
+        <!-- Password -->
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400">Password *</label>
+          <input [type]="showPassword ? 'text' : 'password'"
+                 formControlName="password"
+                 class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-blue-500 transition-all">
+        </div>
+
+        <!-- Profile -->
+        <div class="col-span-full">
+          <label class="text-xs uppercase text-slate-400 font-black">
+            Profile Picture
+          </label>
+
+          <!-- File Input -->
+             <input type="file"
+               (change)="onFileSelected($event, 'admin')"
+               class="w-full mt-2 text-xs dark:text-white">
+
+          <!-- Preview Centered -->
+          <div class="flex justify-center mt-6">
+            <div class="relative group">
+              <img
+                [src]="adminForm.get('profilePic')?.value || 'https://via.placeholder.com/150'"
+                class="w-28 h-28 rounded-full object-cover border-4 border-blue-100 shadow-md transition-all duration-300 group-hover:scale-105">
+
+              <!-- Hover Overlay -->
+              <div class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                <span class="text-white text-xs font-bold">
+                  Change
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Button -->
+        <div class="col-span-full flex justify-end pt-4">
+          <button type="submit"
+                  class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-6 rounded-2xl transition-all flex items-center gap-2">
+            <i class="fas fa-user-plus"></i> Create Admin
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Admin Table -->
+    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+
+      <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+        <h3 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+          Existing Admins
+        </h3>
+        <span class="text-[10px] font-black uppercase text-slate-400 tracking-tighter">
+          {{ admins.length }} Records
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
+            <tr>
+              <th class="px-6 py-4">Profile</th>
+              <th class="px-6 py-4">Full Name</th>
+              <th class="px-6 py-4">Email</th>
+              <th class="px-6 py-4">Mobile</th>
+              <th class="px-6 py-4">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y dark:divide-slate-800">
+            <tr *ngFor="let admin of admins"
+                class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+
+              <td class="px-6 py-4">
+                <img [src]="admin.profilePic || 'https://via.placeholder.com/40'" 
+                     class="w-10 h-10 rounded-full object-cover">
+              </td>
+
+              <td class="px-6 py-4 font-bold dark:text-white text-sm">
+                {{ admin.fullName }}
+              </td>
+
+              <td class="px-6 py-4 text-xs dark:text-slate-400">
+                {{ admin.email }}
+              </td>
+
+              <td class="px-6 py-4 text-xs dark:text-slate-400">
+                {{ admin.mobile || '-' }}
+              </td>
+
+              <td class="px-6 py-4">
+                <div class="flex gap-3">
+                  <button (click)="editAdminFromRow(admin)"
+                          class="text-amber-600 hover:text-amber-700 text-xs">
+                    <i class="fas fa-pencil"></i>
+                  </button>
+                  <button (click)="confirmDelete(admin)"
+                          class="text-rose-600 hover:text-rose-700 text-xs">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION DIVIDER ==================== -->
+  <div class="relative py-4">
+    <div class="absolute inset-0 flex items-center">
+      <div class="w-full border-t-2 border-dashed border-slate-200 dark:border-slate-700"></div>
+    </div>
+    <div class="relative flex justify-center">
+      <span class="bg-white dark:bg-slate-950 px-4 text-xs font-black uppercase text-slate-400 dark:text-slate-500">
+        Academic Management
+      </span>
+    </div>
+  </div>
+
+  <!-- ==================== STUDENT MANAGEMENT SECTION ==================== -->
+  <div class="relative">
+    <!-- Section Divider with Label -->
+    <div class="flex items-center gap-3 mb-4">
+      <div class="h-8 w-1 bg-emerald-600 rounded-full"></div>
+      <div>
+        <h2 class="text-sm font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+          Student Management
+        </h2>
+        <p class="text-[10px] text-slate-500 dark:text-slate-400">Monitor and manage registered students</p>
+      </div>
+    </div>
+
+    <!-- REGISTER STUDENT -->
+    <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm mb-6">
+
+      <div class="flex items-center gap-2 mb-6">
+        <i class="fas fa-user-plus text-emerald-600"></i>
+        <h2 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+          Register Student
+        </h2>
+      </div>
+
+      <form (ngSubmit)="registerStudent()" #studentForm="ngForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Full Name</label>
+          <input type="text" [(ngModel)]="newStudent.fullName" name="fullName"
+            class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-emerald-500 transition-all"
+            placeholder="Enter full name">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Student ID</label>
+          <input type="text" [(ngModel)]="newStudent.studentId" name="studentId"
+            class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-emerald-500 transition-all"
+            placeholder="Enter student ID">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Course</label>
+          <select [(ngModel)]="newStudent.course" name="course"
+            class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-emerald-500 transition-all">
+            <option value="">Select Course</option>
+            <option value="BSIT">BSIT</option>
+            <option value="BSED">BSED</option>
+            <option value="BSCS">BSCS</option>
+            <option value="BSBA">BSBA</option>
+          </select>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Year & Section</label>
+          <input type="text" [(ngModel)]="newStudent.yearSection" name="yearSection"
+            class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-emerald-500 transition-all"
+            placeholder="e.g., 2nd Year - A">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Email</label>
+          <input type="email" [(ngModel)]="newStudent.email" name="email"
+            class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-emerald-500 transition-all">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Contact</label>
+          <input type="text" [(ngModel)]="newStudent.contact" name="contact"
+            class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-emerald-500 transition-all">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">RFID</label>
+          <input type="text" [(ngModel)]="newStudent.rfid" name="rfid"
+            class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2.5 text-sm dark:text-white focus:ring-2 ring-emerald-500 transition-all">
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Face Image</label>
+          <input type="file" (change)="onFileSelected($event, 'new')"
+            class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl px-4 py-2 text-sm dark:text-white">
+        </div>
+
+        <div class="col-span-full flex justify-end pt-4">
+          <button type="submit"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3 px-6 rounded-2xl transition-all flex items-center gap-2">
+            <i class="fas fa-user-plus"></i> Register Student
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- EXPORT BUTTONS -->
+    <div class="flex justify-end gap-3 mb-6">
+      <button (click)="exportTableToCSV()"
+        class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center gap-2">
+        <i class="fas fa-file-csv"></i> Export CSV
+      </button>
+
+      <button (click)="exportTableToExcel()"
+        class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-3 px-4 rounded-2xl transition-all flex items-center gap-2">
+        <i class="fas fa-file-excel"></i> Export Excel
+      </button>
+    </div>
+
+    <!-- STUDENT TABLE -->
+    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+
+      <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-users text-emerald-600"></i>
+          <h3 class="font-bold uppercase text-xs tracking-widest text-slate-500 dark:text-white">
+            Student Records
+          </h3>
+        </div>
+
+        <span class="text-[10px] font-black uppercase text-slate-400 tracking-tighter">
+          Showing {{ showingCount }} of {{ filteredStudents.length }} Students
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-slate-50/50 dark:bg-slate-950/50 text-[10px] uppercase text-slate-400 font-black border-b dark:border-slate-800">
+            <tr>
+              <th class="px-6 py-4">Student ID</th>
+              <th class="px-6 py-4">Name</th>
+              <th class="px-6 py-4">Course</th>
+              <th class="px-6 py-4">Year & Section</th>
+              <th class="px-6 py-4">Email</th>
+              <th class="px-6 py-4">Contact</th>
+              <th class="px-6 py-4">RFID</th>
+              <th class="px-6 py-4">Face</th>
+              <th class="px-6 py-4">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y dark:divide-slate-800">
+            <tr *ngFor="let student of paginatedStudents"
+                class="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+
+              <td class="px-6 py-4 font-mono text-[11px] text-slate-500">{{ student.id }}</td>
+              <td class="px-6 py-4 font-bold dark:text-white text-sm">{{ student.name }}</td>
+              <td class="px-6 py-4 text-xs dark:text-slate-400">{{ student.course }}</td>
+              <td class="px-6 py-4 text-xs dark:text-slate-400">{{ student.yearSection }}</td>
+              <td class="px-6 py-4 text-xs dark:text-slate-400">{{ student.email }}</td>
+              <td class="px-6 py-4 text-xs dark:text-slate-400">{{ student.contact }}</td>
+              <td class="px-6 py-4 text-xs dark:text-slate-400">{{ student.rfid }}</td>
+
+              <td class="px-6 py-4">
+                <img [src]="student.faceImage"
+                     class="w-10 h-10 rounded-2xl object-cover border border-slate-200 dark:border-slate-700">
+              </td>
+
+              <td class="px-6 py-4">
+                <div class="flex gap-2">
+                  <button class="text-blue-600 hover:text-blue-700 text-xs">
+                    <i class="fas fa-eye"></i>
+                  </button>
+
+                  <button (click)="openEditModal(student)"
+                          class="text-amber-600 hover:text-amber-700 text-xs">
+                    <i class="fas fa-pencil"></i>
+                  </button>
+
+                  <button (click)="confirmDeleteStudent(student)"
+                          class="text-rose-600 hover:text-rose-700 text-xs">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr *ngIf="paginatedStudents.length === 0">
+              <td colspan="9"
+                  class="text-center p-8 text-slate-500 dark:text-slate-400 text-[10px] font-black uppercase">
+                No students found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="p-4 border-t dark:border-slate-800 flex justify-between items-center bg-slate-50/30 dark:bg-slate-900/50">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+          Page {{ studentCurrentPage }} of {{ studentTotalPages }}
+        </p>
+
+        <div class="flex gap-2">
+          <button (click)="studentPreviousPage()" [disabled]="studentCurrentPage === 1"
+            class="px-4 py-2 text-[10px] font-black uppercase bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl disabled:opacity-30 dark:text-white transition-all">
+            Prev
+          </button>
+
+          <button (click)="studentNextPage()" [disabled]="studentCurrentPage === studentTotalPages || studentTotalPages === 0"
+            class="px-4 py-2 text-[10px] font-black uppercase bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl disabled:opacity-30 dark:text-white transition-all">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- Admin Edit Modal -->
+<div *ngIf="isAddModalOpen"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl p-6 shadow-xl">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <div class="flex items-center gap-2">
+        <div class="h-6 w-1 bg-blue-600 rounded-full"></div>
+        <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+          Edit Admin
+        </h2>
+      </div>
+
+      <button (click)="closeModal()"
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="editForm"
+          (ngSubmit)="onEditSubmit()"
+          class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <!-- Full Name -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Full Name
+        </label>
+        <input formControlName="fullName"
+               type="text"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Email Address
+        </label>
+        <input formControlName="email"
+               type="email"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Mobile -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Mobile Number
+        </label>
+        <input formControlName="mobile"
+               type="text"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Profile Upload -->
+      <div class="col-span-full">
+        <label class="text-xs uppercase text-slate-400 font-black">
+          Update Profile Picture
+        </label>
+
+         <input type="file"
+           (change)="onFileSelected($event, 'edit')"
+           class="w-full text-sm mb-4 dark:text-white">
+
+        <!-- Preview -->
+        <div class="flex justify-center">
+          <img
+            [src]="editForm.get('profilePic')?.value || 'https://via.placeholder.com/150'"
+            class="w-24 h-24 rounded-full object-cover border shadow-md">
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="col-span-full flex justify-end gap-3 pt-4">
+        <button type="button"
+                (click)="closeModal()"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Student Edit Modal -->
+<div *ngIf="isEditModalOpen"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+  <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl p-6 shadow-xl">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <div class="flex items-center gap-2">
+        <div class="h-6 w-1 bg-emerald-600 rounded-full"></div>
+        <h2 class="text-lg font-bold text-gray-800 dark:text-white">
+          Edit Student
+        </h2>
+      </div>
+
+      <button (click)="isEditModalOpen = false"
+              class="text-gray-400 hover:text-gray-600">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="updateStudent()"
+          class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      <!-- Full Name -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Full Name</label>
+        <input type="text"
+               [(ngModel)]="editStudent.fullName"
+               name="fullName"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Student ID -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Student ID</label>
+        <input type="text"
+               [(ngModel)]="editStudent.studentId"
+               name="studentId"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white"
+               disabled>
+      </div>
+
+      <!-- Course -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Course</label>
+        <input type="text"
+               [(ngModel)]="editStudent.course"
+               name="course"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Year & Section -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Year & Section</label>
+        <input type="text"
+               [(ngModel)]="editStudent.yearSection"
+               name="yearSection"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Email</label>
+        <input type="email"
+               [(ngModel)]="editStudent.email"
+               name="email"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <label class="text-xs uppercase text-slate-400 font-black">Contact</label>
+        <input type="text"
+               [(ngModel)]="editStudent.contact"
+               name="contact"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- RFID -->
+      <div class="col-span-full">
+        <label class="text-xs uppercase text-slate-400 font-black">RFID</label>
+        <input type="text"
+               [(ngModel)]="editStudent.rfid"
+               name="rfid"
+               class="w-full bg-slate-50 dark:bg-slate-800 rounded-2xl px-4 py-2 text-sm dark:text-white">
+      </div>
+
+      <!-- Buttons -->
+      <div class="col-span-full flex justify-end gap-3 pt-4">
+        <button type="button"
+                (click)="isEditModalOpen = false"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-slate-200 dark:bg-slate-700 dark:text-white">
+          Cancel
+        </button>
+
+        <button type="submit"
+                class="px-5 py-2 rounded-2xl text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

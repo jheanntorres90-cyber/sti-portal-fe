@@ -103,33 +103,11 @@ export const GRADES_ROUTES: Routes = [
       ),
   },
   {
-    path: 'student-schedule ',
+    path: 'student-schedule',
     loadComponent: () =>
-      import('./student/schedule/schedule.component').then(
+      import('./student/schedule/class-schedule.component').then(
         (m) => m.MyScheduleComponent,
       ),
-  },
-  {
-    path: 'student-mvh',
-    loadComponent: () =>
-      import('./student/mvh/mvh.componnet').then((m) => m.MvshComponent),
-  },
-  {
-    path: 'student-feedback',
-    loadComponent: () =>
-      import('./student/feedback/feedback.component').then(
-        (m) => m.FeedbackComponent,
-      ),
-  },
-  {
-    path: 'student-about',
-    loadComponent: () =>
-      import('./student/about/about.component').then((m) => m.AboutComponent),
-  },
-  {
-    path: 'student-faqs',
-    loadComponent: () =>
-      import('./student/faqs/faqs.component').then((m) => m.FaqsComponent),
   },
   //============================================
   // PARENT ROUTES
@@ -154,35 +132,6 @@ export const GRADES_ROUTES: Routes = [
       import('./parent/child-schedule/child-schedule.component').then(
         (m) => m.ChildScheduleComponent,
       ),
-  },
-  {
-    path: 'parent-announcements',
-    loadComponent: () =>
-      import('./parent/announcements/announcements.component').then(
-        (m) => m.ParentAnnouncementsComponent,
-      ),
-  },
-  {
-    path: 'parent-mvsh',
-    loadComponent: () =>
-      import('./parent/mvsh/mvsh.component').then((m) => m.MvshComponent),
-  },
-  {
-    path: 'parent-feedback',
-    loadComponent: () =>
-      import('./parent/feedback/feedback.component').then(
-        (m) => m.FeedbackComponent,
-      ),
-  },
-  {
-    path: 'parent-about',
-    loadComponent: () =>
-      import('./parent/about/about.component').then((m) => m.AboutComponent),
-  },
-  {
-    path: 'parent-faqs',
-    loadComponent: () =>
-      import('./parent/faqs/faqs.component').then((m) => m.FaqsComponent),
   },
   {
     path: '',

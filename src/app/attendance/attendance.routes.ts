@@ -24,15 +24,6 @@ export const ATTENDANCE_ROUTES: Routes = [
       ),
   },
   {
-    path: 'admin-manage-students',
-    canActivate: [roleGuard],
-    data: { roles: ['Admin'] },
-    loadComponent: () =>
-      import('./admin/manage-students/manage.component').then(
-        (m) => m.ManageStudentsComponent,
-      ),
-  },
-  {
     path: 'admin-schedule',
     canActivate: [roleGuard],
     data: { roles: ['Admin'] },
@@ -51,12 +42,12 @@ export const ATTENDANCE_ROUTES: Routes = [
       ),
   },
   {
-    path: 'admin-add-new-admin',
+    path: 'admin-administration',
     canActivate: [roleGuard],
     data: { roles: ['Admin'] },
     loadComponent: () =>
-      import('./admin/add-new-admin/add-admin.component').then(
-        (m) => m.AdminAddAdminComponent,
+      import('./admin/administration-panel/administration.component').then(
+        (m) => m.AdministrationComponent,
       ),
   },
   {
