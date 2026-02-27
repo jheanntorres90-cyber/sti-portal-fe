@@ -72,14 +72,7 @@ export class ChildGradesComponent implements OnInit {
   selectedStatus: string = 'All Status';
 
   // Table headers
-  tableHeaders: string[] = ['Subject', 'Professor', 'Prelim', 'Midterm', 'Finals', 'Final Grade', 'Status', 'Actions'];
-
-  // Academic stats
-  academicStats: Stat[] = [
-    { label: 'Current GPA', value: '3.25', icon: 'fas fa-chart-line', color: 'blue' },
-    { label: 'Average Grade', value: '85.5%', icon: 'fas fa-percent', color: 'purple' },
-    { label: 'Subjects This Term', value: '6', icon: 'fas fa-book-open', color: 'green' }
-  ];
+  tableHeaders: string[] = ['Subject', 'Professor', 'Prelim', 'Midterm', 'Finals', 'Final Grade', 'Status',];
 
   // Grades data
   currentGrades: Grade[] = [];

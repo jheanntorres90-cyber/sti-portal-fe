@@ -76,7 +76,7 @@ export class ParentDashboardComponent implements OnInit {
   stats: Stat[] = [
     { label: 'Current GPA', value: '3.25', icon: 'fas fa-chart-line', color: 'blue' },
     { label: 'Classes Today', value: '2', icon: 'fas fa-clock', color: 'purple' },
-    { label: 'New Announcements', value: '1', icon: 'fas fa-bullhorn', color: 'yellow' }
+    { label: 'Balance', value: '1', icon: 'fas fa-peso-sign', color: 'yellow' }
   ];
 
   quickActions: QuickAction[] = [
