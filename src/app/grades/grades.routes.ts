@@ -102,13 +102,6 @@ export const GRADES_ROUTES: Routes = [
         (m) => m.GradesComponent,
       ),
   },
-  {
-    path: 'student-schedule',
-    loadComponent: () =>
-      import('./student/schedule/class-schedule.component').then(
-        (m) => m.MyScheduleComponent,
-      ),
-  },
   //============================================
   // PARENT ROUTES
   //============================================
