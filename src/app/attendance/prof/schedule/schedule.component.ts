@@ -1,94 +1,78 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+
+interface ClassBlock {
+  code: string;
+  name: string;
+  section: string;
+  room: string;
+  students: number;
+  time: string;
+  days: string[];
+}
 
 @Component({
-  selector: 'app-teacher-schedule',
+  selector: 'app-my-schedule',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   template: `
-    <div class="p-6 space-y-6 bg-gray-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
-      <div class="flex justify-between items-center">
+    <div class="p-8 bg-gray-50 dark:bg-slate-950 min-h-screen space-y-8 transition-colors duration-300">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Class Schedule</h1>
-          <p class="text-gray-500 dark:text-slate-400">{{ todayDate }}</p>
-        </div>
-      </div>
-
-      <div class="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-slate-800">
-        <div class="flex items-center gap-2 mb-4 text-blue-800 dark:text-blue-400 font-bold">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />
-          </svg>
-          Filter Schedule
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div class="space-y-1">
-            <label class="text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase">Search by Subject</label>
-            <input type="text" [(ngModel)]="searchSubject" placeholder="Enter subject name" 
-              class="w-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-          </div>
-          <div class="space-y-1">
-            <label class="text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase">Filter by Year</label>
-            <select [(ngModel)]="filterYear" class="w-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 rounded-lg p-2.5 text-sm outline-none">
-              <option value="">All Years</option>
-              <option value="1st Year">1st Year</option>
-              <option value="2nd Year">2nd Year</option>
-              <option value="3rd Year">3rd Year</option>
-            </select>
-          </div>
-          <div class="space-y-1">
-            <label class="text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase">Filter by Day</label>
-            <select [(ngModel)]="filterDay" class="w-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 rounded-lg p-2.5 text-sm outline-none">
-              <option value="">All Days</option>
-              <option *ngFor="let day of weekDays" [value]="day">{{ day }}</option>
-            </select>
-          </div>
-          <div class="space-y-1">
-            <label class="text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase">Filter by Section</label>
-            <input type="text" [(ngModel)]="filterSection" placeholder="e.g. BSIT 2A" 
-              class="w-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-800 dark:text-gray-200 rounded-lg p-2.5 text-sm outline-none">
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 overflow-hidden">
-        <div class="p-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/50 flex justify-between items-center">
-          <h3 class="font-bold text-gray-700 dark:text-gray-200">Weekly Overview (Mon-Sat)</h3>
-          <span class="text-xs font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">
-            {{ filteredClasses.length }} Classes Found
-          </span>
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">My Teaching Schedule</h1>
+          <p class="text-sm text-gray-500 dark:text-slate-400 font-medium">Academic Year 2025-2026 | 2nd Semester</p>
         </div>
         
+        <div class="flex bg-white dark:bg-slate-900 p-1 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
+          <button (click)="viewMode = 'table'" 
+            [ngClass]="viewMode === 'table' ? 'bg-blue-600 text-white shadow-md' : 'text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800'"
+            class="px-5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
+            <i class="pi pi-table"></i> TABLE VIEW
+          </button>
+          <button (click)="viewMode = 'list'" 
+            [ngClass]="viewMode === 'list' ? 'bg-blue-600 text-white shadow-md' : 'text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800'"
+            class="px-5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
+            <i class="pi pi-list"></i> LIST VIEW
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div *ngFor="let stat of stats" class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm flex items-center gap-5">
+          <div [class]="stat.bg + ' ' + stat.color + ' ' + stat.darkBg" class="w-14 h-14 rounded-2xl flex items-center justify-center text-xl shadow-inner">
+            <i [class]="stat.icon"></i>
+          </div>
+          <div>
+            <div class="text-2xl font-black text-gray-900 dark:text-white">{{ stat.value }}</div>
+            <div class="text-[11px] text-gray-400 dark:text-slate-500 font-bold uppercase tracking-widest">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="viewMode === 'table'" class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
+          <table class="w-full text-left border-collapse table-fixed min-w-[1100px]">
             <thead>
-              <tr class="bg-gray-50 dark:bg-slate-800/50 text-gray-600 dark:text-slate-400 text-xs uppercase font-bold">
-                <th class="p-4 border-b dark:border-slate-800">Day</th>
-                <th class="p-4 border-b dark:border-slate-800">Time</th>
-                <th class="p-4 border-b dark:border-slate-800">Subject</th>
-                <th class="p-4 border-b dark:border-slate-800">Section</th>
-                <th class="p-4 border-b dark:border-slate-800">Room</th>
-                <th class="p-4 border-b dark:border-slate-800 text-center">Action</th>
+              <tr class="bg-gray-50/50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
+                <th class="p-5 text-[11px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-wider w-36 text-center">Time Slot</th>
+                <th *ngFor="let day of days" class="p-5 text-[11px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-wider">{{ day }}</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
-              <tr *ngFor="let item of filteredClasses" class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
-                <td class="p-4 font-bold text-gray-700 dark:text-gray-300">{{ item.day }}</td>
-                <td class="p-4 text-blue-600 dark:text-blue-400 font-medium">{{ item.time }}</td>
-                <td class="p-4">
-                  <div class="font-semibold text-gray-800 dark:text-gray-100">{{ item.subject }}</div>
-                  <div class="text-xs text-gray-400 dark:text-slate-500">{{ item.year }}</div>
+            <tbody>
+              <tr *ngFor="let time of timeSlots" class="border-b border-gray-50 dark:border-slate-800 group last:border-0">
+                <td class="p-4 text-[10px] font-bold text-blue-800 dark:text-blue-400 bg-gray-50/30 dark:bg-slate-900/50 text-center group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors">
+                  {{ time }}
                 </td>
-                <td class="p-4 text-gray-600 dark:text-slate-400">{{ item.section }}</td>
-                <td class="p-4">
-                  <span class="px-2 py-1 bg-gray-100 dark:bg-slate-800 dark:text-slate-300 rounded text-xs font-mono border dark:border-slate-700">{{ item.room }}</span>
-                </td>
-                <td class="p-4 text-center">
-                  <button (click)="viewAttendance(item)" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm active:scale-95">
-                    View Attendance
-                  </button>
+                <td *ngFor="let day of days" class="p-2 align-top">
+                  <div *ngIf="getClassForSlot(day, time) as classItem" 
+                    (click)="openDetails(classItem)"
+                    class="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 shadow-sm border-l-4 border-l-blue-600 dark:border-l-blue-500 p-3 rounded-xl hover:shadow-lg hover:-translate-y-1 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all cursor-pointer group/card h-full">
+                    <div class="text-[9px] font-black text-blue-600 dark:text-blue-400 mb-1 truncate">{{ classItem.code }}</div>
+                    <div class="text-[10px] font-bold text-gray-900 dark:text-gray-100 mb-2 leading-tight group-hover/card:text-blue-800 dark:group-hover/card:text-blue-300">{{ classItem.name }}</div>
+                    <div class="text-[9px] text-gray-400 dark:text-slate-500 flex items-center gap-1 font-bold italic">
+                       <i class="pi pi-map-marker text-[8px]"></i> {{ classItem.room }}
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -96,133 +80,108 @@ import { FormsModule } from '@angular/forms';
         </div>
       </div>
 
-      <div *ngIf="currentClass" class="animate-in slide-in-from-bottom-4 duration-500 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-gray-200 dark:border-slate-800 overflow-hidden">
-        
-        <div class="p-4 bg-slate-800 dark:bg-slate-950 text-white flex flex-wrap justify-between items-center gap-4">
-          <div>
-            <span class="text-[10px] uppercase text-slate-400 font-bold tracking-widest">Attendance Management</span>
-            <h3 class="font-bold text-lg leading-tight">{{ currentClass.subject }} — {{ currentClass.section }}</h3>
-          </div>
-          
-          <div class="flex items-center gap-2">
-            <button (click)="saveAttendance()" 
-              class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md active:scale-95">
-              <i class="fas fa-save"></i> Save
-            </button>
-            <button (click)="exportToCSV()" 
-              class="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md active:scale-95">
-              <i class="fas fa-file-csv"></i> CSV
-            </button>
-            <button (click)="exportToExcel()" 
-              class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md active:scale-95">
-              <i class="fas fa-file-excel"></i> Excel
-            </button>
+      <div *ngIf="viewMode === 'list'" class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div *ngFor="let day of days" class="space-y-4">
+          <h3 class="flex items-center gap-3 text-lg font-black text-gray-800 dark:text-gray-100 uppercase tracking-tighter">
+            <span class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-200 dark:shadow-blue-900/20"><i class="pi pi-calendar"></i></span>
+            {{ day }}
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <ng-container *ngFor="let classItem of classes">
+              <div *ngIf="classItem.days.includes(day)" 
+                (click)="openDetails(classItem)"
+                class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer transition-all hover:shadow-xl group">
+                <div class="flex justify-between items-start mb-4">
+                  <span class="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-black px-3 py-1.5 rounded-full ring-1 ring-blue-100 dark:ring-blue-900/50">{{ classItem.time }}</span>
+                  <i class="pi pi-chevron-right text-gray-300 dark:text-slate-700 group-hover:text-blue-500 transition-colors"></i>
+                </div>
+                <h4 class="font-black text-gray-900 dark:text-white text-base leading-tight">{{ classItem.code }}</h4>
+                <p class="text-sm text-gray-500 dark:text-slate-400 font-medium mt-1">{{ classItem.name }}</p>
+                <div class="mt-6 pt-4 border-t border-gray-50 dark:border-slate-800 flex items-center justify-between text-[11px] text-gray-400 dark:text-slate-500 font-bold uppercase tracking-tighter">
+                  <span class="flex items-center gap-1.5"><i class="pi pi-users text-blue-500"></i> {{ classItem.section }}</span>
+                  <span class="flex items-center gap-1.5"><i class="pi pi-map-marker text-red-500"></i> {{ classItem.room }}</span>
+                </div>
+              </div>
+            </ng-container>
           </div>
         </div>
+      </div>
 
-        <table class="w-full text-left">
-          <thead class="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-200 dark:border-slate-700 text-xs text-gray-500 dark:text-slate-400 uppercase font-bold">
-            <tr>
-              <th class="p-4">Student ID</th>
-              <th class="p-4">Student Name</th>
-              <th class="p-4 text-center">Status</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
-            <tr *ngFor="let student of filteredStudents" class="hover:bg-gray-50 dark:hover:bg-slate-800/30 transition-colors">
-              <td class="p-4 font-mono text-sm text-blue-600 dark:text-blue-400 font-semibold">{{ student.id }}</td>
-              <td class="p-4 font-semibold text-gray-700 dark:text-gray-200">{{ student.name }}</td>
-              <td class="p-4">
-                <div class="flex justify-center">
-                  <select [(ngModel)]="student.status" 
-                    [ngClass]="{
-                      'text-green-600 bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800/50': student.status === 'Present',
-                      'text-orange-600 bg-orange-50 border-orange-200 dark:bg-orange-900/20 dark:border-orange-800/50': student.status === 'Late',
-                      'text-red-600 bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800/50': student.status === 'Absent'
-                    }"
-                    class="border rounded-lg p-1.5 text-xs font-bold outline-none cursor-pointer min-w-[100px] dark:bg-slate-800">
-                    <option value="Present">Present</option>
-                    <option value="Late">Late</option>
-                    <option value="Absent">Absent</option>
-                  </select>
+      <div *ngIf="isModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 dark:bg-slate-950/80 backdrop-blur-md">
+        <div class="bg-white dark:bg-slate-900 rounded-[40px] w-full max-w-md overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-300">
+           <div class="p-8 text-center">
+              <div class="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
+                <i class="pi pi-book"></i>
+              </div>
+              <h3 class="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">{{selectedClass?.code}}</h3>
+              <p class="text-gray-500 dark:text-slate-400 font-medium mb-8 text-sm">{{selectedClass?.name}}</p>
+              
+              <div class="grid grid-cols-2 gap-4 mb-8 text-left">
+                <div class="bg-gray-50 dark:bg-slate-800 p-4 rounded-2xl">
+                  <p class="text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase mb-1">Room</p>
+                  <p class="font-bold text-gray-800 dark:text-gray-100">{{selectedClass?.room}}</p>
                 </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <div class="bg-gray-50 dark:bg-slate-800 p-4 rounded-2xl">
+                  <p class="text-[10px] font-black text-gray-400 dark:text-slate-500 uppercase mb-1">Section</p>
+                  <p class="font-bold text-gray-800 dark:text-gray-100">{{selectedClass?.section}}</p>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                <button class="w-full bg-blue-600 dark:bg-blue-500 text-white py-4 rounded-2xl font-black text-sm hover:bg-blue-700 dark:hover:bg-blue-400 shadow-lg shadow-blue-200 dark:shadow-blue-900/20 transition-all">
+                  VIEW CLASS LIST
+                </button>
+                <button (click)="isModalOpen = false" class="w-full bg-white dark:bg-slate-900 text-gray-400 dark:text-slate-500 py-3 rounded-2xl font-bold text-xs hover:text-gray-600 dark:hover:text-gray-300 transition-all">
+                  CLOSE
+                </button>
+              </div>
+           </div>
+        </div>
       </div>
     </div>
   `
 })
 export class TeacherScheduleComponent implements OnInit {
-  todayDate = "Monday, September 11, 2023";
-  currentClass: any = null;
+  viewMode: 'table' | 'list' = 'table';
+  selectedClass: ClassBlock | null = null;
+  isModalOpen = false;
 
-  searchSubject: string = '';
-  filterYear: string = '';
-  filterDay: string = '';
-  filterSection: string = '';
-
-  weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-  classes = [
-    { id: 0, day: "Monday", time: "08:00 - 10:00", subject: "Database Management", year: "1st Year", section: "BSIT 2A", room: "Room 204" },
-    { id: 1, day: "Tuesday", time: "10:00 - 12:00", subject: "Network Administration", year: "1st Year", section: "BSIT 3B", room: "Room 305" },
-    { id: 2, day: "Wednesday", time: "01:00 - 02:30", subject: "Programming", year: "2nd Year", section: "BSCS 1C", room: "Lab 102" },
-    { id: 3, day: "Thursday", time: "09:00 - 11:00", subject: "Web Development", year: "3rd Year", section: "BSIT 3A", room: "Lab 105" },
-    { id: 4, day: "Friday", time: "02:00 - 04:00", subject: "Ethics in IT", year: "1st Year", section: "BSIT 1B", room: "Room 501" },
-    { id: 5, day: "Saturday", time: "08:00 - 12:00", subject: "Capstone Project 1", year: "3rd Year", section: "BSIT 4A", room: "Research Center" }
+  stats = [
+    { label: 'Weekly Sessions', value: '14', icon: 'pi pi-calendar', color: 'text-blue-600', bg: 'bg-blue-100', darkBg: 'dark:bg-blue-900/30' },
+    { label: 'Total Units', value: '18.0', icon: 'pi pi-star', color: 'text-purple-600', bg: 'bg-purple-100', darkBg: 'dark:bg-purple-900/30' },
+    { label: 'Rooms Assigned', value: '4', icon: 'pi pi-map', color: 'text-amber-600', bg: 'bg-amber-100', darkBg: 'dark:bg-amber-900/30' }
   ];
 
-  students = [
-    { id: '02000291930', name: 'Juan Dela Cruz', section: 'BSIT 2A', status: 'Present' },
-    { id: '02000302931', name: 'Maria Santos', section: 'BSIT 2A', status: 'Present' },
-    { id: '02000413932', name: 'Pedro Gomez', section: 'BSIT 3B', status: 'Late' },
-    { id: '02000867938', name: 'Ana Cruz', section: 'BSCS 1C', status: 'Present' },
-    { id: '02000129995', name: 'John Smith', section: 'BSIT 3A', status: 'Present' }
+  timeSlots = [
+    '07:00 - 08:30 AM', 
+    '08:30 - 10:00 AM', 
+    '10:00 - 11:30 AM', 
+    '11:30 - 01:00 PM', 
+    '01:00 - 02:30 PM', 
+    '02:30 - 04:00 PM', 
+    '04:00 - 05:30 PM',
+    '05:30 - 07:00 PM'
+  ];
+
+  days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  classes: ClassBlock[] = [
+    { code: 'WEB101', name: 'Web Development', section: 'Section A', room: 'Room 301', students: 32, time: '07:00 - 08:30 AM', days: ['Monday', 'Wednesday', 'Friday'] },
+    { code: 'DB201', name: 'Database Management', section: 'Section B', room: 'Room 205', students: 28, time: '08:30 - 10:00 AM', days: ['Tuesday', 'Thursday'] },
+    { code: 'PROG101', name: 'Programming Fundamentals', section: 'Section C', room: 'Room 402', students: 30, time: '10:00 - 11:30 AM', days: ['Monday', 'Wednesday'] },
+    { code: 'NET301', name: 'Network Administration', section: 'Section D', room: 'Lab 102', students: 25, time: '01:00 - 02:30 PM', days: ['Tuesday', 'Thursday'] },
+    { code: 'CAP102', name: 'Capstone Project 1', section: 'Section F', room: 'Lab 105', students: 15, time: '08:30 - 10:00 AM', days: ['Saturday'] },
+    { code: 'GDEV202', name: 'Game Development', section: 'Section E', room: 'Lab 103', students: 22, time: '05:30 - 07:00 PM', days: ['Friday'] }
   ];
 
   ngOnInit() {}
 
-  get filteredClasses() {
-    return this.classes.filter(item => {
-      const matchSubject = item.subject.toLowerCase().includes(this.searchSubject.toLowerCase());
-      const matchYear = this.filterYear ? item.year === this.filterYear : true;
-      const matchDay = this.filterDay ? item.day === this.filterDay : true;
-      const matchSection = item.section.toLowerCase().includes(this.filterSection.toLowerCase());
-      return matchSubject && matchYear && matchDay && matchSection;
-    });
+  getClassForSlot(day: string, time: string): ClassBlock | undefined {
+    return this.classes.find(c => c.time === time && c.days.includes(day));
   }
 
-  get filteredStudents() {
-    return this.students.filter(s => s.section === this.currentClass?.section);
-  }
-
-  viewAttendance(item: any) {
-    this.currentClass = item;
-  }
-
-  saveAttendance() {
-    alert(`Attendance for ${this.currentClass.subject} (${this.currentClass.section}) has been saved successfully!`);
-  }
-
-  exportToCSV() {
-    const data = this.filteredStudents;
-    const csvContent = "data:text/csv;charset=utf-8," 
-      + "Student ID,Name,Status\n"
-      + data.map(s => `${s.id},${s.name},${s.status}`).join("\n");
-    
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Attendance_${this.currentClass.section}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
-  exportToExcel() {
-    alert(`Exporting ${this.currentClass.subject} attendance to Excel...`);
-    this.exportToCSV(); 
+  openDetails(classInfo: ClassBlock) {
+    this.selectedClass = classInfo;
+    this.isModalOpen = true;
   }
 }

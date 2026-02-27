@@ -45,10 +45,8 @@ import { map, Subject, takeUntil } from 'rxjs';
                    ========================= -->
               <ng-container *ngIf="isRole('Professor')">
                 <a routerLink="/attendance/teacher-dashboard" routerLinkActive="active-attendance" class="nav-item">Dashboard</a>
-                <a routerLink="/attendance/attendance" routerLinkActive="active-attendance" class="nav-item">Attendance</a>
-                <a routerLink="/attendance/student-list" routerLinkActive="active-attendance" class="nav-item">Student List</a>
+                <a routerLink="/attendance/student-list" routerLinkActive="active-attendance" class="nav-item">Student Attendance</a>
                 <a routerLink="/attendance/schedule" routerLinkActive="active-attendance" class="nav-item">Schedule</a>
-                <a routerLink="/attendance/settings" routerLinkActive="active-attendance" class="nav-item">Settings</a>
               </ng-container>
 
               <!-- =========================
@@ -88,11 +86,8 @@ import { map, Subject, takeUntil } from 'rxjs';
               <!-- PROFESSOR GRADE LINKS -->
               <ng-container *ngIf="isRole('Professor')">
                 <a routerLink="/grades/dashboard" routerLinkActive="active-grade" class="nav-item">Dashboard</a>
-                <a routerLink="/grades/my-schedule" routerLinkActive="active-grade" class="nav-item">My Schedule</a>
-                <a routerLink="/grades/my-students" routerLinkActive="active-grade" class="nav-item">My Students</a>
                 <a routerLink="/grades/upload-grades" routerLinkActive="active-grade" class="nav-item">Upload Grades</a>
                 <a routerLink="/grades/view-grades" routerLinkActive="active-grade" class="nav-item">View Grades</a>
-                <a routerLink="/grades/announcements" routerLinkActive="active-grade" class="nav-item">Announcements</a>
               </ng-container>
 
               <!-- STUDENT GRADE LINKS -->

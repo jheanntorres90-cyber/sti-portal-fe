@@ -73,15 +73,6 @@ export const ATTENDANCE_ROUTES: Routes = [
       ),
   },
   {
-    path: 'attendance',
-    canActivate: [roleGuard],
-    data: { roles: ['Professor'] },
-    loadComponent: () =>
-      import('./prof/attendance/attendance.component').then(
-        (m) => m.TeacherAttendanceComponent,
-      ),
-  },
-  {
     path: 'student-list',
     canActivate: [roleGuard],
     data: { roles: ['Professor'] },
@@ -99,16 +90,6 @@ export const ATTENDANCE_ROUTES: Routes = [
         (m) => m.TeacherScheduleComponent,
       ),
   },
-  {
-    path: 'settings',
-    canActivate: [roleGuard],
-    data: { roles: ['Professor'] },
-    loadComponent: () =>
-      import('./prof/settings/settings.component').then(
-        (m) => m.AttendanceSettingsComponent,
-      ),
-  },
-
   //============================================
   // STUDENT ROUTES
   //============================================

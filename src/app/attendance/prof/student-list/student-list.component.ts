@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
     <div>
       <h1 class="text-3xl font-bold text-gray-800 dark:text-white tracking-tight">
-         Student List
+         Student Attendance
       </h1>
       <p class="text-gray-600 dark:text-gray-400 mt-2"> Monitor and manage registered students</p>
     </div>

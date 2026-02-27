@@ -78,7 +78,7 @@ interface Announcement {
         <div class="stat-card bg-white dark:bg-slate-900 border dark:border-slate-800 p-6 rounded-2xl shadow-sm">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Attendance Rate</p>
+              <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Today's Attendance Rate</p>
               <p class="text-3xl font-bold text-gray-800 dark:text-white mt-2">94%</p>
             </div>
             <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center">
@@ -144,30 +144,6 @@ interface Announcement {
           </div>
         </p-card>
       </div>
-
-      <p-card styleClass="shadow-sm border-none dark:bg-slate-900">
-        <div class="p-2">
-          <div class="flex items-center justify-between mb-8 px-2">
-            <h2 class="text-xl font-heading font-semibold text-gray-800 dark:text-white">
-              <i class="pi pi-bullhorn mr-2 text-blue-600"></i>
-              Latest Announcements
-            </h2>
-          </div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div *ngFor="let announcement of announcements" 
-                 class="p-6 border border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40 rounded-2xl hover:bg-white dark:hover:bg-slate-800 transition-all">
-              <div class="flex items-start justify-between mb-4">
-                <span class="text-[10px] font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded uppercase">Official</span>
-                <span class="text-[10px] text-gray-400">New</span>
-              </div>
-              <h3 class="font-bold text-gray-800 dark:text-white mb-2 leading-tight">{{ announcement.title }}</h3>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ announcement.meta }}</p>
-              <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed">{{ announcement.content }}</p>
-            </div>
-          </div>
-        </div>
-      </p-card>
     </div>
   `,
   styles: [`
